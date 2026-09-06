@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - STI Clinic System</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <!-- Modal styles reused from the add flows -->
+    <link rel="stylesheet" href="../css/consultation.css">
+    <link rel="stylesheet" href="../css/inventory.css">
+
+</head>
+
+
+<body>
+
+
+<div class="clinic-container">
+
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo-container">
+
+            <div class="sti-logo">
+
+                <img src="../PHOTO/STI LOGO.jpg"
+                     alt="STI Logo">
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="dashboard.html"
+               class="menu-item active">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="patients.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>Patients</span>
+
+            </a>
+
+
+            <a href="consultation.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-clipboard-list"></i>
+
+                <span>Consultation Log</span>
+
+            </a>
+
+
+            <a href="inventory.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-kit-medical"></i>
+
+                <span>Inventory</span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <h1>STI Clinic System</h1>
+
+
+            <div class="profile-area" onclick="openProfile()">
+
+    <strong id="headerNurseName">Nurse Name</strong>
+
+    <div class="nurse-avatar">
+        👩‍⚕️
+    </div>
+
+
+
+                <i class="fa-solid fa-circle-chevron-down"></i>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- PAGE -->
+
+        <section class="page-container dashboard-page">
+
+
+            <div class="welcome-section">
+
+                <h2>Welcome, Nurse!</h2>
+
+                <p>
+                    Here's what's happening in the clinic today.
+                </p>
+
+            </div>
+
+
+
+            <!-- STAT CARDS -->
+
+            <div class="dashboard-stats">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon patients-icon">
+                        <i class="fa-solid fa-user-group"></i>
+                    </div>
+
+                    <div class="stat-information">
+
+                        <p>Patients Today</p>
+
+                        <strong>15</strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon warning-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <div class="stat-information">
+
+                        <p>Low Stock Items</p>
+
+                        <strong>5</strong>
+
+                        <span>Needs Attention</span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- MIDDLE SECTION -->
+
+            <div class="dashboard-middle">
+
+
+                <!-- RECENT PATIENTS -->
+
+                <div class="dashboard-box recent-visits">
+
+                    <div class="box-header">
+
+                        <h2>
+                            <i class="fa-regular fa-address-card"></i>
+                            Recent Patient Visits
+                        </h2>
+
+                        <button type="button" data-action="view-all-visits">View All</button>
+
+                    </div>
+
+
+                    <div class="recent-header">
+
+                        <strong>Patient Name</strong>
+                        <strong>Reason</strong>
+                        <strong>Time</strong>
+                        <strong>Date</strong>
+
+                    </div>
+
+
+                    <div class="recent-row">
+
+                        <span>👨🏻 Chadler Esparteto</span>
+                        <span>Fever</span>
+                        <span>7:30 AM</span>
+                        <span>July 26, 2026</span>
+
+                    </div>
+
+
+                    <div class="recent-row">
+
+                        <span>👩🏻 Mary Josephine Lajom</span>
+                        <span>Headache</span>
+                        <span>8:50 AM</span>
+                        <span>July 26, 2026</span>
+
+                    </div>
+
+
+                    <div class="recent-row">
+
+                        <span>👩🏻 Daniela Marzan</span>
+                        <span>Allergy</span>
+                        <span>9:20 AM</span>
+                        <span>July 26, 2026</span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LOW STOCK -->
+
+                <div class="dashboard-box low-stock-box">
+
+                    <div class="box-header">
+
+                        <h2>
+                            <i class="fa-solid fa-pills"></i>
+                            Low Stock Medical Supplies
+                        </h2>
+
+                        <button type="button" data-action="view-inventory">
+                            View Inventory
+                        </button>
+
+                    </div>
+
+
+                    <div class="stock-heading">
+
+                        <strong>Medicines</strong>
+                        <strong>Stock</strong>
+                        <strong>Status</strong>
+
+                    </div>
+
+
+                    <div class="stock-row">
+
+                        <span>Alcohol</span>
+                        <span>2 left</span>
+                        <span class="stock-status yellow">
+                            Low
+                        </span>
+
+                    </div>
+
+
+                    <div class="stock-row">
+
+                        <span>Paracetamol</span>
+                        <span>3 left</span>
+                        <span class="stock-status orange">
+                            Low
+                        </span>
+
+                    </div>
+
+
+                    <div class="stock-row">
+
+                        <span>Bandages</span>
+                        <span>5 left</span>
+                        <span class="stock-status pink">
+                            Low
+                        </span>
+
+                    </div>
+
+
+                    <div class="stock-row">
+
+                        <span>Cotton</span>
+                        <span>6 left</span>
+                        <span class="stock-status pink">
+                            Low
+                        </span>
+
+                    </div>
+
+
+                    <div class="stock-row">
+
+                        <span>Betadine</span>
+                        <span>0 left</span>
+                        <span class="stock-status critical">
+                            Critical
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BOTTOM BOXES -->
+
+            <div class="dashboard-bottom">
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="small-dashboard-box">
+
+                    <h3>
+                        <i class="fa-solid fa-bolt"></i>
+                        Quick Actions
+                    </h3>
+
+                    <button type="button" data-action="add-patient">
+                        <i class="fa-solid fa-user-plus"></i>
+                        + Add Patient
+                    </button>
+
+                    <button type="button" data-action="add-medicine">
+                        <i class="fa-solid fa-pills"></i>
+                        + Add Medicine
+                    </button>
+
+                </div>
+
+
+
+                <!-- ACTIVITY -->
+
+                <div class="small-dashboard-box">
+
+                    <h3>
+                        <i class="fa-regular fa-calendar-check"></i>
+                        Today's Activity
+                    </h3>
+
+                    <p>🟢 8:00 AM &nbsp; Clinic Opened</p>
+                    <p>🟢 9:00 AM &nbsp; Inventory Checked</p>
+                    <p>🟢 10:00 AM &nbsp; Restock</p>
+                    <p>⚪ 12:00 PM &nbsp; Break Time</p>
+
+                </div>
+
+
+
+                <!-- NOTIFICATION -->
+
+                <div class="small-dashboard-box notification-box">
+
+                    <h3>
+                        🔔 Notification
+                    </h3>
+
+                    <p>
+                        🔴 Betadine is running low.
+                        <small>2 hours ago</small>
+                    </p>
+
+                    <p>
+                        🟡 Alcohol needs restocking.
+                        <small>1 hour ago</small>
+                    </p>
+
+                    <p>
+                        🔵 15 patients visited today.
+                        <small>10 minutes ago</small>
+                    </p>
+
+                </div>
+
+
+
+                <!-- CALENDAR -->
+
+                <div class="small-dashboard-box calendar-box">
+
+                    <h3>
+                        <i class="fa-regular fa-calendar"></i>
+                        Calendar
+                    </h3>
+
+                    <div class="mini-calendar-wrap">
+                        <input type="date" id="dashboardDatePicker" class="mini-date-picker">
+                    </div>
+
+                    <div class="calendar-details" id="calendarDetails">
+                        <strong>Select a date</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<div class="profile-area"
+     id="profileButton"
+     onclick="toggleProfileMenu()">
+
+    <strong id="headerNurseName">
+        Nurse Name
+    </strong>
+
+    <div class="nurse-avatar">
+        <i class="fa-solid fa-user-nurse"></i>
+    </div>
+
+</div>
+
+<div class="profile-menu" id="profileMenu">
+
+    <a href="profile.html">
+        Profile
+    </a>
+
+    <a href="../index.html">
+        Log out
+    </a>
+
+</div>
+
+<div id="consultationModal" class="consultation-modal">
+    <div class="consultation-box">
+        <div class="consultation-title">
+            <h1>New Consultation Log</h1>
+            <button type="button" onclick="closeConsultationModal()">×</button>
+        </div>
+
+        <div class="consultation-body">
+            <div class="patient-form">
+                <h2>👤 Patient Information</h2>
+                <input type="text" id="searchStudent" placeholder="Search Student" autocomplete="off">
+                <div id="searchSuggestions" class="search-suggestions" style="display:none;"></div>
+                <p class="or-text">Or</p>
+                <label><input type="checkbox" id="registerStudent"> Register New Student</label>
+                <input type="hidden" id="patientId">
+                <input type="hidden" id="consultationEditId">
+                <input type="text" id="studentName" placeholder="Student Name">
+                <input type="text" id="studentNumber" placeholder="Student No.">
+                <input type="text" id="studentStrand" placeholder="Strand">
+                <input type="text" id="studentSection" placeholder="Grade & Section">
+            </div>
+
+            <div class="consultation-form">
+                <h2>🩺 Consultation Information</h2>
+                <div class="two-inputs">
+                    <input type="time" id="consultationTime">
+                    <input type="date" id="consultationDate">
+                </div>
+
+                <div class="two-inputs">
+                    <div>
+                        <label>Chief Complaint</label>
+                        <input type="text" id="chiefComplaint">
+                    </div>
+                    <div>
+                        <label>Disposition</label>
+                        <select id="disposition">
+                            <option value="">Select</option>
+                            <option>Returned to Class</option>
+                            <option>Sent Home to Rest</option>
+                            <option>Referred</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="two-inputs">
+                    <div>
+                        <label>Diagnosis / Assessment</label>
+                        <input type="text" id="diagnosis">
+                    </div>
+                    <div>
+                        <label>Nurse</label>
+                        <input type="text" id="nurseName" value="Nurse Name">
+                    </div>
+                </div>
+
+                <div>
+                    <label>Treatment Given</label>
+                    <select id="treatment">
+                        <option value="">Select Treatment</option>
+                        <option>First Aid</option>
+                        <option>Medication</option>
+                        <option>Rest</option>
+                        <option>None</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="consultation-buttons">
+            <button class="save-consultation" type="button" onclick="saveConsultation()">Save</button>
+            <button class="cancel-consultation" type="button" onclick="closeConsultationModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="inventoryModal" class="inventory-modal">
+    <div class="inventory-modal-box">
+        <div class="inventory-modal-header">
+            <h2>Add New Inventory Item</h2>
+            <button type="button" class="inventory-close" onclick="closeInventoryModal()">×</button>
+        </div>
+
+        <div class="inventory-modal-body">
+            <div class="inventory-form-grid">
+                <div class="inventory-field-group">
+                    <label for="inventoryName">Item Name</label>
+                    <input id="inventoryName" type="text" placeholder="">
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryUnit">Unit</label>
+                    <select id="inventoryUnit">
+                        <option value="Bottle">Bottle</option>
+                        <option value="Bottles">Bottles</option>
+                        <option value="Box">Box</option>
+                        <option value="Boxes">Boxes</option>
+                        <option value="Pack">Pack</option>
+                        <option value="Packs">Packs</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Tablets">Tablets</option>
+                    </select>
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryCategory">Category</label>
+                    <select id="inventoryCategory">
+                        <option value="Medicine">Medicine</option>
+                        <option value="Antiseptic">Antiseptic</option>
+                        <option value="Supplies">Supplies</option>
+                    </select>
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryStock">Stock</label>
+                    <input id="inventoryStock" type="number" min="0" value="0">
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventorySupplier">Supplier (optional)</label>
+                    <input id="inventorySupplier" type="text">
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryExpiry">Expiry Date</label>
+                    <input id="inventoryExpiry" type="date">
+                </div>
+
+                <div class="inventory-notes-field">
+                    <label for="inventoryNotes">Description / Remarks</label>
+                    <textarea id="inventoryNotes" rows="6"></textarea>
+                </div>
+            </div>
+
+            <div class="inventory-modal-actions">
+                <button class="inventory-save" type="button" onclick="saveInventoryItem()">Save</button>
+                <button class="inventory-cancel" type="button" onclick="closeInventoryModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/consultation.js"></script>
+<script src="../js/inventory.js"></script>
+<script src="../js/dashboard.js"></script>
+
+</body>
+</html>

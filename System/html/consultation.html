@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Consultation Log - STI Clinic System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+    <link rel="stylesheet"
+          href="../css/consultation.css">
+
+</head>
+
+
+<body>
+
+
+<div class="clinic-container">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo-container">
+
+            <div class="sti-logo">
+
+                <img src="../PHOTO/STI LOGO.jpg"
+                     alt="STI Logo">
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="dashboard.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="patients.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-user"></i>
+                <span>Patients</span>
+
+            </a>
+
+
+            <a href="consultation.html"
+               class="menu-item active">
+
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Consultation Log</span>
+
+            </a>
+
+
+            <a href="inventory.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-kit-medical"></i>
+                <span>Inventory</span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <header class="top-header">
+
+            <h1>Consultation Log</h1>
+
+
+            <div class="profile-area" onclick="openProfile()">
+
+    <strong id="headerNurseName">Nurse Name</strong>
+
+    <div class="nurse-avatar">
+        👩‍⚕️
+    </div>
+
+
+
+                <i class="fa-solid fa-circle-chevron-down"></i>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="page-container consultation-page">
+
+
+            <!-- TOP -->
+
+            <div class="consultation-top">
+
+
+                <div class="consultation-filters">
+
+
+                    <div class="search-box">
+
+                        <input
+                            type="text"
+                            id="consultationSearch"
+                            placeholder="Search patients..."
+                        >
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                    </div>
+
+
+                    <div class="date-box">
+
+                        <input type="date"
+                               id="toDate">
+
+                    </div>
+
+
+                    <div class="date-box">
+
+                        <input type="date"
+                               id="fromDate">
+
+                    </div>
+
+                </div>
+
+
+                <button class="add-button"
+                       onclick="openConsultationModal()">
+
+                    + Add New Log
+
+                </button>
+
+            </div>
+
+
+
+            <!-- CONSULTATION LIST -->
+
+            <div class="consultation-list">
+
+
+                <div class="consultation-card">
+
+                    <div>
+
+                        <h3>Patient Name</h3>
+
+                        <p>Chadler Esparteto</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Time</h3>
+
+                        <p>7:00 AM</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Date</h3>
+
+                        <p>July 26, 2026</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Reason</h3>
+
+                        <p>Fever</p>
+
+                    </div>
+
+
+                    <div class="consultation-actions">
+
+                        <button class="edit-btn">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+
+                        <button class="delete-btn"
+                                onclick="deleteConsultation(this)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="consultation-card">
+
+                    <div>
+
+                        <h3>Patient Name</h3>
+
+                        <p>Mary Josephine Lajom</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Time</h3>
+
+                        <p>8:50 AM</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Date</h3>
+
+                        <p>July 26, 2026</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Reason</h3>
+
+                        <p>Headache</p>
+
+                    </div>
+
+
+                    <div class="consultation-actions">
+
+                        <button class="edit-btn">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+
+                        <button class="delete-btn"
+                                onclick="deleteConsultation(this)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="consultation-card">
+
+                    <div>
+
+                        <h3>Patient Name</h3>
+
+                        <p>Daniela Marzan</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Time</h3>
+
+                        <p>9:20 AM</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Date</h3>
+
+                        <p>July 26, 2026</p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>Reason</h3>
+
+                        <p>Allergy</p>
+
+                    </div>
+
+
+                    <div class="consultation-actions">
+
+                        <button class="edit-btn">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+
+                        <button class="delete-btn"
+                                onclick="deleteConsultation(this)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div class="profile-area"
+     id="profileButton"
+     onclick="toggleProfileMenu()">
+
+    <strong id="headerNurseName">
+        Nurse Name
+    </strong>
+
+    <div class="nurse-avatar">
+        <i class="fa-solid fa-user-nurse"></i>
+    </div>
+
+</div>
+
+<div class="profile-menu" id="profileMenu">
+
+    <a href="profile.html">
+        Profile
+    </a>
+
+    <a href="../index.html">
+        Log out
+    </a>
+
+</div>
+
+
+<!-- NEW CONSULTATION MODAL -->
+
+<div id="consultationModal" class="consultation-modal">
+
+    <div class="consultation-box">
+
+        <div class="consultation-title">
+            <h1>New Consultation Log</h1>
+
+            <button onclick="closeConsultationModal()">
+                ×
+            </button>
+        </div>
+
+
+        <div class="consultation-body">
+
+            <!-- PATIENT INFORMATION -->
+
+            <div class="patient-form">
+
+                <h2>👤 Patient Information</h2>
+
+                <input
+                    type="text"
+                    id="searchStudent"
+                    placeholder="Search Student"
+                    autocomplete="off"
+                >
+
+                <div id="searchSuggestions" class="search-suggestions" style="display:none;"></div>
+
+                <p class="or-text">Or</p>
+
+                <label>
+                    <input type="checkbox" id="registerStudent">
+                    Register New Student
+                </label>
+
+                <input
+                    type="hidden"
+                    id="patientId"
+                >
+                <input
+                    type="hidden"
+                    id="consultationEditId"
+                >
+
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Student Name"
+                >
+
+                <input
+                    type="text"
+                    id="studentNumber"
+                    placeholder="Student No."
+                >
+
+                <input
+                    type="text"
+                    id="studentStrand"
+                    placeholder="Strand"
+                >
+
+                <input
+                    type="text"
+                    id="studentSection"
+                    placeholder="Grade & Section"
+                >
+
+                <!-- Selected patient details (auto-expanded when a patient is chosen) -->
+                <div id="patientDetails" class="patient-details" style="display:none;">
+                    <!-- populated by JS -->
+                </div>
+
+            </div>
+
+
+            <!-- CONSULTATION INFORMATION -->
+
+            <div class="consultation-form">
+
+                <h2>🩺 Consultation Information</h2>
+
+                <div class="two-inputs">
+
+                    <input
+                        type="time"
+                        id="consultationTime"
+                    >
+
+                    <input
+                        type="date"
+                        id="consultationDate"
+                    >
+
+                </div>
+
+
+                <div class="two-inputs">
+
+                    <div>
+                        <label>Chief Complaint</label>
+
+                        <input
+                            type="text"
+                            id="chiefComplaint"
+                        >
+                    </div>
+
+                    <div>
+                        <label>Disposition</label>
+
+                        <select id="disposition">
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option>
+                                Returned to Class
+                            </option>
+
+                            <option>
+                                Sent Home to Rest
+                            </option>
+
+                            <option>
+                                Referred
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="two-inputs">
+
+                    <div>
+
+                        <label>
+                            Diagnosis / Assessment
+                        </label>
+
+                        <input
+                            type="text"
+                            id="diagnosis"
+                        >
+
+                    </div>
+
+                    <div>
+
+                        <label>
+                            Nurse
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nurseName"
+                            value="Nurse Name"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Treatment Given
+                    </label>
+
+                    <select id="treatment">
+
+                        <option value="">
+                            Select Treatment
+                        </option>
+
+                        <option>
+                            First Aid
+                        </option>
+
+                        <option>
+                            Medication
+                        </option>
+
+                        <option>
+                            Rest
+                        </option>
+
+                        <option>
+                            None
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="consultation-buttons">
+
+            <button
+                class="save-consultation"
+                onclick="saveConsultation()">
+
+                Save
+
+            </button>
+
+            <button
+                class="cancel-consultation"
+                onclick="closeConsultationModal()">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="../js/main.js"></script>
+<script src="../js/consultation.js"></script>
+
+</body>
+</html>

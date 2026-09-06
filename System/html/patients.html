@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Patients - STI Clinic System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+    <link rel="stylesheet"
+          href="../css/patients.css">
+
+</head>
+
+
+<body>
+
+
+<div class="clinic-container">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo-container">
+
+            <div class="sti-logo">
+
+                <img src="../PHOTO/STI LOGO.jpg"
+                     alt="STI Logo">
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="dashboard.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="patients.html"
+               class="menu-item active">
+
+                <i class="fa-solid fa-user"></i>
+                <span>Patients</span>
+
+            </a>
+
+
+            <a href="consultation.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Consultation Log</span>
+
+            </a>
+
+
+            <a href="inventory.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-kit-medical"></i>
+                <span>Inventory</span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <header class="top-header">
+
+            <h1>Patients</h1>
+
+
+           <div class="profile-area" onclick="openProfile()">
+
+    <strong id="headerNurseName">Nurse Name</strong>
+
+    <div class="nurse-avatar">
+        👩‍⚕️
+    </div>
+
+
+
+                <i class="fa-solid fa-circle-chevron-down"></i>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="page-container patients-page">
+
+
+            <!-- CONTROLS -->
+
+            <div class="patients-controls">
+
+
+                <div class="search-box">
+
+                    <input type="text"
+                           id="patientSearch"
+                           placeholder="Search patients...">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+
+                <select id="strandFilter">
+
+                    <option value="">All Courses</option>
+
+                    <option value="ITMAWD">ITMAWD</option>
+
+                    <option value="STEM">STEM</option>
+
+                    <option value="ABM">ABM</option>
+
+                    <option value="CulArts">CulArts</option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- TABLE -->
+
+            <div class="patients-table-container">
+
+                <table class="patients-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Patient Name</th>
+
+                            <th>Student No.</th>
+
+                            <th>Strand</th>
+
+                            <th>Section</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="patientsTable">
+
+
+                        <tr>
+
+                            <td>1</td>
+
+                            <td>Daniela Marzan</td>
+
+                            <td>0200442151</td>
+
+                            <td>ITMAWD</td>
+
+                            <td>12A</td>
+
+                            <td class="actions">
+
+                               
+                                <button class="view-btn"
+                                    
+             onclick='openPatientModal({
+             surname:"Marzan",
+             middleName:"Daco",
+             firstName:"Daniela",
+             studentNo:"0200442151",
+             sex:"Female",
+             strand:"ITMAWD",
+             section:"12A",
+             bloodType:"O+",
+             allergies:"Seafood",
+             condition:"None",
+             emergencyName:"Kaly Marzan",
+             emergencyNumber:"09229984659"
+                                            })'>
+
+                                    <i class="fa-solid fa-eye"></i>
+    
+                          </button>
+
+                                <button class="edit-btn"
+                                        onclick="editPatient('Daniela Marzan')">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                                <button class="delete-btn"
+                                        onclick="deletePatient(this)">
+
+                                    <i class="fa-solid fa-trash-can"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>2</td>
+
+                            <td>Mary Joy Lajom</td>
+
+                            <td>0200172926</td>
+
+                            <td>STEM</td>
+
+                            <td>12A</td>
+
+                            <td class="actions">
+
+                                <button class="view-btn">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+
+                                <button class="edit-btn">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+
+                                <button class="delete-btn"
+                                        onclick="deletePatient(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>3</td>
+
+                            <td>Chadler Esparteto</td>
+
+                            <td>0200276328</td>
+
+                            <td>STEM</td>
+
+                            <td>12A</td>
+
+                            <td class="actions">
+
+                                <button class="view-btn">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+
+                                <button class="edit-btn">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+
+                                <button class="delete-btn"
+                                        onclick="deletePatient(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>4</td>
+
+                            <td>Lawrence Mercado</td>
+
+                            <td>0200816263</td>
+
+                            <td>STEM</td>
+
+                            <td>12A</td>
+
+                            <td class="actions">
+
+                                <button class="view-btn">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+
+                                <button class="edit-btn">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+
+                                <button class="delete-btn"
+                                        onclick="deletePatient(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>5</td>
+
+                            <td>Sean Espiridion</td>
+
+                            <td>02003715198</td>
+
+                            <td>ITMAWD</td>
+
+                            <td>12A</td>
+
+                            <td class="actions">
+
+                                <button class="view-btn">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+
+                                <button class="edit-btn">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+
+                                <button class="delete-btn"
+                                        onclick="deletePatient(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>6</td>
+
+                            <td>Yuan De Chavez</td>
+
+                            <td>02008162521</td>
+
+                            <td>ABM</td>
+
+                            <td>12A</td>
+
+                            <td class="actions">
+
+                                <button class="view-btn">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+
+                                <button class="edit-btn">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+
+                                <button class="delete-btn"
+                                        onclick="deletePatient(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>7</td>
+
+                            <td>Dyian Angeles</td>
+
+                            <td>02007162816</td>
+
+                            <td>CulArts</td>
+
+                            <td>12A</td>
+
+                            <td class="actions">
+
+                                <button class="view-btn">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+
+                                <button class="edit-btn">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+
+                                <button class="delete-btn"
+                                        onclick="deletePatient(this)">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- PATIENT INFORMATION MODAL -->
+<div id="patientModal" class="patient-modal">
+
+    <div class="patient-modal-content">
+
+        <div class="patient-modal-header">
+            <h1>Patient Information</h1>
+            <button class="close-modal" onclick="closePatientModal()">×</button>
+        </div>
+
+        <div class="patient-info-body">
+
+            <div class="patient-name-section">
+
+                <div class="patient-avatar">
+                    👩
+                </div>
+
+                <div>
+                    <span>Surname</span>
+                    <strong id="infoSurname">Marzan</strong>
+                </div>
+
+                <div>
+                    <span>Middle Name</span>
+                    <strong id="infoMiddleName">Daco</strong>
+                </div>
+
+                <div>
+                    <span>First Name</span>
+                    <strong id="infoFirstName">Daniela</strong>
+                </div>
+
+            </div>
+
+            <div class="patient-details">
+
+                <div class="detail-left">
+
+                    <p>
+                        <i>Student No:</i>
+                        <strong id="infoStudentNo">0200442151</strong>
+                    </p>
+
+                    <p>
+                        <i>Sex:</i>
+                        <strong id="infoSex">Female</strong>
+                    </p>
+
+                    <p>
+                        <i>Strand:</i>
+                        <strong id="infoStrand">ITMAWD</strong>
+                    </p>
+
+                    <p>
+                        <i>Grade & Section:</i>
+                        <strong id="infoSection">12A</strong>
+                    </p>
+
+                </div>
+
+                <div class="detail-right">
+
+                    <p>
+                        <i>Blood Type:</i>
+                        <strong id="infoBlood">O+</strong>
+                    </p>
+
+                    <p>
+                        <i>Allergies:</i>
+                        <strong id="infoAllergies">Seafood</strong>
+                    </p>
+
+                    <p>
+                        <i>Existing Medical Condition:</i>
+                        <strong id="infoCondition">None</strong>
+                    </p>
+
+                    <p>
+                        <i>Emergency Contact:</i><br>
+                        <strong id="infoEmergency">
+                            Kaly Marzan<br>
+                            09229984659
+                        </strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="profile-area"
+     id="profileButton"
+     onclick="toggleProfileMenu()">
+
+    <strong id="headerNurseName">
+        Nurse Name
+    </strong>
+
+    <div class="nurse-avatar">
+        <i class="fa-solid fa-user-nurse"></i>
+    </div>
+
+</div>
+
+<div class="profile-menu" id="profileMenu">
+
+    <a href="profile.html">
+        Profile
+    </a>
+
+    <a href="../index.html">
+        Log out
+    </a>
+
+</div>
+
+
+
+<script src="../js/main.js"></script>
+<script src="../js/patients.js"></script>
+
+</body>
+</html>

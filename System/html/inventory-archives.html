@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory Archives</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/archives.css">
+
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo-container">
+            <div class="sti-logo">
+                <img src="../PHOTO/STI LOGO.jpg" alt="STI Logo">
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="patients.html" class="menu-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Patients</span>
+            </a>
+
+            <a href="consultation.html" class="menu-item">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Consultation Log</span>
+            </a>
+
+            <a href="inventory.html" class="menu-item active">
+                <i class="fa-solid fa-kit-medical"></i>
+                <span>Inventory</span>
+            </a>
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+
+        <header class="top-header">
+
+            <h1>Inventory</h1>
+
+            <div class="nurse-profile">
+                Nurse Name 👩‍⚕️
+            </div>
+
+        </header>
+
+        <div class="page-container">
+
+        <!-- ================= ARCHIVES ================= -->
+
+        <section class="archive-page">
+
+
+            <!-- TOP SECTION -->
+
+            <div class="archive-top">
+
+                <!-- BREADCRUMB -->
+
+                <div class="archive-breadcrumb">
+                    Inventory <span>›</span> Archives
+                </div>
+
+
+                <!-- SEARCH + CATEGORY -->
+
+                <div class="archive-controls">
+
+                    <div class="archive-search">
+
+                        <input
+                            type="text"
+                            id="archiveSearch"
+                            placeholder="Search item..."
+                            onkeyup="searchArchives()"
+                        >
+
+                        <span class="search-icon">⌕</span>
+
+                    </div>
+
+
+                    <select
+                        id="archiveCategory"
+                        onchange="searchArchives()"
+                    >
+
+                        <option value="all">
+                            All Categories
+                        </option>
+
+                        <option value="Antiseptic">
+                            Antiseptic
+                        </option>
+
+                        <option value="Supplies">
+                            Supplies
+                        </option>
+
+                        <option value="Medicine">
+                            Medicine
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= TABLE ================= -->
+
+            <div class="archive-table-container">
+
+                <table class="archive-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Item Name</th>
+
+                            <th>Category</th>
+
+                            <th>Reason</th>
+
+                            <th>Last Stock</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="archiveTableBody">
+
+
+                        <!-- ROW 1 -->
+
+                        <tr>
+
+                            <td>1</td>
+
+                            <td>Alcohol</td>
+
+                            <td>Antiseptic</td>
+
+                            <td>Expired</td>
+
+                            <td>1</td>
+
+                            <td class="archive-actions">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteArchive(this)"
+                                >
+                                    Delete Permanently
+                                </button>
+
+                                <button
+                                    class="restore-btn"
+                                    onclick="restoreItem(this)"
+                                >
+                                    Restore
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ROW 2 -->
+
+                        <tr>
+
+                            <td>2</td>
+
+                            <td>Bandages</td>
+
+                            <td>Supplies</td>
+
+                            <td>Damaged Packaging</td>
+
+                            <td>2</td>
+
+                            <td class="archive-actions">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteArchive(this)"
+                                >
+                                    Delete Permanently
+                                </button>
+
+                                <button
+                                    class="restore-btn"
+                                    onclick="restoreItem(this)"
+                                >
+                                    Restore
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ROW 3 -->
+
+                        <tr>
+
+                            <td>3</td>
+
+                            <td>Betadine</td>
+
+                            <td>Antiseptic</td>
+
+                            <td>Discontinued</td>
+
+                            <td>0</td>
+
+                            <td class="archive-actions">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteArchive(this)"
+                                >
+                                    Delete Permanently
+                                </button>
+
+                                <button
+                                    class="restore-btn"
+                                    onclick="restoreItem(this)"
+                                >
+                                    Restore
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ROW 4 -->
+
+                        <tr>
+
+                            <td>4</td>
+
+                            <td>Cotton</td>
+
+                            <td>Supplies</td>
+
+                            <td>Discontinued</td>
+
+                            <td>0</td>
+
+                            <td class="archive-actions">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteArchive(this)"
+                                >
+                                    Delete Permanently
+                                </button>
+
+                                <button
+                                    class="restore-btn"
+                                    onclick="restoreItem(this)"
+                                >
+                                    Restore
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ROW 5 -->
+
+                        <tr>
+
+                            <td>5</td>
+
+                            <td>Cough Syrup</td>
+
+                            <td>Medicine</td>
+
+                            <td>Expired</td>
+
+                            <td>3</td>
+
+                            <td class="archive-actions">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteArchive(this)"
+                                >
+                                    Delete Permanently
+                                </button>
+
+                                <button
+                                    class="restore-btn"
+                                    onclick="restoreItem(this)"
+                                >
+                                    Restore
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ROW 6 -->
+
+                        <tr>
+
+                            <td>6</td>
+
+                            <td>Instant Heat Pack</td>
+
+                            <td>Supplies</td>
+
+                            <td>Damaged</td>
+
+                            <td>0</td>
+
+                            <td class="archive-actions">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteArchive(this)"
+                                >
+                                    Delete Permanently
+                                </button>
+
+                                <button
+                                    class="restore-btn"
+                                    onclick="restoreItem(this)"
+                                >
+                                    Restore
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ROW 7 -->
+
+                        <tr>
+
+                            <td>7</td>
+
+                            <td>Paracetamol</td>
+
+                            <td>Medicine</td>
+
+                            <td>Expired</td>
+
+                            <td>2</td>
+
+                            <td class="archive-actions">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteArchive(this)"
+                                >
+                                    Delete Permanently
+                                </button>
+
+                                <button
+                                    class="restore-btn"
+                                    onclick="restoreItem(this)"
+                                >
+                                    Restore
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ================= FOOTER ================= -->
+
+            <div class="archive-footer">
+
+                <div class="archive-count">
+                    Showing 1 to 7 of 34 entries
+                </div>
+
+
+                <div class="pagination" id="archivePagination"></div>
+
+            </div>
+
+
+        </section>
+
+        </div> <!-- .page-container -->
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="../js/main.js"></script>
+    <script src="../js/archives.js"></script>
+
+</body>
+
+</html>

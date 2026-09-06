@@ -1,0 +1,432 @@
+/* =========================================
+   INVENTORY
+========================================= */
+
+.inventory-page {
+    padding-top: 6px;
+}
+
+
+/* =========================================
+   TOP
+========================================= */
+
+.inventory-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+
+.inventory-filters {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 26px;
+}
+
+
+.inventory-filters .search-box {
+    width: 352px;
+}
+
+
+.inventory-filters select {
+
+    height: 53px;
+
+    width: 258px;
+
+    background: white;
+
+    border: 2px solid #222;
+
+    padding: 0 14px;
+
+    font-size: 21px;
+
+    outline: none;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.inventory-table-container {
+
+    background: white;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+}
+
+
+.inventory-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+
+.inventory-table th {
+
+    background: #e7e7e7;
+
+    padding: 14px 10px;
+
+    font-size: 20px;
+
+    text-align: left;
+}
+
+
+.inventory-table td {
+
+    padding: 11px 10px;
+
+    font-size: 18px;
+}
+
+
+/* =========================================
+   STOCK
+========================================= */
+
+.stock-control {
+ 
+    display: flex;
+ 
+    align-items: center;
+ 
+    justify-content: center;
+ 
+    gap: 13px;
+ 
+    font-size: 20px;
+}
+ 
+.stock-control span {
+    display: inline-block;
+    min-width: 42px;
+    text-align: center;
+    font-weight: 700;
+}
+ 
+.stock-control button {
+ 
+    background: transparent;
+ 
+    border: none;
+ 
+    font-size: 21px;
+ 
+    cursor: pointer;
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+.status {
+
+    display: inline-block;
+
+    padding: 8px 14px;
+
+    min-width: 117px;
+
+    text-align: center;
+
+    border-radius: 5px;
+}
+
+
+.status.high {
+
+    background: #a9df92;
+
+    color: #278516;
+}
+
+
+.status.low {
+
+    background: #ed9498;
+
+    color: #a50000;
+}
+
+
+.status.expire {
+
+    background: #ffc1a7;
+
+    color: #e65b00;
+}
+
+
+/* =========================================
+   EDIT
+========================================= */
+
+.inventory-edit,
+.inventory-delete {
+   border: none;
+   background: transparent;
+   cursor: pointer;
+   font-size: 29px;
+}
+
+.inventory-edit {
+   color: #f6ae12;
+}
+
+.inventory-delete {
+   color: #d9534f;
+}
+
+/* =========================================
+   BOTTOM
+========================================= */
+
+.inventory-bottom {
+
+    position: relative;
+
+    min-height: 80px;
+
+    padding: 16px 11px;
+
+    color: #666;
+
+    font-size: 18px;
+}
+
+
+.archives-button {
+
+    display: block;
+
+    margin-top: 17px;
+
+    background: transparent;
+
+    border: none;
+
+    color: #666;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+
+.archives-button i {
+
+    font-size: 25px;
+
+    margin-right: 7px;
+}
+
+
+/* =========================================
+   PAGINATION
+========================================= */
+
+.pagination {
+
+    position: absolute;
+
+    right: 10px;
+
+    bottom: 12px;
+
+    display: flex;
+
+    gap: 14px;
+}
+
+
+.pagination button {
+
+    width: 49px;
+
+    height: 40px;
+
+    border: 1px solid #bbb;
+
+    border-radius: 7px;
+
+    background: white;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+
+.pagination .current {
+
+    background: #147db8;
+
+    color: white;
+
+    border-color: #147db8;
+}
+
+/* =========================================
+   ADD ITEM MODAL
+========================================= */
+
+.inventory-modal {
+   position: fixed;
+   inset: 0;
+   display: none;
+   align-items: center;
+   justify-content: center;
+   background: rgba(0, 0, 0, 0.12);
+   z-index: 1000;
+}
+
+.inventory-modal-box {
+   width: min(1100px, 90vw);
+   background: #f2f2f2;
+   border: 3px solid #222;
+   box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+}
+
+.inventory-modal-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   background: #0f5d8d;
+   color: white;
+   padding: 18px 22px;
+   border-bottom: 2px solid #0a486f;
+}
+
+.inventory-modal-header h2 {
+   margin: 0;
+   font-size: clamp(2rem, 3vw, 3rem);
+   font-weight: 800;
+   letter-spacing: 0.02em;
+}
+
+.inventory-close {
+   border: none;
+   background: transparent;
+   color: white;
+   font-size: 44px;
+   line-height: 1;
+   cursor: pointer;
+   padding: 0 8px;
+}
+
+.inventory-modal-body {
+   padding: 20px 24px 18px;
+}
+
+.inventory-form-grid {
+   display: grid;
+   grid-template-columns: 1.3fr 1.3fr 1.1fr;
+   gap: 20px 26px;
+   align-items: start;
+}
+
+.inventory-field-group,
+.inventory-notes-field {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.inventory-field-group label,
+.inventory-notes-field label {
+   font-size: 18px;
+   font-weight: 700;
+   color: #1a1a1a;
+}
+
+.inventory-field-group input,
+.inventory-field-group select,
+.inventory-notes-field textarea {
+   width: 100%;
+   min-height: 48px;
+   border: 2px solid #202020;
+   background: white;
+   padding: 10px 12px;
+   font-size: 20px;
+   outline: none;
+   color: #111;
+}
+
+.inventory-notes-field {
+   grid-column: 3;
+   grid-row: 1 / span 4;
+}
+
+.inventory-notes-field textarea {
+   min-height: 176px;
+   resize: vertical;
+   font-family: inherit;
+}
+
+.inventory-modal-actions {
+   display: flex;
+   justify-content: center;
+   gap: 24px;
+   margin-top: 26px;
+   padding-bottom: 10px;
+}
+
+.inventory-modal-actions button {
+   border: none;
+   border-radius: 14px;
+   height: 56px;
+   min-width: 220px;
+   font-size: 26px;
+   font-weight: 700;
+   cursor: pointer;
+   color: white;
+}
+
+.inventory-save {
+   background: #1d71b8;
+}
+
+.inventory-cancel {
+   background: #cf2a2a;
+}
+
+@media (max-width: 900px) {
+   .inventory-form-grid {
+       grid-template-columns: 1fr;
+   }
+
+   .inventory-notes-field {
+       grid-column: auto;
+       grid-row: auto;
+   }
+
+   .inventory-modal-actions {
+       flex-direction: column;
+       align-items: center;
+   }
+
+   .inventory-modal-actions button {
+       width: 100%;
+   }
+}

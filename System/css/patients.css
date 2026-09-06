@@ -1,0 +1,257 @@
+/* =========================================
+   PATIENTS PAGE
+========================================= */
+
+.patients-page {
+    padding-top: 55px;
+}
+
+
+/* =========================================
+   CONTROLS
+========================================= */
+
+.patients-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+
+    margin-left: 9px;
+
+    margin-bottom: 30px;
+}
+
+
+.patients-controls .search-box {
+    width: 386px;
+}
+
+
+.patients-controls select {
+
+    height: 53px;
+
+    width: 294px;
+
+    background: white;
+
+    border: 2px solid #222;
+
+    padding: 0 14px;
+
+    font-size: 22px;
+
+    outline: none;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.patients-table-container {
+
+    margin: 0 12px;
+
+    background: white;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+}
+
+
+.patients-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+
+.patients-table th {
+
+    background: #e7e7e7;
+
+    padding: 18px 24px;
+
+    text-align: left;
+
+    font-size: 23px;
+}
+
+
+.patients-table td {
+
+    padding: 12px 24px;
+
+    font-size: 22px;
+}
+
+
+.patients-table th:first-child {
+    width: 60px;
+}
+
+
+.patients-table th:last-child {
+    width: 170px;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+.actions button {
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 22px;
+}
+
+
+.view-btn {
+    color: #147db8;
+}
+
+
+.edit-btn {
+    color: #f5c400;
+}
+
+
+.delete-btn {
+    color: red;
+}
+
+/* ============================= */
+/* PATIENT INFORMATION MODAL     */
+/* ============================= */
+
+.patient-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15);
+
+    justify-content: center;
+    align-items: center;
+}
+
+.patient-modal-content {
+    width: 860px;
+    background: #eeeeee;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.patient-modal-header {
+    height: 75px;
+    background: #164a75;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.patient-modal-header h1 {
+    margin: 0;
+    font-size: 38px;
+}
+
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+
+    border: none;
+    background: none;
+    color: red;
+
+    font-size: 38px;
+    cursor: pointer;
+}
+
+.patient-info-body {
+    padding: 20px 30px 25px;
+}
+
+.patient-name-section {
+    display: flex;
+    align-items: center;
+    gap: 45px;
+    margin-bottom: 20px;
+}
+
+.patient-avatar {
+    width: 80px;
+    height: 80px;
+
+    border-radius: 50%;
+    background: #ffd98f;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 48px;
+}
+
+.patient-name-section div:not(.patient-avatar) {
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-name-section span {
+    font-size: 25px;
+    font-style: italic;
+}
+
+.patient-name-section strong {
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.patient-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+}
+
+.patient-details p {
+    font-size: 24px;
+    margin: 18px 0;
+}
+
+.patient-details strong {
+    font-size: 28px;
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+.detail-right p {
+    margin-left: 0;
+}

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile - STI Clinic System</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/profile.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <img src="../PHOTO/STI LOGO.jpg"
+             class="sti-logo"
+             alt="STI Logo">
+
+        <nav class="sidebar-menu">
+
+            <a href="dashboard.html">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="patients.html">
+                <i class="fa-solid fa-user"></i>
+                <span>Patients</span>
+            </a>
+
+            <a href="consultation.html">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Consultation Log</span>
+            </a>
+
+            <a href="inventory.html">
+                <i class="fa-solid fa-kit-medical"></i>
+                <span>Inventory</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div class="main-content">
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <h1>Profile</h1>
+
+            <div class="header-profile"
+                 onclick="toggleProfileMenu()">
+
+                <span id="headerNurseName">
+                    Nurse Name
+                </span>
+
+                <div class="header-avatar">
+                    <i class="fa-solid fa-user-nurse"></i>
+                </div>
+
+            </div>
+
+
+            <!-- DROPDOWN -->
+
+            <div class="profile-dropdown"
+                 id="profileMenu">
+
+                <a href="profile.html">
+                    Profile
+                </a>
+
+                <a href="../index.html">
+                    Log out
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= PROFILE ================= -->
+
+        <main class="profile-page">
+
+            <section class="profile-card">
+
+                <!-- PROFILE BANNER -->
+
+                <div class="profile-banner">
+
+                    <div class="profile-avatar">
+                        <i class="fa-solid fa-user-nurse"></i>
+                    </div>
+
+                    <h2 id="displayName">
+                        Nurse Name
+                    </h2>
+
+                    <button class="edit-profile-btn"
+                            onclick="openEditProfile()">
+
+                        <i class="fa-solid fa-pen"></i>
+                        Edit
+
+                    </button>
+
+                </div>
+
+
+                <!-- INFORMATION -->
+
+                <div class="profile-info">
+
+                    <h2 class="information-title">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        Information
+
+                    </h2>
+
+
+                    <div class="information-content">
+
+                        <p>
+                            <strong>Campus:</strong>
+                            <span id="displayCampus">
+                                STI College Baliuag
+                            </span>
+                        </p>
+
+                        <p>
+                            <strong>Role:</strong>
+                            <span id="displayRole">
+                                School Nurse
+                            </span>
+                        </p>
+
+                        <p>
+                            <strong>Email:</strong>
+                            <span id="displayEmail">
+                                Nurse@sti.edu.ph
+                            </span>
+                        </p>
+
+                        <p>
+                            <strong>Contact Number:</strong>
+                            <span id="displayContact">
+                                0998989898
+                            </span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= EDIT PROFILE MODAL ================= -->
+
+    <div class="modal-overlay"
+         id="editProfileModal">
+
+        <div class="edit-modal">
+
+            <div class="edit-modal-header">
+
+                <h2>Edit Profile</h2>
+
+                <button onclick="closeEditProfile()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div class="edit-modal-body">
+
+                <label>Nurse Name</label>
+
+                <input type="text"
+                       id="editName">
+
+
+                <label>Campus</label>
+
+                <input type="text"
+                       id="editCampus">
+
+
+                <label>Role</label>
+
+                <input type="text"
+                       id="editRole">
+
+
+                <label>Email</label>
+
+                <input type="email"
+                       id="editEmail">
+
+
+                <label>Contact Number</label>
+
+                <input type="text"
+                       id="editContact">
+
+            </div>
+
+
+            <div class="edit-modal-buttons">
+
+                <button class="cancel-btn"
+                        onclick="closeEditProfile()">
+
+                    Cancel
+
+                </button>
+
+                <button class="save-btn"
+                        onclick="saveProfile()">
+
+                    Save
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="../js/main.js"></script>
+    <script src="../js/profile.js"></script>
+
+</body>
+
+</html>

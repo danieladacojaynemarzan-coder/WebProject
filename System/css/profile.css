@@ -1,0 +1,528 @@
+/* =========================================
+   PROFILE PAGE
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* MAIN CONTENT */
+
+.main-content {
+    margin-left: 198px;
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: 198px;
+    height: 100vh;
+
+    background: #122f48;
+
+    z-index: 100;
+}
+
+
+.sti-logo {
+    width: 145px;
+    height: 85px;
+
+    object-fit: contain;
+
+    display: block;
+
+    margin: 20px auto 100px;
+}
+
+
+/* SIDEBAR LINKS */
+
+.sidebar-menu {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    padding: 0 7px;
+}
+
+
+.sidebar-menu a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    width: 100%;
+
+    padding: 12px 8px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 17px;
+
+    border-radius: 5px;
+
+    transition: 0.2s;
+}
+
+
+.sidebar-menu a:hover {
+    background: #15527f;
+}
+
+
+.sidebar-menu a i {
+    width: 25px;
+
+    text-align: center;
+
+    font-size: 22px;
+}
+
+
+/* =========================================
+   TOP HEADER
+========================================= */
+
+.top-header {
+    height: 83px;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 20px 0 14px;
+
+    position: relative;
+
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+
+    z-index: 50;
+}
+
+
+.top-header h1 {
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
+
+.header-profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    font-weight: 600;
+}
+
+
+.header-avatar {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: #ffd1d1;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: #573b3b;
+
+    font-size: 24px;
+}
+
+
+.header-profile:hover {
+    opacity: 0.75;
+}
+
+
+/* =========================================
+   PROFILE DROPDOWN
+========================================= */
+
+.profile-dropdown {
+    display: none;
+
+    position: absolute;
+
+    right: 20px;
+
+    top: 72px;
+
+    width: 175px;
+
+    background: #f2f4f7;
+
+    border-radius: 20px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+    overflow: hidden;
+
+    z-index: 500;
+}
+
+
+.profile-dropdown.show {
+    display: block;
+}
+
+
+.profile-dropdown a {
+    display: block;
+
+    padding: 12px 18px;
+
+    color: #111;
+
+    text-decoration: none;
+
+    font-size: 19px;
+}
+
+
+.profile-dropdown a:hover {
+    background: #dfe3e8;
+}
+
+
+/* =========================================
+   PROFILE PAGE
+========================================= */
+
+.profile-page {
+    min-height: calc(100vh - 83px);
+
+    background: #f1f4f9;
+
+    padding: 40px 35px;
+}
+
+
+/* PROFILE CARD */
+
+.profile-card {
+    width: 90%;
+
+    max-width: 1030px;
+
+    min-height: 590px;
+
+    margin: 0 auto;
+
+    background: white;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.20);
+}
+
+
+/* =========================================
+   PROFILE BANNER
+========================================= */
+
+.profile-banner {
+    height: 160px;
+
+    background: #e7656d;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-left: 218px;
+}
+
+
+.profile-banner h2 {
+    margin: 0;
+
+    font-size: 40px;
+
+    font-weight: 400;
+}
+
+
+/* =========================================
+   PROFILE AVATAR
+========================================= */
+
+.profile-avatar {
+    position: absolute;
+
+    left: 30px;
+
+    top: 28px;
+
+    width: 160px;
+
+    height: 160px;
+
+    border-radius: 50%;
+
+    background: #ffd1d1;
+
+    border: 9px solid #ffb6b6;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: #603d3d;
+
+    font-size: 70px;
+
+    z-index: 2;
+}
+
+
+/* =========================================
+   EDIT BUTTON
+========================================= */
+
+.edit-profile-btn {
+    position: absolute;
+
+    right: 40px;
+
+    top: 65px;
+
+    background: #147eb8;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 14px;
+
+    padding: 12px 28px;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+
+.edit-profile-btn:hover {
+    background: #0d6798;
+}
+
+
+/* =========================================
+   INFORMATION
+========================================= */
+
+.profile-info {
+    padding: 48px 42px;
+}
+
+
+.information-title {
+    margin: 0 0 35px;
+
+    font-size: 44px;
+
+    font-weight: 400;
+}
+
+
+.information-title i {
+    color: #147eb8;
+
+    margin-right: 15px;
+}
+
+
+.information-content {
+    font-size: 29px;
+
+    line-height: 1.7;
+}
+
+
+.information-content p {
+    margin: 5px 0;
+}
+
+
+.information-content strong {
+    font-weight: 400;
+}
+
+
+/* =========================================
+   EDIT MODAL
+========================================= */
+
+.modal-overlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.45);
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 1000;
+}
+
+
+.modal-overlay.show {
+    display: flex;
+}
+
+
+.edit-modal {
+    width: 520px;
+
+    background: white;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+
+.edit-modal-header {
+    background: #154b75;
+
+    color: white;
+
+    padding: 18px 22px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.edit-modal-header h2 {
+    margin: 0;
+
+    font-size: 27px;
+}
+
+
+.edit-modal-header button {
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+.edit-modal-body {
+    padding: 25px;
+}
+
+
+.edit-modal-body label {
+    display: block;
+
+    margin-top: 10px;
+
+    margin-bottom: 5px;
+
+    font-size: 16px;
+}
+
+
+.edit-modal-body input {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 2px solid #bbb;
+
+    font-size: 16px;
+}
+
+
+.edit-modal-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    padding: 20px;
+}
+
+
+.edit-modal-buttons button {
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 11px 35px;
+
+    color: white;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+
+.cancel-btn {
+    background: #d90000;
+}
+
+
+.save-btn {
+    background: #147eb8;
+}

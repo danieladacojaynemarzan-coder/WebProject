@@ -1,0 +1,423 @@
+/* =========================================
+   CONSULTATION LOG
+========================================= */
+
+.consultation-page {
+    padding-top: 14px;
+}
+
+
+/* =========================================
+   TOP
+========================================= */
+
+.consultation-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 32px;
+}
+
+
+.consultation-filters {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 19px;
+}
+
+
+.consultation-filters .search-box {
+
+    width: 352px;
+}
+
+
+.date-box {
+
+    width: 275px;
+
+    height: 53px;
+
+    background: white;
+
+    border: 2px solid #222;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.date-box input {
+
+    width: 100%;
+
+    height: 100%;
+
+    border: none;
+
+    outline: none;
+
+    padding: 0 14px;
+
+    font-size: 19px;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.consultation-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 25px;
+}
+
+
+.consultation-card {
+
+    min-height: 160px;
+
+    background: white;
+
+    border: 1px solid #777;
+
+    border-radius: 30px;
+
+    box-shadow: 0 8px 18px rgba(0,0,0,.12);
+
+    padding: 10px 44px;
+
+    display: grid;
+
+    grid-template-columns:
+        1.8fr
+        .65fr
+        .85fr
+        .9fr
+        90px;
+
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    position: relative;
+}
+
+.consultation-card:hover {
+    box-shadow: 0 12px 24px rgba(0,0,0,.14);
+    transform: translateY(-1px);
+}
+
+.consultation-card.expanded {
+    box-shadow: 0 12px 24px rgba(0,0,0,.16);
+    padding-bottom: 20px;
+}
+
+.consultation-card h3 {
+
+    font-size: 25px;
+
+    margin-bottom: 18px;
+}
+
+
+.consultation-card p {
+
+    font-size: 20px;
+}
+
+.consultation-extra {
+    grid-column: 1 / -1;
+    display: none;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #ebedf0;
+    background: #fafbff;
+    border-radius: 0 0 18px 18px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.consultation-card.expanded .consultation-extra {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 12px 22px;
+}
+
+.extra-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    color: #3d4958;
+    min-height: 30px;
+}
+
+.extra-label {
+    min-width: 140px;
+    font-weight: 700;
+    color: #1f2b3a;
+}
+
+.consultation-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 14px;
+}
+
+
+.consultation-actions button {
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 31px;
+}
+
+
+.consultation-actions .edit-btn {
+    color: #f5b400;
+}
+
+
+.consultation-actions .delete-btn {
+    color: red;
+}
+
+/* ============================= */
+/* NEW CONSULTATION MODAL        */
+/* ============================= */
+
+.consultation-modal {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    background: rgba(0,0,0,0.1);
+
+    justify-content: center;
+    align-items: center;
+}
+
+.consultation-box {
+    width: 1120px;
+    background: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+
+    overflow: hidden;
+}
+
+.consultation-title {
+    background: #164a75;
+    color: white;
+
+    height: 65px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+.consultation-title h1 {
+    font-size: 36px;
+    margin: 0;
+}
+
+.consultation-title button {
+    position: absolute;
+    right: 15px;
+
+    background: none;
+    border: none;
+
+    color: white;
+
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.consultation-body {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+
+    gap: 70px;
+
+    padding: 20px;
+}
+
+.consultation-body h2 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-top: 0;
+}
+
+.patient-form input,
+.consultation-form input,
+.consultation-form select {
+    width: 100%;
+    height: 36px;
+
+    border: 2px solid #222;
+
+    padding: 5px 10px;
+
+    font-size: 18px;
+
+    box-sizing: border-box;
+
+    margin-bottom: 12px;
+}
+
+.patient-form input {
+    width: 270px;
+}
+
+.or-text {
+    text-align: center;
+    width: 270px;
+
+    font-size: 20px;
+}
+
+.patient-form label {
+    display: block;
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
+}
+
+.patient-form label input {
+    width: auto;
+    height: auto;
+}
+
+.two-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 45px;
+
+    margin-bottom: 5px;
+}
+
+.two-inputs label,
+.consultation-form > div > label {
+    display: block;
+
+    font-size: 18px;
+
+    margin-bottom: 3px;
+}
+
+.consultation-buttons {
+    display: flex;
+.consultation-buttons {
+    display: flex;
+    justify-content: center;
+
+    gap: 60px;
+}
+    padding: 0 0 15px;
+}
+.patient-details {
+    margin-top: 8px;
+    background: #fbfdff;
+    border: 1px solid #dfe9f3;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    transition: all 0.2s ease;
+    font-size: 15px;
+}
+
+.patient-details.hidden {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
+}
+
+.patient-details .row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.patient-details .label {
+    min-width: 110px;
+    color: #3b4b5c;
+    font-weight: 600;
+}
+
+.patient-details .value {
+    color: #222;
+}
+
+.patient-details .actions {
+    margin-top: 8px;
+}
+
+.patient-details .actions button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.patient-details .actions .view-btn {
+    background: #137fc1;
+    color: white;
+}
+
+.patient-details .actions .clear-btn {
+    background: #f0f4f8;
+    color: #233;
+    margin-left: 8px;
+}
+.consultation-buttons button {
+    width: 190px;
+    height: 38px;
+
+    border: none;
+    border-radius: 7px;
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+.save-consultation {
+    background: green;
+}
+
+.cancel-consultation {
+    background: red;
+}

@@ -1,0 +1,443 @@
+/* =========================================
+   STI CLINIC SYSTEM
+   COMMON STYLES
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f1f3f8;
+    color: #111;
+}
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.clinic-container {
+    min-height: 100vh;
+}
+
+.main-content {
+    margin-left: 198px;
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 198px;
+
+    background: #122e45;
+
+    color: white;
+
+    z-index: 1000;
+}
+
+
+/* LOGO */
+
+.logo-container {
+    height: 180px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sti-logo {
+    width: 146px;
+    height: 85px;
+
+    background: #fff500;
+
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.sti-logo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+
+/* SIDEBAR MENU */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+
+    gap: 11px;
+
+    padding-top: 38px;
+}
+
+.menu-item {
+    height: 45px;
+
+    margin-left: 6px;
+    margin-right: 27px;
+
+    padding: 0 7px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+
+    border-radius: 4px;
+
+    color: white;
+    text-decoration: none;
+
+    font-size: 17px;
+
+    transition: .2s;
+}
+
+.menu-item i {
+    width: 22px;
+
+    text-align: center;
+
+    font-size: 22px;
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background: #14527f;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.top-header {
+    height: 83px;
+
+    background: white;
+
+    border-bottom: 1px solid #ddd;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px 0 14px;
+}
+
+.top-header h1 {
+    font-size: 27px;
+    font-weight: 800;
+}
+
+
+/* NURSE PROFILE */
+
+.nurse-profile {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nurse-avatar {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background: #ffd8d8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+}
+
+.nurse-profile i {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   PAGE CONTAINER
+========================================= */
+
+.page-container {
+    padding: 23px 26px 30px;
+}
+
+
+/* =========================================
+   COMMON SEARCH BOX
+========================================= */
+
+.search-box {
+    height: 53px;
+
+    background: white;
+
+    border: 2px solid #222;
+
+    display: flex;
+    align-items: center;
+}
+
+.search-box input {
+    flex: 1;
+
+    height: 100%;
+
+    border: none;
+    outline: none;
+
+    padding: 0 14px;
+
+    font-size: 22px;
+}
+
+.search-box i {
+    font-size: 24px;
+
+    padding: 0 14px;
+}
+
+
+/* =========================================
+   COMMON BUTTON
+========================================= */
+
+.add-button {
+    background: #147db8;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 28px;
+
+    padding: 12px 21px;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background: #106b9d;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .main-content {
+        margin-left: 70px;
+    }
+
+    .menu-item span {
+        display: none;
+    }
+
+    .menu-item {
+        justify-content: center;
+        margin-right: 5px;
+    }
+
+    .sti-logo {
+        width: 55px;
+        height: 45px;
+    }
+
+    .nurse-profile span {
+        display: none;
+    }
+}
+
+/* ===============================
+   PROFILE HEADER
+================================ */
+
+.profile-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.profile-area:hover {
+    opacity: 0.8;
+}
+
+.nurse-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffd1d1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 25px;
+}
+
+/* PROFILE DROPDOWN */
+
+.profile-menu {
+    display: none;
+
+    position: absolute;
+
+    right: 20px;
+    top: 72px;
+
+    background: #f5f7fa;
+
+    width: 170px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+    z-index: 500;
+}
+
+.profile-menu.show {
+    display: block;
+}
+
+.profile-menu a {
+    display: block;
+
+    padding: 12px 20px;
+
+    text-decoration: none;
+
+    color: #111;
+
+    font-size: 20px;
+}
+
+.profile-menu a:hover {
+    background: #e5e8ec;
+}
+
+/* Global confirm modal & action animations */
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.18);
+    z-index: 2000;
+}
+.confirm-modal.open {
+    display: flex;
+}
+.confirm-modal-box {
+    width: 420px;
+    max-width: 92vw;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 36px rgba(0,0,0,0.28);
+    overflow: hidden;
+    border: 3px solid #222;
+}
+.confirm-modal-body {
+    padding: 22px 26px;
+    font-size: 18px;
+    color: #14324a;
+}
+.confirm-modal-actions {
+    padding: 18px 20px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+}
+.confirm-modal-actions .btn-cancel,
+.confirm-modal-actions .btn-ok {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+.confirm-modal-actions .btn-cancel {
+    background: #f0f4f8;
+    color: #333;
+}
+.confirm-modal-actions .btn-ok {
+    background: #d9534f;
+    color: white;
+}
+
+/* action animation (small pop) */
+@keyframes action-pop {
+    0% { transform: scale(0.98); opacity: 0.85; }
+    50% { transform: scale(1.03); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.action-animate {
+    animation: action-pop 360ms ease both;
+}
+
+/* Avatar initials styling used for generated avatars */
+.avatar-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffd8d8;
+    color: #1f2b3a;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.nurse-avatar, .header-avatar, .profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}

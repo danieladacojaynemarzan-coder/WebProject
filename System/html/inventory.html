@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory - STI Clinic System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+    <link rel="stylesheet"
+          href="../css/inventory.css">
+
+</head>
+
+
+<body>
+
+
+<div class="clinic-container">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo-container">
+
+            <div class="sti-logo">
+
+                <img src="../PHOTO/STI LOGO.jpg"
+                     alt="STI Logo">
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="dashboard.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="patients.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-user"></i>
+                <span>Patients</span>
+
+            </a>
+
+
+            <a href="consultation.html"
+               class="menu-item">
+
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Consultation Log</span>
+
+            </a>
+
+
+            <a href="inventory.html"
+               class="menu-item active">
+
+                <i class="fa-solid fa-kit-medical"></i>
+                <span>Inventory</span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+
+        <header class="top-header">
+
+            <h1>Inventory</h1>
+
+
+            <div class="profile-area" onclick="openProfile()">
+
+    <strong id="headerNurseName">Nurse Name</strong>
+
+    <div class="nurse-avatar">
+        👩‍⚕️
+    </div>
+
+
+
+                <i class="fa-solid fa-circle-chevron-down"></i>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="page-container inventory-page">
+
+
+            <!-- TOP CONTROLS -->
+
+            <div class="inventory-top">
+
+
+                <div class="inventory-filters">
+
+
+                    <div class="search-box">
+
+                        <input
+                            type="text"
+                            id="inventorySearch"
+                            placeholder="Search item..."
+                        >
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                    </div>
+
+
+                    <select id="categoryFilter">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="Antiseptic">
+                            Antiseptic
+                        </option>
+
+                        <option value="Supplies">
+                            Supplies
+                        </option>
+
+                        <option value="Medicine">
+                            Medicine
+                        </option>
+
+                    </select>
+
+
+                    <select id="statusFilter">
+
+                        <option value="">
+                            All Statuses
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Soon to expire">
+                            Soon to expire
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button class="add-button"
+                        onclick="openInventoryModal()">
+
+                    + Add Item
+
+                </button>
+
+            </div>
+
+
+
+            <!-- INVENTORY TABLE -->
+
+            <div class="inventory-table-container">
+
+                <table class="inventory-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Item Name</th>
+
+                            <th>Category</th>
+
+                            <th>Unit</th>
+
+                            <th>Expiry Date</th>
+
+                            <th>Stock</th>
+
+                            <th>Status</th>
+
+                            <th></th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="inventoryTable">
+
+
+                        <tr>
+
+                            <td>1</td>
+
+                            <td>Alcohol</td>
+
+                            <td>Antiseptic</td>
+
+                            <td>Bottles</td>
+
+                            <td>Aug 3, 2026</td>
+
+                            <td>
+
+                                <div class="stock-control">
+
+                                    <button
+                                        onclick="changeStock(this, 1)">
+                                        +
+                                    </button>
+
+                                    <span>11</span>
+
+                                    <button
+                                        onclick="changeStock(this, -1)">
+                                        −
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status expire">
+                                    Soon to expire
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button class="inventory-edit">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>2</td>
+
+                            <td>Bandages</td>
+
+                            <td>Supplies</td>
+
+                            <td>Boxes</td>
+
+                            <td>Dec 21, 2026</td>
+
+                            <td>
+
+                                <div class="stock-control">
+
+                                    <button
+                                        onclick="changeStock(this, 1)">
+                                        +
+                                    </button>
+
+                                    <span>5</span>
+
+                                    <button
+                                        onclick="changeStock(this, -1)">
+                                        −
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status low">
+                                    Low
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button class="inventory-edit">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>3</td>
+
+                            <td>Betadine</td>
+
+                            <td>Antiseptic</td>
+
+                            <td>Bottles</td>
+
+                            <td>Dec 21, 2026</td>
+
+                            <td>
+
+                                <div class="stock-control">
+
+                                    <button
+                                        onclick="changeStock(this, 1)">
+                                        +
+                                    </button>
+
+                                    <span>5</span>
+
+                                    <button
+                                        onclick="changeStock(this, -1)">
+                                        −
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status low">
+                                    Low
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button class="inventory-edit">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>4</td>
+
+                            <td>Cotton</td>
+
+                            <td>Supplies</td>
+
+                            <td>Packs</td>
+
+                            <td>Dec 21, 2026</td>
+
+                            <td>
+
+                                <div class="stock-control">
+
+                                    <button
+                                        onclick="changeStock(this, 1)">
+                                        +
+                                    </button>
+
+                                    <span>13</span>
+
+                                    <button
+                                        onclick="changeStock(this, -1)">
+                                        −
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status high">
+                                    High
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button class="inventory-edit">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>5</td>
+
+                            <td>Cough Syrup</td>
+
+                            <td>Medicine</td>
+
+                            <td>Bottles</td>
+
+                            <td>Dec 21, 2026</td>
+
+                            <td>
+
+                                <div class="stock-control">
+
+                                    <button
+                                        onclick="changeStock(this, 1)">
+                                        +
+                                    </button>
+
+                                    <span>15</span>
+
+                                    <button
+                                        onclick="changeStock(this, -1)">
+                                        −
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status high">
+                                    High
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button class="inventory-edit">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>6</td>
+
+                            <td>Instant Heat Pack</td>
+
+                            <td>Supplies</td>
+
+                            <td>Packs</td>
+
+                            <td>Dec 21, 2026</td>
+
+                            <td>
+
+                                <div class="stock-control">
+
+                                    <button
+                                        onclick="changeStock(this, 1)">
+                                        +
+                                    </button>
+
+                                    <span>15</span>
+
+                                    <button
+                                        onclick="changeStock(this, -1)">
+                                        −
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status high">
+                                    High
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button class="inventory-edit">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>7</td>
+
+                            <td>Paracetamol</td>
+
+                            <td>Medicine</td>
+
+                            <td>Boxes</td>
+
+                            <td>Dec 21, 2026</td>
+
+                            <td>
+
+                                <div class="stock-control">
+
+                                    <button
+                                        onclick="changeStock(this, 1)">
+                                        +
+                                    </button>
+
+                                    <span>16</span>
+
+                                    <button
+                                        onclick="changeStock(this, -1)">
+                                        −
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+
+                                <span class="status high">
+                                    High
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button class="inventory-edit">
+
+                                    <i class="fa-solid fa-pencil"></i>
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+
+            <!-- BOTTOM -->
+
+            <div class="inventory-bottom">
+
+                <span>
+                    Showing 1 to 7 of 34 entries
+                </span>
+
+
+                <button class="archives-button">
+
+                    <i class="fa-solid fa-box-archive"></i>
+
+                   <a href="inventory-archives.html" class="archives-link">
+    📥 Archives
+</a>
+
+                </button>
+
+
+                <div class="pagination">
+
+                    <button>‹</button>
+
+                    <button class="current">1</button>
+
+                    <button>2</button>
+
+                    <button>3</button>
+
+                    <button>4</button>
+
+                    <button>›</button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<div class="profile-area"
+     id="profileButton"
+     onclick="toggleProfileMenu()">
+
+    <strong id="headerNurseName">
+        Nurse Name
+    </strong>
+
+    <div class="nurse-avatar">
+        <i class="fa-solid fa-user-nurse"></i>
+    </div>
+
+</div>
+
+<div class="profile-menu" id="profileMenu">
+ 
+    <a href="profile.html">
+        Profile
+    </a>
+ 
+    <a href="../index.html">
+        Log out
+    </a>
+ 
+</div>
+
+<div id="inventoryModal" class="inventory-modal">
+    <div class="inventory-modal-box">
+        <div class="inventory-modal-header">
+            <h2>Add New Inventory Item</h2>
+            <button type="button" class="inventory-close" onclick="closeInventoryModal()">×</button>
+        </div>
+
+        <div class="inventory-modal-body">
+            <div class="inventory-form-grid">
+                <div class="inventory-field-group">
+                    <label for="inventoryName">Item Name</label>
+                    <input id="inventoryName" type="text" placeholder="">
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryUnit">Unit</label>
+                    <select id="inventoryUnit">
+                        <option value="Bottle">Bottle</option>
+                        <option value="Bottles">Bottles</option>
+                        <option value="Box">Box</option>
+                        <option value="Boxes">Boxes</option>
+                        <option value="Pack">Pack</option>
+                        <option value="Packs">Packs</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Tablets">Tablets</option>
+                    </select>
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryCategory">Category</label>
+                    <select id="inventoryCategory">
+                        <option value="Medicine">Medicine</option>
+                        <option value="Antiseptic">Antiseptic</option>
+                        <option value="Supplies">Supplies</option>
+                    </select>
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryStock">Stock</label>
+                    <input id="inventoryStock" type="number" min="0" value="0">
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventorySupplier">Supplier (optional)</label>
+                    <input id="inventorySupplier" type="text" placeholder="">
+                </div>
+
+                <div class="inventory-field-group">
+                    <label for="inventoryExpiry">Expiry Date</label>
+                    <input id="inventoryExpiry" type="date">
+                </div>
+
+                <div class="inventory-notes-field">
+                    <label for="inventoryNotes">Description / Remarks</label>
+                    <textarea id="inventoryNotes" rows="6" placeholder=""></textarea>
+                </div>
+            </div>
+
+            <div class="inventory-modal-actions">
+                <button class="inventory-save" type="button" onclick="saveInventoryItem()">Save</button>
+                <button class="inventory-cancel" type="button" onclick="closeInventoryModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="../js/main.js"></script>
+<script src="../js/inventory.js"></script>
+
+</body>
+</html>
