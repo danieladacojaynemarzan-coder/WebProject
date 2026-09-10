@@ -500,6 +500,7 @@
             renderConsultationList();
             if (window.animateAction) window.animateAction(document.querySelector('.consultation-list') || document.body);
             alert('Consultation updated');
+            if (window.updateDashboardStats) window.updateDashboardStats();
             // clear editing flag
             editIdInput.value = '';
             window.closeConsultationModal();
@@ -526,6 +527,7 @@
       renderConsultationList();
       if (window.animateAction) window.animateAction(document.querySelector('.consultation-list') || document.body);
       alert('Consultation saved');
+      if (window.updateDashboardStats) window.updateDashboardStats();
       window.closeConsultationModal();
     };
 
