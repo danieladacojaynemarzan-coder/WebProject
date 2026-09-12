@@ -129,16 +129,22 @@
 
 
 .view-btn {
+    cursor: pointer;
+
     color: #147db8;
 }
 
 
 .edit-btn {
+    cursor: pointer;
+
     color: #f5c400;
 }
 
 
 .delete-btn {
+    cursor: pointer;
+    
     color: red;
 }
 

@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const patient = patients.find(p => String(p.id) === String(patientId) || String(p.studentId) === String(patientId));
 
     if (!patient) {
-        console.error("Patient not found with ID:", patientId);
+        console.error("Patient ID:", patientId);
         return;
     }
 

@@ -191,11 +191,15 @@
 
 
 .consultation-actions .edit-btn {
+    cursor: pointer;
+
     color: #f5b400;
 }
 
 
 .consultation-actions .delete-btn {
+    cursor: pointer;
+    
     color: red;
 }
 
