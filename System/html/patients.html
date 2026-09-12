@@ -566,6 +566,96 @@
 
 </div>
 
+/* EDIT */
+<div id="editPatientModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Patient Information</h2>
+      <span class="close-btn" onclick="closeEditPatientModal()">&times;</span>
+    </div>
+    
+    <form id="editPatientForm" onsubmit="savePatientEdit(event)">
+      
+      <input type="hidden" id="editPatientId">
+
+      <div class="form-grid">
+    
+        <div class="form-group">
+          <label for="editFirstName">First Name</label>
+          <input type="text" id="editFirstName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editMiddleName">Middle Name</label>
+          <input type="text" id="editMiddleName">
+        </div>
+
+        <div class="form-group">
+          <label for="editSurname">Last Name</label>
+          <input type="text" id="editSurname" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editStudentNumber">Student No.</label>
+          <input type="text" id="editStudentNumber" required>
+        </div>
+
+        <div class="form-group">
+          <label for="editSex">Sex</label>
+          <select id="editSex">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        
+        <div class="form-group">
+          <label for="editStrand">Strand</label>
+          <input type="text" id="editStrand">
+        </div>
+
+        <div class="form-group">
+          <label for="editGradeSection">Grade & Section</label>
+          <input type="text" id="editGradeSection">
+        </div>
+
+       
+        <div class="form-group">
+          <label for="editBloodType">Blood Type</label>
+          <input type="text" id="editBloodType" placeholder="e.g. O+, A-">
+        </div>
+
+        <div class="form-group full-width">
+          <label for="editAllergies">Allergies</label>
+          <input type="text" id="editAllergies" placeholder="e.g. Peanuts, Penicillin">
+        </div>
+
+        <div class="form-group full-width">
+          <label for="editCondition">Existing Medical Conditions</label>
+          <textarea id="editCondition" rows="2" placeholder="e.g. Asthma, Hypertension"></textarea>
+        </div>
+
+        
+        <div class="form-group">
+          <label for="editEmergency1">Emergency Contact No. 1</label>
+          <input type="text" id="editEmergency1">
+        </div>
+
+        <div class="form-group">
+          <label for="editEmergency2">Emergency Contact No. 2</label>
+          <input type="text" id="editEmergency2">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeEditPatientModal()">Cancel</button>
+        <button type="submit" class="btn-save">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
 
 <script src="../js/main.js"></script>

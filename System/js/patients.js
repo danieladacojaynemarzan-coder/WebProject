@@ -133,6 +133,98 @@ document.addEventListener('DOMContentLoaded', () => {
    if (modal) modal.style.display = 'none';
   };
 
+  // Edit
+  function openEditPatientModal(patientId) {
+    const patients = STI.getPatients();
+    const patient = patients.find(p => String(p.id) === String(patientId) || String(p.studentId) === String(patientId));
+
+    if (!patient) {
+        console.error("Patient not found with ID:", patientId);
+        return;
+    }
+
+    setFieldValue("editPatientId", patient.id || patient.studentId || "");
+    setFieldValue("editSurname", patient.surname || "");
+    setFieldValue("editMiddleName", patient.middleName || "");
+    setFieldValue("editFirstName", patient.firstName || patient.name || "");
+    setFieldValue("editStudentNumber", patient.studentNumber || "");
+    setFieldValue("editSex", patient.sex || "");
+    setFieldValue("editStrand", patient.strand || "");
+    setFieldValue("editGradeSection", patient.section || patient.gradeSection || "");
+    setFieldValue("editBloodType", patient.bloodType || "");
+    setFieldValue("editAllergies", patient.allergies || "");
+    setFieldValue("editCondition", patient.condition || "");
+    setFieldValue("editEmergency1", patient.emergencyNumber || patient.emergencyContact1 || "");
+    setFieldValue("editEmergency2", patient.emergencyNumber2 || patient.emergencyContact2 || "");
+
+    const modal = document.getElementById("editPatientModal");
+    if (modal) {
+        modal.classList.add("show");
+        modal.style.display = "flex";
+    } else {
+        console.error("Modal element #editPatientModal not found in HTML.");
+    }
+  }
+
+  function closeEditPatientModal() {
+    const modal = document.getElementById("editPatientModal");
+    if (modal) {
+        modal.classList.remove("show");
+        modal.style.display = "none";
+    }
+  }
+
+  function savePatientEdit(event) {
+    if (event) event.preventDefault();
+
+    const targetId = getFieldValue("editPatientId");
+    let patients = STI.getPatients();
+
+    patients = patients.map(patient => {
+        if (String(patient.id) === String(targetId) || String(patient.studentId) === String(targetId)) {
+            const surname = getFieldValue("editSurname") || patient.surname;
+            const firstName = getFieldValue("editFirstName") || patient.firstName;
+            const middleName = getFieldValue("editMiddleName") || patient.middleName;
+
+          
+            const fullName = [firstName, middleName, surname].filter(Boolean).join(' ');
+
+            return {
+                ...patient,
+                surname: surname,
+                middleName: middleName,
+                firstName: firstName,
+                name: fullName,
+                studentNumber: getFieldValue("editStudentNumber") || patient.studentNumber,
+                sex: getFieldValue("editSex") || patient.sex,
+                strand: getFieldValue("editStrand") || patient.strand,
+                section: getFieldValue("editGradeSection") || patient.section,
+                bloodType: getFieldValue("editBloodType") || patient.bloodType,
+                allergies: getFieldValue("editAllergies") || patient.allergies,
+                condition: getFieldValue("editCondition") || patient.condition,
+                emergencyNumber: getFieldValue("editEmergency1") || patient.emergencyNumber,
+                emergencyNumber2: getFieldValue("editEmergency2") || patient.emergencyNumber2
+            };
+        }
+        return patient;
+    });
+
+    STI.savePatients(patients);
+    renderPatients();
+    closeEditPatientModal();
+  }
+
+  function setFieldValue(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  }
+
+  function getFieldValue(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
+
+
   if (searchInput) searchInput.addEventListener('keyup', renderPatients);
   if (strandFilter) strandFilter.addEventListener('change', renderPatients);
 
