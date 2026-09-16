@@ -1,0 +1,128 @@
+/* Login CSS */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  color: #152238;
+  background: linear-gradient(135deg, rgba(10, 44, 108, 0.72), rgba(53, 127, 235, 0.55)),
+    url(../PHOTO/BACKGROUND.jfif) center/cover no-repeat;
+}
+
+.BAR {
+  padding: 16px 20px;
+  background-color: #ffffff;
+}
+
+.LOGO_AND_TEXT {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.STI_LOGO img {
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+}
+
+.STI_TEXT h1 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #000000;
+}
+
+.BACKGROUND {
+  display: grid;
+  place-items: center;
+  min-height: calc(90vh - 84px);
+  padding: 20px;
+}
+
+.LOGIN_BOX {
+  width: min(380px, 100%);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 22px 50px rgba(4, 27, 75, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.LOGIN_BOX h2 {
+  margin: 0 0 20px;
+  font-size: 1.8rem;
+  color: #000000;
+  text-align: center;
+}
+
+.LOGIN_BOX form {
+  display: grid;
+  gap: 18px;
+}
+
+.LOGIN_BOX label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #000000;
+}
+
+.LOGIN_BOX input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #d7dfef;
+  border-radius: 14px;
+  font-size: 1rem;
+  background: #f8fbff;
+  color: #10214d;
+  box-sizing: border-box;
+}
+
+.LOGIN_BOX input:focus {
+  outline: none;
+  border-color: #4a7dff;
+  box-shadow: 0 0 0 3px rgba(74, 125, 255, 0.12);
+}
+
+.FORGOT_PASSWORD {
+  text-align: left;
+}
+
+.LOGIN_BUTTON {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 16px;
+  background: #001b64;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.LOGIN_BUTTON:hover {
+  background: #1449d9;
+}
+
+.SIGNIN_REDIRECT {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.TEXT_BUTTON {
+  color: hsl(199, 100%, 52%);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #556c9f;
+}
+
+.footer-links a {
+  color: #3b61ff;
+}
