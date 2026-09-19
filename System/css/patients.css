@@ -48,6 +48,62 @@
     outline: none;
 }
 
+.patient-view-toggle {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+    padding: 4px;
+    border-radius: 10px;
+    background: #e5edf4;
+}
+
+.patient-view-tab {
+    border: 0;
+    border-radius: 7px;
+    padding: 9px 13px;
+    background: transparent;
+    color: #4b6276;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.patient-view-tab.active {
+    background: #164a75;
+    color: #fff;
+}
+
+.restore-btn,
+.permanent-delete-btn {
+    border: 0;
+    border-radius: 6px;
+    padding: 7px 9px;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.restore-btn {
+    background: #dcefe3;
+    color: #17643a;
+}
+
+.permanent-delete-btn {
+    background: #f8dddd;
+    color: #a12a2a;
+}
+
+@media (max-width: 900px) {
+    .patients-controls {
+        flex-wrap: wrap;
+    }
+
+    .patient-view-toggle {
+        margin-left: 0;
+    }
+}
+
 
 /* =========================================
    TABLE
@@ -614,7 +670,7 @@
 
 .delete-btn {
     cursor: pointer;
-    
+
     color: red;
 }
 
@@ -774,7 +830,7 @@
     border-top-right-radius: 8px;
     display: flex;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center;
 }
 
 .modal-header h2 {
@@ -876,7 +932,7 @@
   .form-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .form-group.full-width {
     grid-column: span 1;
   }

@@ -2,6 +2,7 @@
   const STORAGE_KEYS = {
    patients: 'sti_patients',
    consultations: 'sti_consultations',
+  patientArchives: 'sti_patient_archives',
    inventory: 'sti_inventory',
    archives: 'sti_archives',
    seeded: 'sti_system_seeded_v1'
@@ -77,6 +78,14 @@
    writeJSON(STORAGE_KEYS.patients, patients);
   }
 
+  function getPatientArchives() {
+   return readJSON(STORAGE_KEYS.patientArchives, []);
+  }
+
+  function savePatientArchives(archives) {
+   writeJSON(STORAGE_KEYS.patientArchives, archives);
+  }
+
   function getInventory() {
    ensureSeedData();
    return readJSON(STORAGE_KEYS.inventory, []);
@@ -108,6 +117,8 @@
    ensureSeedData,
    getPatients,
    savePatients,
+  getPatientArchives,
+  savePatientArchives,
    getInventory,
    saveInventory,
    getConsultations,
@@ -183,13 +194,19 @@ function toggleProfileMenu() {
 
 document.addEventListener('click', function (event) {
   const menu = document.getElementById('profileMenu');
-  const profileButton = document.getElementById('profileButton');
-  if (!menu || !profileButton) return;
-  if (!menu.contains(event.target) && !profileButton.contains(event.target)) {
+  const profileButtons = document.querySelectorAll('.profile-area');
+  if (!menu || !profileButtons.length) return;
+  const clickedProfile = Array.from(profileButtons).some((button) => button.contains(event.target));
+  if (!menu.contains(event.target) && !clickedProfile) {
    menu.classList.remove('show');
   }
 });
 
+document.addEventListener('click', function (event) {
+  const logoutLink = event.target.closest('.profile-menu a[href="../index.html"]');
+  if (logoutLink) localStorage.removeItem('nurseProfile');
+});
+
 function openProfile() {
-  window.location.href = 'profile.html';
+  toggleProfileMenu();
 }

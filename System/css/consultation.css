@@ -70,6 +70,20 @@
     font-size: 19px;
 }
 
+.date-box button {
+    flex: 0 0 auto;
+    height: 34px;
+    margin-right: 9px;
+    padding: 0 9px;
+    border: 0;
+    border-radius: 6px;
+    background: #eaf1f7;
+    color: #164a75;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
 
 /* =========================================
    CARDS
@@ -199,7 +213,7 @@
 
 .consultation-actions .delete-btn {
     cursor: pointer;
-    
+
     color: red;
 }
 
@@ -425,3 +439,4 @@
 .cancel-consultation {
     background: red;
 }
+

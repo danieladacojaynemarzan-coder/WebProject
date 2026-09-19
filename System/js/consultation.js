@@ -179,6 +179,8 @@
     const nurseInput = document.getElementById('nurseName');
     const editIdInput = document.getElementById('consultationEditId');
     const listContainer = document.querySelector('.consultation-list');
+    const dateFilter = document.getElementById('fromDate');
+    const clearDateFilter = document.getElementById('clearDateFilter');
 
     function hideSuggestions() {
       if (!suggestionsBox) return;
@@ -214,7 +216,15 @@
 
     function renderConsultationList() {
       if (!listContainer) return;
-      const items = listConsultations();
+      const query = (document.getElementById('consultationSearch')?.value || '').trim().toLowerCase();
+      const selectedDate = dateFilter?.value || '';
+      const items = listConsultations().filter((record) => {
+        const patient = getPatientById(record.patientId) || {};
+        const name = String(patient.name || record.patientName || '').toLowerCase();
+        const matchesSearch = !query || name.includes(query);
+        const matchesDate = !selectedDate || record.date === selectedDate;
+        return matchesSearch && matchesDate;
+      });
       listContainer.innerHTML = '';
       if (!items.length) {
         listContainer.innerHTML = '<p>No consultations yet.</p>';
@@ -546,6 +556,14 @@
     };
 
     renderConsultationList();
+
+    const consultationSearch = document.getElementById('consultationSearch');
+    if (consultationSearch) consultationSearch.addEventListener('input', renderConsultationList);
+    if (dateFilter) dateFilter.addEventListener('change', renderConsultationList);
+    if (clearDateFilter) clearDateFilter.addEventListener('click', () => {
+      if (dateFilter) dateFilter.value = '';
+      renderConsultationList();
+    });
 
     if (window.location.hash === '#add') {
       setTimeout(() => {

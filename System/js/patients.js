@@ -8,14 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalActions = document.getElementById('patientModalActions');
   const saveButton = document.getElementById('patientSaveButton');
   const cancelButton = document.getElementById('patientCancelButton');
+  const activeTab = document.getElementById('activePatientsTab');
+  const archivedTab = document.getElementById('archivedPatientsTab');
   let activePatientId = null;
   let activePatientSnapshot = null;
   let isEditing = false;
+  let archiveMode = false;
 
   function renderPatients() {
    if (!table) return;
 
-   const patients = STI.getPatients();
+  const patients = archiveMode ? STI.getPatientArchives() : STI.getPatients();
    const searchValue = (searchInput ? searchInput.value : '').trim().toLowerCase();
    const strandValue = (strandFilter ? strandFilter.value : '').trim();
    const filtered = patients.filter((patient) => {
@@ -33,20 +36,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
    filtered.forEach((patient, index) => {
      const row = document.createElement('tr');
+     const actions = archiveMode ? `
+       <button class="restore-btn" data-id="${patient.id}" type="button">Restore</button>
+       <button class="permanent-delete-btn" data-id="${patient.id}" type="button">Delete permanently</button>` : `
+       <button class="view-btn" data-id="${patient.id}" type="button" aria-label="View patient"><i class="fa-solid fa-eye"></i></button>
+       <button class="edit-btn" data-id="${patient.id}" type="button" aria-label="Edit patient"><i class="fa-solid fa-pencil"></i></button>
+       <button class="delete-btn" data-id="${patient.id}" type="button" aria-label="Archive patient"><i class="fa-solid fa-box-archive"></i></button>`;
      row.innerHTML = `
       <td>${index + 1}</td>
       <td>${escapeHtml(patient.name || '')}</td>
       <td>${escapeHtml(patient.studentNumber || '')}</td>
       <td>${escapeHtml(patient.strand || '')}</td>
       <td>${escapeHtml(patient.section || '')}</td>
-       <td class="actions">
-         <button class="view-btn" data-id="${patient.id}" type="button" aria-label="View patient"><i class="fa-solid fa-eye"></i></button>
-         <button class="edit-btn" data-id="${patient.id}" type="button" aria-label="Edit patient"><i class="fa-solid fa-pencil"></i></button>
-         <button class="delete-btn" data-id="${patient.id}" type="button" aria-label="Delete patient"><i class="fa-solid fa-trash-can"></i></button>
-       </td>`;
-     row.querySelector('.view-btn').addEventListener('click', () => viewPatient(patient.id));
-     row.querySelector('.edit-btn').addEventListener('click', () => editPatient(patient.id));
-     row.querySelector('.delete-btn').addEventListener('click', () => deletePatient(patient.id));
+       <td class="actions">${actions}</td>`;
+     if (archiveMode) {
+       row.querySelector('.restore-btn').addEventListener('click', () => restorePatient(patient.id));
+       row.querySelector('.permanent-delete-btn').addEventListener('click', () => permanentlyDeletePatient(patient.id));
+     } else {
+       row.querySelector('.view-btn').addEventListener('click', () => viewPatient(patient.id));
+       row.querySelector('.edit-btn').addEventListener('click', () => editPatient(patient.id));
+       row.querySelector('.delete-btn').addEventListener('click', () => archivePatient(patient.id));
+     }
      table.appendChild(row);
    });
   }
@@ -169,17 +179,43 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.deletePatient = async function (id) {
+    return archivePatient(id);
+  };
+
+  async function archivePatient(id) {
    try {
-     const ok = window.showConfirm ? await window.showConfirm('Are you sure you want to delete this patient?') : confirm('Are you sure you want to delete this patient?');
+     const ok = window.showConfirm ? await window.showConfirm('Move this patient to Archived Patients?') : confirm('Move this patient to Archived Patients?');
      if (!ok) return;
-     const patients = STI.getPatients().filter((item) => String(item.id) !== String(id));
-     STI.savePatients(patients);
+     const patients = STI.getPatients();
+     const patient = patients.find((item) => String(item.id) === String(id));
+     if (!patient) return;
+     const archives = STI.getPatientArchives();
+     archives.unshift({ ...patient, archivedAt: new Date().toISOString() });
+     STI.savePatientArchives(archives);
+     const remaining = patients.filter((item) => String(item.id) !== String(id));
+     STI.savePatients(remaining);
      renderPatients();
      if (window.animateAction) window.animateAction(document.querySelector('#patientsTable') || document.body);
    } catch (e) {
      console.error('delete patient', e);
    }
-  };
+  }
+
+  async function restorePatient(id) {
+   const archives = STI.getPatientArchives();
+   const patient = archives.find((item) => String(item.id) === String(id));
+   if (!patient) return;
+   STI.savePatients([{ ...patient, archivedAt: undefined }, ...STI.getPatients()]);
+   STI.savePatientArchives(archives.filter((item) => String(item.id) !== String(id)));
+   renderPatients();
+  }
+
+  async function permanentlyDeletePatient(id) {
+   const ok = window.showConfirm ? await window.showConfirm('Permanently delete this archived patient?') : confirm('Permanently delete this archived patient?');
+   if (!ok) return;
+   STI.savePatientArchives(STI.getPatientArchives().filter((item) => String(item.id) !== String(id)));
+   renderPatients();
+  }
 
   window.openPatientModal = function (patient) {
    renderPatientModal(patient);
@@ -195,6 +231,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (searchInput) searchInput.addEventListener('keyup', renderPatients);
   if (strandFilter) strandFilter.addEventListener('change', renderPatients);
+  if (activeTab) activeTab.addEventListener('click', () => {
+   archiveMode = false;
+   activeTab.classList.add('active');
+   archivedTab.classList.remove('active');
+   activeTab.setAttribute('aria-selected', 'true');
+   archivedTab.setAttribute('aria-selected', 'false');
+   renderPatients();
+  });
+  if (archivedTab) archivedTab.addEventListener('click', () => {
+   archiveMode = true;
+   archivedTab.classList.add('active');
+   activeTab.classList.remove('active');
+   archivedTab.setAttribute('aria-selected', 'true');
+   activeTab.setAttribute('aria-selected', 'false');
+   renderPatients();
+  });
   if (saveButton) saveButton.addEventListener('click', () => finishEdit(true));
   if (cancelButton) cancelButton.addEventListener('click', () => finishEdit(false));
   window.addEventListener('storage', (event) => {
@@ -392,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const firstName = getFieldValue("editFirstName") || patient.firstName;
             const middleName = getFieldValue("editMiddleName") || patient.middleName;
 
-          
+
             const fullName = [firstName, middleName, surname].filter(Boolean).join(' ');
 
             return {
