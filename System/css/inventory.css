@@ -230,7 +230,7 @@
 
     font-size: 17px;
 
-    cursor: pointer;
+    cursor: pointer; 
 }
 
 
@@ -239,6 +239,8 @@
     font-size: 25px;
 
     margin-right: 7px;
+
+    cursor: pointer;
 }
 
 

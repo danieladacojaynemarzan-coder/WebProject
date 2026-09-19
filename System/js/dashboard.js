@@ -128,44 +128,124 @@ document.addEventListener('DOMContentLoaded', () => {
    `;
   }
 
+  let calendarCurrentDate = new Date();
+
   function renderCalendar() {
-   const datePicker = document.getElementById('dashboardDatePicker');
-   const details = document.getElementById('calendarDetails');
-   if (!datePicker) return;
+   const monthYearEl = document.getElementById('calendarMonthYear');
+   const datesContainer = document.getElementById('calendarDates');
+   if (!datesContainer) return;
 
-   const defaultDate = todayISO();
-   datePicker.value = defaultDate;
-   datePicker.addEventListener('change', (event) => {
-     renderCalendarDetails(event.target.value, details);
-   });
+   const year = calendarCurrentDate.getFullYear();
+   const month = calendarCurrentDate.getMonth();
 
-   renderCalendarDetails(defaultDate, details);
+   if (monthYearEl) {
+     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+     monthYearEl.textContent = `${monthNames[month]} ${year}`;
+   }
+
+   const firstDay = new Date(year, month, 1);
+   const lastDay = new Date(year, month + 1, 0);
+   const startDate = new Date(firstDay);
+   startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+   datesContainer.innerHTML = '';
+
+   for (let i = 0; i < 42; i++) {
+     const date = new Date(startDate);
+     date.setDate(date.getDate() + i);
+     const dateISO = toLocalDateISO(date);
+     const isCurrentMonth = date.getMonth() === month;
+     const isToday = dateISO === todayISO();
+
+     const consultations = STI.getConsultations().filter((item) => (item.date || '').toString() === dateISO);
+     const inventory = STI.getInventory().filter((item) => {
+       if (!item.createdAt) return false;
+       return toLocalDateISO(item.createdAt) === dateISO;
+     });
+     const hasEvents = consultations.length > 0 || inventory.length > 0;
+
+     const cell = document.createElement('div');
+     cell.className = 'calendar-date-cell';
+     if (!isCurrentMonth) cell.classList.add('other-month');
+     if (isToday) cell.classList.add('today');
+     if (hasEvents) cell.classList.add('has-events');
+
+     cell.textContent = date.getDate();
+     cell.style.cursor = isCurrentMonth ? 'pointer' : 'default';
+
+     if (isCurrentMonth) {
+       cell.addEventListener('click', () => {
+         showCalendarDateModal(dateISO);
+       });
+     }
+
+     datesContainer.appendChild(cell);
+   }
   }
 
-  function renderCalendarDetails(date, container) {
-   if (!container) return;
-   const consultations = STI.getConsultations().filter((item) => (item.date || '').toString() === date);
+  function showCalendarDateModal(dateISO) {
+   const modal = document.getElementById('calendarDateModal');
+   const titleEl = document.getElementById('calendarModalTitle');
+   const contentEl = document.getElementById('calendarModalContent');
+
+   if (!modal) return;
+
+   const consultations = STI.getConsultations().filter((item) => (item.date || '').toString() === dateISO);
    const inventory = STI.getInventory().filter((item) => {
      if (!item.createdAt) return false;
-     return toLocalDateISO(item.createdAt) === date;
+     return toLocalDateISO(item.createdAt) === dateISO;
    });
 
-   let html = `<strong>${date}</strong>`;
+   const dateObj = new Date(dateISO);
+   const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+   if (titleEl) {
+     titleEl.textContent = formattedDate;
+   }
+
+   let html = '';
 
    if (consultations.length) {
-     html += '<div><strong>Consultation Log</strong><ul>' + consultations.map((item) => `<li>${escapeHtml(item.patientName || 'Patient')} — ${escapeHtml(item.chiefComplaint || '')}</li>`).join('') + '</ul></div>';
+     html += '<strong>Consultation Log</strong><ul>';
+     consultations.forEach((item) => {
+       html += `<li><strong>${escapeHtml(item.patientName || 'Patient')}</strong><br/><small>Complaint: ${escapeHtml(item.chiefComplaint || '—')}</small><br/><small>Time: ${escapeHtml(item.time || '—')}</small></li>`;
+     });
+     html += '</ul>';
    }
 
    if (inventory.length) {
-     html += '<div><strong>Inventory Added</strong><ul>' + inventory.map((item) => `<li>${escapeHtml(item.name || 'Item')} — ${Number(item.stock || 0)} stock</li>`).join('') + '</ul></div>';
+     html += '<strong>Inventory Added</strong><ul>';
+     inventory.forEach((item) => {
+       html += `<li><strong>${escapeHtml(item.name || 'Item')}</strong><br/><small>Stock: ${Number(item.stock || 0)}</small></li>`;
+     });
+     html += '</ul>';
    }
 
    if (!consultations.length && !inventory.length) {
-     html += '<div class="empty-state">No records for this date.</div>';
+     html = '<p>No records for this date.</p>';
    }
 
-   container.innerHTML = html;
+   if (contentEl) {
+     contentEl.innerHTML = html;
+   }
+
+   modal.style.display = 'flex';
   }
+
+  window.closeDashboardCalendarModal = function() {
+   const modal = document.getElementById('calendarDateModal');
+   if (modal) {
+     modal.style.display = 'none';
+   }
+  };
+
+  window.updateDashboardStats = function() {
+   renderStats();
+   renderRecentVisits();
+   renderLowStock();
+   renderActivity();
+   renderNotifications();
+  };
 
   function renderNotifications() {
    const notificationBox = document.querySelector('.notification-box');
@@ -228,6 +308,31 @@ document.addEventListener('DOMContentLoaded', () => {
      addMedicineButton.addEventListener('click', () => {
        if (typeof window.openInventoryModal === 'function') {
          window.openInventoryModal();
+       }
+     });
+   }
+
+   const prevMonthBtn = document.getElementById('calendarPrevMonth');
+   if (prevMonthBtn) {
+     prevMonthBtn.addEventListener('click', () => {
+       calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() - 1);
+       renderCalendar();
+     });
+   }
+
+   const nextMonthBtn = document.getElementById('calendarNextMonth');
+   if (nextMonthBtn) {
+     nextMonthBtn.addEventListener('click', () => {
+       calendarCurrentDate.setMonth(calendarCurrentDate.getMonth() + 1);
+       renderCalendar();
+     });
+   }
+
+   const calendarModal = document.getElementById('calendarDateModal');
+   if (calendarModal) {
+     calendarModal.addEventListener('click', (e) => {
+       if (e.target === calendarModal || e.target.classList.contains('calendar-modal-overlay')) {
+         window.closeDashboardCalendarModal();
        }
      });
    }

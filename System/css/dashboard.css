@@ -323,7 +323,7 @@ button:hover {
 /* CALENDAR */
 
 .calendar-box {
-    text-align: center;
+    text-align: left;
     min-height: 150px;
     padding: 8px 6px 6px;
     display: flex;
@@ -333,7 +333,7 @@ button:hover {
 
 .calendar-box h3 {
     margin-bottom: 6px;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .mini-calendar-wrap {
@@ -412,6 +412,267 @@ button:hover {
     color: #888;
 
     font-size: 10px;
+}
+
+/* ========================================= 
+   FULL CALENDAR GRID
+========================================= */
+
+.calendar-header {
+    display: flex;
+    align-items: left;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.calendar-nav-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #137fc1;
+    transition: color 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+    color: #075db6;
+}
+
+.calendar-month-year {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1d2b3d;
+    min-width: 120px;
+    text-align: center;
+}
+
+.mini-calendar-wrap {
+    width: 100%;
+}
+
+.calendar-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.calendar-day-names {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.calendar-day-names div {
+    font-weight: 600;
+    font-size: 11px;
+    color: #137fc1;
+    padding: 4px 0;
+}
+
+.calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.calendar-date-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dfeaf5;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    background: white;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.calendar-date-cell:hover {
+    background: #e7f0f8;
+    border-color: #137fc1;
+    transform: scale(1.05);
+}
+
+.calendar-date-cell.other-month {
+    color: #ccc;
+    background: #f9f9f9;
+    cursor: default;
+}
+
+.calendar-date-cell.other-month:hover {
+    background: #f9f9f9;
+    border-color: #dfeaf5;
+    transform: scale(1);
+}
+
+.calendar-date-cell.today {
+    background: #137fc1;
+    color: white;
+    font-weight: bold;
+    border-color: #075db6;
+}
+
+.calendar-date-cell.has-events::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    width: 4px;
+    height: 4px;
+    background: #ff8b4a;
+    border-radius: 50%;
+}
+
+.calendar-date-cell.today.has-events::after {
+    background: #ffe8d6;
+}
+
+/* ========================================= 
+   CALENDAR DATE MODAL
+========================================= */
+
+.calendar-date-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.calendar-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.calendar-modal-box {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: popIn 0.3s ease;
+    z-index: 1001;
+}
+
+.calendar-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #dfeaf5;
+}
+
+.calendar-modal-header h2 {
+    font-size: 18px;
+    margin: 0;
+    color: #1d2b3d;
+}
+
+.calendar-modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #888;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.calendar-modal-close:hover {
+    color: #333;
+}
+
+.calendar-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+}
+
+.calendar-modal-content {
+    font-size: 13px;
+    color: #1d2b3d;
+}
+
+.calendar-modal-content p {
+    margin: 0;
+    color: #888;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.calendar-modal-content strong {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    color: #137fc1;
+    font-size: 14px;
+}
+
+.calendar-modal-content ul {
+    margin: 0;
+    padding-left: 16px;
+    list-style: none;
+}
+
+.calendar-modal-content li {
+    margin: 6px 0;
+    line-height: 1.4;
+    padding-left: 16px;
+    position: relative;
+}
+
+.calendar-modal-content li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #137fc1;
+}
+
+.calendar-modal-actions {
+    display: flex;
+    gap: 10px;
+    padding: 12px 20px;
+    border-top: 1px solid #dfeaf5;
+    justify-content: flex-end;
+}
+
+.calendar-modal-close-btn {
+    background: #137fc1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.calendar-modal-close-btn:hover {
+    background: #075db6;
 }
 
 @keyframes fadeInUp {
