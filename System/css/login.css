@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @import url('./signup.css');
 
 .login-card {
@@ -39,7 +38,9 @@
 
 .login-card .account-link {
     margin-top: 5px;
-=======
+  }
+
+  @media not all {
 /* Login CSS */
 body {
   margin: 0;
@@ -167,5 +168,4 @@ body {
 
 .footer-links a {
   color: #3b61ff;
->>>>>>> 27a468eb9d104dd95aa9b6b5474e3cde2f1c4d44
 }

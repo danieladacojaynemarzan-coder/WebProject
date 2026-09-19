@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* patients.js — localStorage-driven patient list */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,11 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
    filtered.forEach((patient, index) => {
      const row = document.createElement('tr');
      row.innerHTML = `
-       <td>${index + 1}</td>
-       <td>${escapeHtml(patient.name || '')}</td>
-       <td>${escapeHtml(patient.studentNumber || '')}</td>
-       <td>${escapeHtml(patient.strand || '')}</td>
-       <td>${escapeHtml(patient.section || '')}</td>
+      <td>${index + 1}</td>
+      <td>${escapeHtml(patient.name || '')}</td>
+      <td>${escapeHtml(patient.studentNumber || '')}</td>
+      <td>${escapeHtml(patient.strand || '')}</td>
+      <td>${escapeHtml(patient.section || '')}</td>
        <td class="actions">
          <button class="view-btn" data-id="${patient.id}" type="button" aria-label="View patient"><i class="fa-solid fa-eye"></i></button>
          <button class="edit-btn" data-id="${patient.id}" type="button" aria-label="Edit patient"><i class="fa-solid fa-pencil"></i></button>
@@ -204,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('pageshow', renderPatients);
 
   renderPatients();
-=======
+const discardedPatientScript = String.raw`
 /* patients.js — localStorage-driven patient list */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -236,18 +235,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
    filtered.forEach((patient, index) => {
      const row = document.createElement('tr');
-     row.innerHTML = `
-       <td>${index + 1}</td>
-       <td>${escapeHtml(patient.name || '')}</td>
-       <td>${escapeHtml(patient.studentNumber || '')}</td>
-       <td>${escapeHtml(patient.strand || '')}</td>
-       <td>${escapeHtml(patient.section || '')}</td>
+     row.innerHTML = '
+       <td>\${index + 1}</td>
+       <td>\${escapeHtml(patient.name || '')}</td>
+       <td>\${escapeHtml(patient.studentNumber || '')}</td>
+       <td>\${escapeHtml(patient.strand || '')}</td>
+       <td>\${escapeHtml(patient.section || '')}</td>
        <td class="actions">
-         <button class="view-btn" data-id="${patient.id}" type="button"><i class="fa-solid fa-eye"></i></button>
-         <button class="edit-btn" data-id="${patient.id}" type="button"><i class="fa-solid fa-pencil"></i></button>
-         <button class="delete-btn" data-id="${patient.id}" type="button"><i class="fa-solid fa-trash-can"></i></button>
+         <button class="view-btn" data-id="\${patient.id}" type="button"><i class="fa-solid fa-eye"></i></button>
+         <button class="edit-btn" data-id="\${patient.id}" type="button"><i class="fa-solid fa-pencil"></i></button>
+         <button class="delete-btn" data-id="\${patient.id}" type="button"><i class="fa-solid fa-trash-can"></i></button>
        </td>
-     `;
+    ';
 
      row.querySelector('.view-btn').addEventListener('click', () => viewPatient(patient.id));
      row.querySelector('.edit-btn').addEventListener('click', () => editPatient(patient.id));
@@ -436,5 +435,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (strandFilter) strandFilter.addEventListener('change', renderPatients);
 
   renderPatients();
->>>>>>> 27a468eb9d104dd95aa9b6b5474e3cde2f1c4d44
+`;
 });
