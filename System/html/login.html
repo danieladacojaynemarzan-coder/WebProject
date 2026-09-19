@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - STI Clinic Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body class="auth-page">
+    <header class="site-header">
+        <a class="brand" href="login.html" aria-label="STI Clinic Management System home">
+            <img src="../PHOTO/STI LOGO.jpg" alt="STI logo">
+            <span>STI Clinic Management System</span>
+        </a>
+    </header>
+
+    <main class="auth-stage">
+        <section class="auth-card login-card" aria-labelledby="login-title">
+            <h1 id="login-title">Log In</h1>
+            <form id="login-form" novalidate>
+                <div class="field-group">
+                    <label for="login-username">Username</label>
+                    <input id="login-username" name="username" type="text" autocomplete="username">
+                </div>
+                <div class="field-group">
+                    <label for="login-password">Password</label>
+                    <input id="login-password" name="password" type="password" autocomplete="current-password">
+                </div>
+                <button class="forgot-link" id="forgot-password" type="button">Forgot Password</button>
+                <button class="primary-button login-button" type="submit">Log In</button>
+                <p class="auth-message" id="login-message" role="status" aria-live="polite"></p>
+            </form>
+            <p class="account-link">Not registered yet? <a href="signup.html">Create your account</a></p>
+        </section>
+    </main>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

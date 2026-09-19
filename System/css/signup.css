@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+    font-family: 'Poppins', sans-serif;
+    color: #111820;
+    background: #f1f3f8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.site-header {
+    height: 74px;
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+    background: #fff;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: #050505;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.brand img {
+    width: 96px;
+    height: 58px;
+    display: block;
+    object-fit: contain;
+}
+
+.auth-stage {
+    min-height: calc(100vh - 74px);
+    padding: 35px 16px;
+    display: grid;
+    place-items: center;
+    background-image: linear-gradient(rgba(238, 247, 255, 0.2), rgba(238, 247, 255, 0.2)), url('../PHOTO/images (1).jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.auth-card {
+    background: #f1f3f8;
+    border-radius: 30px;
+    text-align: center;
+}
+
+.signup-card {
+    width: min(510px, calc(100vw - 32px));
+    padding: 31px 40px 25px;
+}
+
+.auth-card h1 {
+    margin: 0;
+    color: #050505;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.field-group {
+    text-align: left;
+}
+
+.field-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #111820;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.field-group input {
+    width: 100%;
+    height: 51px;
+    padding: 8px 12px;
+    border: 1px solid #555b60;
+    border-radius: 2px;
+    background: #fff;
+    color: #111820;
+    font: inherit;
+    font-size: 17px;
+    outline: none;
+}
+
+.field-group input:focus {
+    border-color: #124b78;
+    box-shadow: 0 0 0 2px rgba(18, 75, 120, 0.18);
+}
+
+.signup-card h1 {
+    margin-bottom: 22px;
+}
+
+.signup-card .field-group + .field-group {
+    margin-top: 12px;
+}
+
+.primary-button {
+    display: block;
+    border: 0;
+    background: #124b78;
+    color: #fff;
+    font: inherit;
+    font-size: 19px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.primary-button:hover {
+    background: #0d3d63;
+}
+
+.signup-button {
+    width: min(300px, 100%);
+    height: 45px;
+    margin: 25px auto 0;
+    border-radius: 16px;
+}
+
+.forgot-link {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #075b9d;
+    font: inherit;
+    font-size: 18px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.forgot-link:hover,
+.account-link a:hover {
+    text-decoration: underline;
+}
+
+.account-link {
+    margin-bottom: 0;
+    color: #075b9d;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.account-link a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.auth-message {
+    min-height: 21px;
+    margin: 8px 0 0;
+    color: #124b78;
+    font-size: 13px;
+}
+
+.auth-message.error {
+    color: #a12a2a;
+}
+
+@media (max-width: 600px) {
+    .site-header {
+        height: auto;
+        min-height: 74px;
+        padding: 8px 16px;
+    }
+
+    .brand {
+        gap: 10px;
+        font-size: 19px;
+    }
+
+    .brand img {
+        width: 76px;
+        height: 48px;
+    }
+
+    .auth-stage {
+        min-height: calc(100vh - 74px);
+        padding: 24px 0;
+    }
+
+    .signup-card,
+    .login-card {
+        padding-right: 25px;
+        padding-left: 25px;
+    }
+}
