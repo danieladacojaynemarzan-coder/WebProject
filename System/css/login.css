@@ -25,9 +25,10 @@
 }
 
 .login-button {
-    width: min(350px, 100%);
-    height: 53px;
-    margin-top: 8px;
+    width: min(300px, 100%);
+    height: 45px;
+    margin: 25px auto 0;
+    border-radius: 16px;
 }
 
 .login-card .auth-message {

@@ -196,9 +196,9 @@
 
                             <td class="actions">
 
-                               
+
                                 <button class="view-btn"
-                                    
+
              onclick='openPatientModal({
              surname:"Marzan",
              middleName:"Daco",
@@ -215,7 +215,7 @@
                                             })'>
 
                                     <i class="fa-solid fa-eye"></i>
-    
+
                           </button>
 
                                 <button class="edit-btn"
@@ -460,19 +460,19 @@
                     👩
                 </div>
 
-                <div>
+                <div class="name-field">
                     <span>Surname</span>
                     <strong id="infoSurname">Marzan</strong>
                 </div>
 
-                <div>
-                    <span>Middle Name</span>
-                    <strong id="infoMiddleName">Daco</strong>
-                </div>
-
-                <div>
+                <div class="name-field">
                     <span>First Name</span>
                     <strong id="infoFirstName">Daniela</strong>
+                </div>
+
+                <div class="name-field">
+                    <span>Middle Name</span>
+                    <strong id="infoMiddleName">Daco</strong>
                 </div>
 
             </div>
@@ -530,6 +530,11 @@
 
                 </div>
 
+            </div>
+
+            <div class="patient-modal-actions" id="patientModalActions" hidden>
+                <button class="modal-cancel-btn" id="patientCancelButton" type="button">Cancel</button>
+                <button class="modal-save-btn" id="patientSaveButton" type="button">Save Changes</button>
             </div>
 
         </div>

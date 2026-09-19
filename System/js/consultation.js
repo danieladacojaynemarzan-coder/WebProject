@@ -1,4 +1,4 @@
-﻿/* consultation.js — localStorage implementation for consultation records and patient lookup */
+/* consultation.js — localStorage implementation for consultation records and patient lookup */
 
 (function () {
   const PATIENTS_KEY = 'sti_patients';
@@ -54,6 +54,20 @@
 
   function createPatient(obj) {
     const all = listPatients();
+    const normalizedName = String(obj.name || '').trim().toLowerCase();
+    const normalizedNumber = String(obj.studentNumber || '').trim().toLowerCase();
+    const existing = all.find((patient) => {
+      const sameNumber = normalizedNumber && String(patient.studentNumber || '').trim().toLowerCase() === normalizedNumber;
+      const sameName = normalizedName && String(patient.name || '').trim().toLowerCase() === normalizedName;
+      return sameNumber || sameName;
+    });
+
+    if (existing) {
+      Object.assign(existing, obj);
+      writeJSON(PATIENTS_KEY, all);
+      return existing;
+    }
+
     const patient = Object.assign({ id: nextId(all) }, obj);
     all.unshift(patient);
     writeJSON(PATIENTS_KEY, all);

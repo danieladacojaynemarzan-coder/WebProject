@@ -20,7 +20,7 @@
                 return;
             }
 
-            showMessage(message, 'Your login details are ready to be verified.', false);
+            window.location.href = 'dashboard.html';
         });
     }
 
