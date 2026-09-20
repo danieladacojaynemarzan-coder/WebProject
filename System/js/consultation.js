@@ -165,7 +165,9 @@
     const suggestionsBox = document.getElementById('searchSuggestions');
     const registerCheckbox = document.getElementById('registerStudent');
     const patientIdInput = document.getElementById('patientId');
-    const studentNameInput = document.getElementById('studentName');
+    const studentFirstNameInput = document.getElementById('studentFirstName');
+    const studentMiddleNameInput = document.getElementById('studentMiddleName');
+    const studentLastNameInput = document.getElementById('studentLastName');
     const studentNumberInput = document.getElementById('studentNumber');
     const strandInput = document.getElementById('studentStrand');
     const sectionInput = document.getElementById('studentSection');
@@ -181,6 +183,15 @@
     const listContainer = document.querySelector('.consultation-list');
     const dateFilter = document.getElementById('fromDate');
     const clearDateFilter = document.getElementById('clearDateFilter');
+
+    function getFullName() {
+      const first = studentFirstNameInput.value.trim();
+      const middle = studentMiddleNameInput.value.trim();
+      const last = studentLastNameInput.value.trim();
+
+      return [first, middle, last].filter(Boolean).join(' ');
+    }
+
 
     function hideSuggestions() {
       if (!suggestionsBox) return;
@@ -202,7 +213,17 @@
         item.textContent = `${patient.name}${patient.studentNumber ? ' — ' + patient.studentNumber : ''}`;
         item.addEventListener('click', () => {
           patientIdInput.value = patient.id;
-          studentNameInput.value = patient.name || '';
+          const nameParts = (patient.name || '').trim().split(/\s+/);
+
+          studentFirstNameInput.value = nameParts[0] || '';
+
+          studentMiddleNameInput.value = nameParts.length > 2
+          ? nameParts.slice(1, -1).join(' ')
+          : '';
+
+          studentLastNameInput.value = nameParts.length > 1
+          ? nameParts[nameParts.length - 1]
+          : '';
           studentNumberInput.value = patient.studentNumber || '';
           strandInput.value = patient.strand || '';
           sectionInput.value = patient.section || '';
@@ -291,20 +312,41 @@
               if (record.patientId) {
                 const p = getPatientById(record.patientId);
                 if (p) {
-                  patientIdInput.value = p.id;
-                  studentNameInput.value = p.name || '';
+                 patientIdInput.value = p.id;
+                  const nameParts = (p.name || '').trim().split(/\s+/);
+
+                    studentFirstNameInput.value = nameParts[0] || '';
+                    studentMiddleNameInput.value = nameParts.length > 2
+                    ? nameParts.slice(1, -1).join(' ')
+                    : '';
+                    studentLastNameInput.value = nameParts.length > 1
+                    ? nameParts[nameParts.length - 1]
+                    : '';
                   studentNumberInput.value = p.studentNumber || '';
                   strandInput.value = p.strand || '';
                   sectionInput.value = p.section || '';
                   showPatientDetails(p);
                 }
               } else {
-                patientIdInput.value = '';
-                studentNameInput.value = record.patientName || '';
-                studentNumberInput.value = '';
-                strandInput.value = '';
-                sectionInput.value = '';
-                hidePatientDetails();
+                  patientIdInput.value = '';
+
+                  const nameParts = (record.patientName || '').trim().split(/\s+/);
+
+                  studentFirstNameInput.value = nameParts[0] || '';
+
+                  studentMiddleNameInput.value = nameParts.length > 2
+                  ? nameParts.slice(1, -1).join(' ')
+                  : '';
+
+                  studentLastNameInput.value = nameParts.length > 1
+                  ? nameParts[nameParts.length - 1]
+                  : '';
+
+                  studentNumberInput.value = '';
+                  strandInput.value = '';
+                  sectionInput.value = '';
+
+                  hidePatientDetails(); 
               }
 
               // time may be stored in AM/PM format — convert to HH:MM for input[type=time]
@@ -362,8 +404,14 @@
           return;
         }
 
-        if (!patientIdInput.value && !registerCheckbox.checked && !studentNameInput.value.trim()) {
-          studentNameInput.value = query;
+        if (
+          !patientIdInput.value &&
+          !registerCheckbox.checked &&
+          !studentFirstNameInput.value.trim() &&
+          !studentMiddleNameInput.value.trim() &&
+          !studentLastNameInput.value.trim()
+         ) {
+          studentFirstNameInput.value = query;
         }
 
         const matches = searchPatients(query);
@@ -379,29 +427,23 @@
     }
 
     if (registerCheckbox) {
-      registerCheckbox.addEventListener('change', () => {
+        registerCheckbox.addEventListener('change', () => {
         if (registerCheckbox.checked) {
-          patientIdInput.value = '';
-          studentNameInput.value = '';
-          studentNumberInput.value = '';
-          strandInput.value = '';
-          sectionInput.value = '';
-          hidePatientDetails();
-        }
-      });
-    }
 
-    if (registerCheckbox) {
-      registerCheckbox.addEventListener('change', () => {
-        if (registerCheckbox.checked) {
-          patientIdInput.value = '';
-          studentNameInput.value = '';
-          studentNumberInput.value = '';
-          strandInput.value = '';
-          sectionInput.value = '';
-        }
-      });
+        patientIdInput.value = '';
+
+        studentFirstNameInput.value = '';
+        studentMiddleNameInput.value = '';
+        studentLastNameInput.value = '';
+
+        studentNumberInput.value = '';
+        strandInput.value = '';
+        sectionInput.value = '';
+ 
+        hidePatientDetails();
     }
+  });
+}
 
     window.openConsultationModal = function () {
       const modal = document.getElementById('consultationModal');
@@ -409,7 +451,9 @@
       try {
         if (!editIdInput || !editIdInput.value) {
           if (patientIdInput) patientIdInput.value = '';
-          if (studentNameInput) studentNameInput.value = '';
+          if (studentFirstNameInput) studentFirstNameInput.value = '';
+          if (studentMiddleNameInput) studentMiddleNameInput.value = '';
+          if (studentLastNameInput) studentLastNameInput.value = '';
           if (studentNumberInput) studentNumberInput.value = '';
           if (strandInput) strandInput.value = '';
           if (sectionInput) sectionInput.value = '';
@@ -445,7 +489,7 @@
           <div class="row"><div class="label">Student No.</div><div class="value">${escapeHtml(patient.studentNumber || '—')}</div></div>
           <div class="row"><div class="label">Strand</div><div class="value">${escapeHtml(patient.strand || '—')}</div></div>
           <div class="row"><div class="label">Section</div><div class="value">${escapeHtml(patient.section || '—')}</div></div>
-          <div class="actions"><button type="button" class="view-btn" onclick="/* no-op for now */">View Profile</button><button type="button" class="clear-btn" onclick="(function(){document.getElementById('patientId').value=''; document.getElementById('studentName').value=''; document.getElementById('studentNumber').value=''; document.getElementById('studentStrand').value=''; document.getElementById('studentSection').value=''; window.hidePatientDetails();})()">Clear</button></div>
+          <div class="actions"><button type="button" class="view-btn" onclick="/* no-op for now */">View Profile</button><button type="button" class="clear-btn" onclick="(function(){document.getElementById('patientId').value=''; document.getElementById('studentFirstName').value=''; document.getElementById('studentMiddleName').value=''; document.getElementById('studentLastName').value=''; document.getElementById('studentNumber').value=''; document.getElementById('studentStrand').value=''; document.getElementById('studentSection').value=''; window.hidePatientDetails();})()">Clear</button></div>
         `;
         details.innerHTML = html;
         details.style.display = 'block';
@@ -467,7 +511,7 @@
 
     window.saveConsultation = function () {
       const register = !!(registerCheckbox && registerCheckbox.checked);
-      const typedStudentName = (studentNameInput && studentNameInput.value.trim()) || (searchInput && searchInput.value.trim());
+      const typedStudentName = getFullName();
 
       if (!typedStudentName) {
         alert('Please type or select a student name before saving.');
