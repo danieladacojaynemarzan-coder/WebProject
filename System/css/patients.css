@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /* =========================================
    PATIENTS PAGE
 ========================================= */
@@ -85,13 +85,40 @@
 }
 
 .restore-btn {
-    background: #dcefe3;
-    color: #17643a;
+    min-width: 160px;
+    height: 44px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #168700;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.12s ease;
 }
 
+.restore-btn:hover {
+    background: #116b00;
+    transform: translateY(-1px);
+}
+
+
 .permanent-delete-btn {
-    background: #f8dddd;
-    color: #a12a2a;
+    min-width: 160px;
+    height: 44px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #d90000;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.12s ease;
+}
+
+.permanent-delete-btn:hover {
+    background: #b50000;
+    transform: translateY(-1px);
 }
 
 @media (max-width: 900px) {
@@ -175,25 +202,26 @@
 }
 
 
-.actions button {
-
+.actions button{
     border: none;
-
     font-size: 22px;
 }
 
 
 .view-btn {
+    background: transparent;
     color: #147db8;
 }
 
 
 .edit-btn {
+    background: transparent;
     color: #f5c400;
 }
 
 
 .delete-btn {
+    background: transparent;
     color: red;
 }
 
@@ -521,13 +549,13 @@
         grid-template-columns: 1fr;
         gap: 0;
     }
-=======
 /* =========================================
    PATIENTS PAGE
 ========================================= */
 
 .patients-page {
     padding-top: 55px;
+}
 }
 
 
@@ -627,50 +655,6 @@
     width: 170px;
 }
 
-
-/* =========================================
-   ACTIONS
-========================================= */
-
-.actions {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 20px;
-}
-
-
-.actions button {
-
-    border: none;
-
-    background: transparent;
-
-    font-size: 22px;
-}
-
-
-.view-btn {
-    cursor: pointer;
-
-    color: #147db8;
-}
-
-
-.edit-btn {
-    cursor: pointer;
-
-    color: #f5c400;
-}
-
-
-.delete-btn {
-    cursor: pointer;
-
-    color: red;
-}
 
 /* ============================= */
 /* PATIENT INFORMATION MODAL     */
@@ -934,5 +918,4 @@
   .form-group.full-width {
     grid-column: span 1;
   }
->>>>>>> 27a468eb9d104dd95aa9b6b5474e3cde2f1c4d44
 }
