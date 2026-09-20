@@ -27,6 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
    }[char]));
   }
 
+  function isExpiringSoon(expiry) {
+   if (!expiry) return false;
+
+   const expiryDate = new Date(`${expiry}T00:00:00`);
+   if (Number.isNaN(expiryDate.getTime())) return false;
+
+   const today = new Date();
+   today.setHours(0, 0, 0, 0);
+   const daysUntilExpiry = Math.round((expiryDate - today) / (1000 * 60 * 60 * 24));
+
+   return daysUntilExpiry >= 0 && daysUntilExpiry <= 5;
+  }
+
   function getTodayConsultations() {
    const today = todayISO();
    return STI.getConsultations().filter((item) => (item.date || '').toString() === today);
@@ -44,8 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
    if (patientValue) patientValue.textContent = String(todayPatients);
    if (lowStockCard) lowStockCard.textContent = String(lowStockItems.length);
 
-   const patientName = document.getElementById('headerNurseName');
-   if (patientName) patientName.textContent = 'Nurse Name';
   }
 
   function renderRecentVisits() {
@@ -253,20 +264,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
    const inventory = STI.getInventory();
    const lowStock = inventory.filter((item) => Number(item.stock || 0) <= 5);
+  const expiringSoon = inventory.filter((item) => isExpiringSoon(item.expiry));
    const consultationsToday = getTodayConsultations().length;
 
    const messageList = [];
 
    if (lowStock.length) {
      const firstItem = lowStock[0];
-     messageList.push({ type: 'error', text: `${firstItem.name || 'Item'} is running low.`, time: 'now' });
+     messageList.push({ type: 'error', text: `${firstItem.name || 'Item'} is running low.`, time: 'now', inventory: true });
    } else {
-     messageList.push({ type: 'success', text: 'Inventory is in good condition.', time: 'now' });
+     messageList.push({ type: 'success', text: 'Inventory is in good condition.', time: 'now', inventory: true });
    }
 
    if (lowStock.length > 1) {
      const second = lowStock[1];
-     messageList.push({ type: 'warning', text: `${second.name || 'Another item'} needs restocking.`, time: 'recently' });
+     messageList.push({ type: 'warning', text: `${second.name || 'Another item'} needs restocking.`, time: 'recently', inventory: true });
+   }
+
+   if (expiringSoon.length) {
+     const names = expiringSoon.slice(0, 2).map((item) => item.name || 'Item').join(' and ');
+     const remaining = expiringSoon.length > 2 ? ` and ${expiringSoon.length - 2} more` : '';
+    messageList.push({ type: 'warning', text: `${names}${remaining} will expire soon.`, time: 'within 5 days', inventory: true });
    }
 
    messageList.push({ type: 'info', text: `${consultationsToday} patient${consultationsToday === 1 ? '' : 's'} visited today.`, time: 'recently' });
@@ -274,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
    notificationBox.innerHTML = `
      <h3><i class="fa-solid fa-bell"></i> Notification</h3>
      ${messageList.map((note) => `
-       <p>${note.type === 'error' ? '🔴' : note.type === 'warning' ? '🟡' : note.type === 'success' ? '🟢' : '🔵'} ${escapeHtml(note.text)} <small>${escapeHtml(note.time)}</small></p>
+       <p>${note.type === 'error' ? '🔴' : note.type === 'warning' ? '🟡' : note.type === 'success' ? '🟢' : '🔵'} ${note.inventory ? `<a href="inventory.html">${escapeHtml(note.text)} <small>${escapeHtml(note.time)}</small></a>` : `${escapeHtml(note.text)} <small>${escapeHtml(note.time)}</small>`}</p>
      `).join('')}
    `;
   }

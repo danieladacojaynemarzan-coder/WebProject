@@ -404,6 +404,13 @@ button:hover {
     animation: fadeInUp 0.3s ease;
 }
 
+.notification-box a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+
 .notification-box small {
     display: block;
 
