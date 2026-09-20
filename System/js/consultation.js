@@ -29,9 +29,9 @@
     const existing = readJSON(PATIENTS_KEY, []);
     if (existing.length === 0) {
       const sample = [
-        { id: 1, name: 'Chadler Esparteto', studentNumber: '2021-001', strand: 'HS', section: '12-A' },
-        { id: 2, name: 'Mary Josephine Lajom', studentNumber: '2021-002', strand: 'HS', section: '12-B' },
-        { id: 3, name: 'Daniela Marzan', studentNumber: '2021-003', strand: 'HS', section: '12-C' }
+        { id: 1, name: 'Chadler Esparteto', firstName: 'Chadler', surname: 'Esparteto', studentNumber: '2021-001', strand: 'HS', section: '12-A' },
+        { id: 2, name: 'Mary Josephine Lajom', firstName: 'Mary', middleName: 'Josephine', surname: 'Lajom', studentNumber: '2021-002', strand: 'HS', section: '12-B' },
+        { id: 3, name: 'Daniela Marzan', firstName: 'Daniela', surname: 'Marzan', studentNumber: '2021-003', strand: 'HS', section: '12-C' }
       ];
       writeJSON(PATIENTS_KEY, sample);
     }
@@ -52,10 +52,62 @@
     });
   }
 
+  function parseNameParts(fullName) {
+    const raw = String(fullName || '').trim();
+    if (!raw) return { firstName: '', middleName: '', surname: '', suffix: '', name: '' };
+
+    const suffixRegex = /\s+(Jr\.?|Sr\.?|III|IV|II|V)$/i;
+    let suffix = '';
+    let cleanName = raw;
+    const suffixMatch = raw.match(suffixRegex);
+    if (suffixMatch) {
+      suffix = suffixMatch[1];
+      cleanName = raw.replace(suffixRegex, '').trim();
+    }
+
+    const parts = cleanName.split(/\s+/).filter(Boolean);
+    let firstName = '';
+    let middleName = '';
+    let surname = '';
+
+    if (parts.length === 1) {
+      firstName = parts[0];
+    } else if (parts.length === 2) {
+      firstName = parts[0];
+      surname = parts[1];
+    } else if (parts.length === 3) {
+      firstName = parts[0];
+      middleName = parts[1];
+      surname = parts[2];
+    } else if (parts.length > 3) {
+      firstName = parts[0];
+      middleName = parts.slice(1, -1).join(' ');
+      surname = parts[parts.length - 1];
+    }
+
+    const formattedName = [firstName, middleName, surname, suffix].filter(Boolean).join(' ');
+    return { firstName, middleName, surname, suffix, name: formattedName || raw };
+  }
+
   function createPatient(obj) {
     const all = listPatients();
-    const normalizedName = String(obj.name || '').trim().toLowerCase();
+
+    const firstName = String(obj.firstName || '').trim();
+    const middleName = String(obj.middleName || '').trim();
+    const surname = String(obj.surname || '').trim();
+    const suffix = String(obj.suffix || '').trim();
+
+    let nameData;
+    if (firstName || surname) {
+      const formatted = [firstName, middleName, surname, suffix].filter(Boolean).join(' ');
+      nameData = { firstName, middleName, surname, suffix, name: formatted };
+    } else {
+      nameData = parseNameParts(obj.name || '');
+    }
+
+    const normalizedName = nameData.name.toLowerCase();
     const normalizedNumber = String(obj.studentNumber || '').trim().toLowerCase();
+
     const existing = all.find((patient) => {
       const sameNumber = normalizedNumber && String(patient.studentNumber || '').trim().toLowerCase() === normalizedNumber;
       const sameName = normalizedName && String(patient.name || '').trim().toLowerCase() === normalizedName;
@@ -63,15 +115,49 @@
     });
 
     if (existing) {
-      Object.assign(existing, obj);
+      Object.assign(existing, {
+        firstName: nameData.firstName || existing.firstName,
+        middleName: nameData.middleName || existing.middleName,
+        surname: nameData.surname || existing.surname,
+        suffix: nameData.suffix || existing.suffix,
+        name: nameData.name || existing.name,
+        studentNumber: obj.studentNumber || existing.studentNumber,
+        strand: obj.strand || existing.strand,
+        section: obj.section || existing.section
+      });
       writeJSON(PATIENTS_KEY, all);
+      notifyStorageChange();
       return existing;
     }
 
-    const patient = Object.assign({ id: nextId(all) }, obj);
-    all.unshift(patient);
+    const newPatient = {
+      id: nextId(all),
+      firstName: nameData.firstName,
+      middleName: nameData.middleName,
+      surname: nameData.surname,
+      suffix: nameData.suffix,
+      name: nameData.name,
+      studentNumber: obj.studentNumber || 'N/A',
+      strand: obj.strand || 'N/A',
+      section: obj.section || 'N/A',
+      sex: obj.sex || 'Male',
+      bloodType: obj.bloodType || 'N/A',
+      allergies: obj.allergies || 'None',
+      condition: obj.condition || 'None',
+      emergencyNumber: obj.emergencyNumber || '',
+      createdAt: new Date().toISOString()
+    };
+
+    all.unshift(newPatient);
     writeJSON(PATIENTS_KEY, all);
-    return patient;
+    notifyStorageChange();
+    return newPatient;
+  }
+
+  function notifyStorageChange() {
+    try {
+      window.dispatchEvent(new Event('storage'));
+    } catch (e) {}
   }
 
   function getPatientById(id) {
@@ -105,7 +191,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     seedPatientsIfNeeded();
 
-    // inject a small confirm modal & animation helper if not present (per-page fallback)
+    // inject confirm modal & animation helper if not present
     (function () {
       try {
         if (!window.showConfirm) {
@@ -160,12 +246,17 @@
       }
     })();
 
-
     const searchInput = document.getElementById('searchStudent');
     const suggestionsBox = document.getElementById('searchSuggestions');
     const registerCheckbox = document.getElementById('registerStudent');
     const patientIdInput = document.getElementById('patientId');
-    const studentNameInput = document.getElementById('studentName');
+    const studentNameHidden = document.getElementById('studentName');
+
+    const firstNameInput = document.getElementById('studentFirstName');
+    const middleNameInput = document.getElementById('studentMiddleName');
+    const surnameInput = document.getElementById('studentSurname');
+    const suffixInput = document.getElementById('studentSuffix');
+
     const studentNumberInput = document.getElementById('studentNumber');
     const strandInput = document.getElementById('studentStrand');
     const sectionInput = document.getElementById('studentSection');
@@ -181,6 +272,40 @@
     const listContainer = document.querySelector('.consultation-list');
     const dateFilter = document.getElementById('fromDate');
     const clearDateFilter = document.getElementById('clearDateFilter');
+
+    function resetPatientFormInputs() {
+      if (patientIdInput) patientIdInput.value = '';
+      if (studentNameHidden) studentNameHidden.value = '';
+      if (firstNameInput) firstNameInput.value = '';
+      if (middleNameInput) middleNameInput.value = '';
+      if (surnameInput) surnameInput.value = '';
+      if (suffixInput) suffixInput.value = '';
+      if (studentNumberInput) studentNumberInput.value = '';
+      if (strandInput) strandInput.value = '';
+      if (sectionInput) sectionInput.value = '';
+      const confirmCheck = document.getElementById('confirmConsultationSave');
+      const confirmWarning = document.getElementById('confirmWarningText');
+      if (confirmCheck) confirmCheck.checked = false;
+      if (confirmWarning) confirmWarning.style.display = 'none';
+      hidePatientDetails();
+    }
+
+    function populatePatientInputs(patient) {
+      if (!patient) return;
+      if (patientIdInput) patientIdInput.value = patient.id || '';
+      if (studentNameHidden) studentNameHidden.value = patient.name || '';
+
+      const nameParts = parseNameParts(patient.name || '');
+      if (firstNameInput) firstNameInput.value = patient.firstName || nameParts.firstName || '';
+      if (middleNameInput) middleNameInput.value = patient.middleName || nameParts.middleName || '';
+      if (surnameInput) surnameInput.value = patient.surname || nameParts.surname || '';
+      if (suffixInput) suffixInput.value = patient.suffix || nameParts.suffix || '';
+
+      if (studentNumberInput) studentNumberInput.value = patient.studentNumber || '';
+      if (strandInput) strandInput.value = patient.strand || '';
+      if (sectionInput) sectionInput.value = patient.section || '';
+      showPatientDetails(patient);
+    }
 
     function hideSuggestions() {
       if (!suggestionsBox) return;
@@ -201,13 +326,8 @@
         item.className = 'suggestion-item';
         item.textContent = `${patient.name}${patient.studentNumber ? ' — ' + patient.studentNumber : ''}`;
         item.addEventListener('click', () => {
-          patientIdInput.value = patient.id;
-          studentNameInput.value = patient.name || '';
-          studentNumberInput.value = patient.studentNumber || '';
-          strandInput.value = patient.strand || '';
-          sectionInput.value = patient.section || '';
+          populatePatientInputs(patient);
           hideSuggestions();
-          showPatientDetails(patient);
         });
         suggestionsBox.appendChild(item);
       });
@@ -282,32 +402,18 @@
         if (editBtn) {
           editBtn.addEventListener('click', (event) => {
             event.stopPropagation();
-            // open modal prefilled for editing
             try {
               if (!editIdInput) return;
               editIdInput.value = record.id;
 
-              // populate patient selection / fields
               if (record.patientId) {
                 const p = getPatientById(record.patientId);
-                if (p) {
-                  patientIdInput.value = p.id;
-                  studentNameInput.value = p.name || '';
-                  studentNumberInput.value = p.studentNumber || '';
-                  strandInput.value = p.strand || '';
-                  sectionInput.value = p.section || '';
-                  showPatientDetails(p);
-                }
+                if (p) populatePatientInputs(p);
               } else {
-                patientIdInput.value = '';
-                studentNameInput.value = record.patientName || '';
-                studentNumberInput.value = '';
-                strandInput.value = '';
-                sectionInput.value = '';
-                hidePatientDetails();
+                resetPatientFormInputs();
+                if (firstNameInput) firstNameInput.value = record.patientName || '';
               }
 
-              // time may be stored in AM/PM format — convert to HH:MM for input[type=time]
               function toTimeInputFormat(t) {
                 if (!t) return '';
                 const m = t.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
@@ -328,7 +434,6 @@
               treatmentInput.value = record.treatment || '';
               nurseInput.value = record.nurse || '';
 
-              // open modal
               window.openConsultationModal();
             } catch (e) {
               console.error('prefill edit', e);
@@ -362,10 +467,6 @@
           return;
         }
 
-        if (!patientIdInput.value && !registerCheckbox.checked && !studentNameInput.value.trim()) {
-          studentNameInput.value = query;
-        }
-
         const matches = searchPatients(query);
         showSuggestions(matches);
       });
@@ -381,58 +482,35 @@
     if (registerCheckbox) {
       registerCheckbox.addEventListener('change', () => {
         if (registerCheckbox.checked) {
-          patientIdInput.value = '';
-          studentNameInput.value = '';
-          studentNumberInput.value = '';
-          strandInput.value = '';
-          sectionInput.value = '';
-          hidePatientDetails();
-        }
-      });
-    }
-
-    if (registerCheckbox) {
-      registerCheckbox.addEventListener('change', () => {
-        if (registerCheckbox.checked) {
-          patientIdInput.value = '';
-          studentNameInput.value = '';
-          studentNumberInput.value = '';
-          strandInput.value = '';
-          sectionInput.value = '';
+          resetPatientFormInputs();
         }
       });
     }
 
     window.openConsultationModal = function () {
       const modal = document.getElementById('consultationModal');
-      // if we're not editing (no edit id set) reset the form
       try {
         if (!editIdInput || !editIdInput.value) {
-          if (patientIdInput) patientIdInput.value = '';
-          if (studentNameInput) studentNameInput.value = '';
-          if (studentNumberInput) studentNumberInput.value = '';
-          if (strandInput) strandInput.value = '';
-          if (sectionInput) sectionInput.value = '';
+          resetPatientFormInputs();
           if (timeInput) timeInput.value = '';
           if (dateInput) dateInput.value = '';
           if (complaintInput) complaintInput.value = '';
           if (dispositionInput) dispositionInput.value = '';
           if (diagnosisInput) diagnosisInput.value = '';
           if (treatmentInput) treatmentInput.value = '';
-          if (nurseInput) nurseInput.value = '';
+          if (nurseInput) nurseInput.value = 'Nurse Name';
           if (editIdInput) editIdInput.value = '';
-          hidePatientDetails();
         }
       } catch(e) {
         console.error('reset modal', e);
       }
       if (modal) modal.style.display = 'flex';
     };
+
     window.closeConsultationModal = function () {
       const modal = document.getElementById('consultationModal');
       if (modal) modal.style.display = 'none';
-      // hide patient details when modal closed
-      hidePatientDetails();
+      resetPatientFormInputs();
       try { if (editIdInput) editIdInput.value = ''; } catch(e){}
     };
 
@@ -445,7 +523,7 @@
           <div class="row"><div class="label">Student No.</div><div class="value">${escapeHtml(patient.studentNumber || '—')}</div></div>
           <div class="row"><div class="label">Strand</div><div class="value">${escapeHtml(patient.strand || '—')}</div></div>
           <div class="row"><div class="label">Section</div><div class="value">${escapeHtml(patient.section || '—')}</div></div>
-          <div class="actions"><button type="button" class="view-btn" onclick="/* no-op for now */">View Profile</button><button type="button" class="clear-btn" onclick="(function(){document.getElementById('patientId').value=''; document.getElementById('studentName').value=''; document.getElementById('studentNumber').value=''; document.getElementById('studentStrand').value=''; document.getElementById('studentSection').value=''; window.hidePatientDetails();})()">Clear</button></div>
+          <div class="actions"><button type="button" class="view-btn">View Profile</button><button type="button" class="clear-btn" onclick="(function(){window.resetPatientFormInputs();})()">Clear</button></div>
         `;
         details.innerHTML = html;
         details.style.display = 'block';
@@ -454,6 +532,8 @@
         console.error('showPatientDetails', e);
       }
     };
+
+    window.resetPatientFormInputs = resetPatientFormInputs;
 
     window.hidePatientDetails = function () {
       const details = document.getElementById('patientDetails');
@@ -466,11 +546,29 @@
     };
 
     window.saveConsultation = function () {
-      const register = !!(registerCheckbox && registerCheckbox.checked);
-      const typedStudentName = (studentNameInput && studentNameInput.value.trim()) || (searchInput && searchInput.value.trim());
+      const confirmCheck = document.getElementById('confirmConsultationSave');
+      const confirmWarning = document.getElementById('confirmWarningText');
+      if (confirmCheck && !confirmCheck.checked) {
+        if (confirmWarning) confirmWarning.style.display = 'block';
+        alert('Please check the confirmation box before saving the consultation log.');
+        confirmCheck.focus();
+        return;
+      }
+      if (confirmWarning) confirmWarning.style.display = 'none';
 
-      if (!typedStudentName) {
-        alert('Please type or select a student name before saving.');
+      const register = !!(registerCheckbox && registerCheckbox.checked);
+
+      const firstName = (firstNameInput && firstNameInput.value.trim()) || '';
+      const middleName = (middleNameInput && middleNameInput.value.trim()) || '';
+      const surname = (surnameInput && surnameInput.value.trim()) || '';
+      const suffix = (suffixInput && suffixInput.value.trim()) || '';
+      const typedSearchName = (searchInput && searchInput.value.trim()) || '';
+
+      const constructedName = [firstName, middleName, surname, suffix].filter(Boolean).join(' ');
+      const finalStudentName = constructedName || typedSearchName;
+
+      if (!finalStudentName) {
+        alert('Please enter student name details before saving.');
         return;
       }
 
@@ -480,28 +578,22 @@
       }
 
       let finalPatientId = patientIdInput.value || null;
-      if (!finalPatientId && !register) {
-        // If the name was typed but not selected, use it as a new patient so the record still saves.
+
+      // Register or ensure patient is saved to Patients list
+      if (!finalPatientId || register) {
         const created = createPatient({
-          name: typedStudentName,
-          studentNumber: studentNumberInput.value.trim(),
-          strand: strandInput.value.trim(),
-          section: sectionInput.value.trim()
+          firstName,
+          middleName,
+          surname,
+          suffix,
+          name: finalStudentName,
+          studentNumber: studentNumberInput ? studentNumberInput.value.trim() : '',
+          strand: strandInput ? strandInput.value.trim() : '',
+          section: sectionInput ? sectionInput.value.trim() : ''
         });
         finalPatientId = created.id;
       }
 
-      if (register && !finalPatientId) {
-        const created = createPatient({
-          name: typedStudentName,
-          studentNumber: studentNumberInput.value.trim(),
-          strand: strandInput.value.trim(),
-          section: sectionInput.value.trim()
-        });
-        finalPatientId = created.id;
-      }
-
-      // if editing existing consultation, update instead of create
       const editingId = editIdInput && editIdInput.value ? String(editIdInput.value) : null;
       if (editingId) {
         try {
@@ -510,7 +602,7 @@
           if (idx !== -1) {
             all[idx] = Object.assign({}, all[idx], {
               patientId: finalPatientId,
-              patientName: typedStudentName,
+              patientName: finalStudentName,
               time: timeInput.value,
               date: dateInput.value,
               chiefComplaint: complaintInput.value.trim(),
@@ -525,7 +617,6 @@
             if (window.animateAction) window.animateAction(document.querySelector('.consultation-list') || document.body);
             alert('Consultation updated');
             if (window.updateDashboardStats) window.updateDashboardStats();
-            // clear editing flag
             editIdInput.value = '';
             window.closeConsultationModal();
             return;
@@ -535,10 +626,9 @@
         }
       }
 
-      // otherwise create new
       createConsultation({
         patientId: finalPatientId,
-        patientName: typedStudentName,
+        patientName: finalStudentName,
         time: timeInput.value,
         date: dateInput.value,
         chiefComplaint: complaintInput.value.trim(),

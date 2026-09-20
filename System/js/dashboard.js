@@ -19,25 +19,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function escapeHtml(value) {
    return String(value || '').replace(/[&<>"']/g, (char) => ({
-     '&': '&amp;',
-     '<': '&lt;',
-     '>': '&gt;',
-     '"': '&quot;',
-     "'": '&#39;'
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
    }[char]));
   }
 
-  function isExpiringSoon(expiry) {
-   if (!expiry) return false;
+  function getExpiryStatus(expiry) {
+    if (!expiry) return null;
 
-   const expiryDate = new Date(`${expiry}T00:00:00`);
-   if (Number.isNaN(expiryDate.getTime())) return false;
+    const expiryDate = new Date(`${expiry}T00:00:00`);
+    if (Number.isNaN(expiryDate.getTime())) return null;
 
-   const today = new Date();
-   today.setHours(0, 0, 0, 0);
-   const daysUntilExpiry = Math.round((expiryDate - today) / (1000 * 60 * 60 * 24));
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const daysUntilExpiry = Math.round((expiryDate - today) / (1000 * 60 * 60 * 24));
 
-   return daysUntilExpiry >= 0 && daysUntilExpiry <= 5;
+    if (daysUntilExpiry < 0) {
+      return 'Expired';
+    } else if (daysUntilExpiry === 0) {
+      return 'Expired';
+    } else if (daysUntilExpiry <= 5) {
+      return 'Soon to expire';
+    }
+    return null;
   }
 
   function getTodayConsultations() {
@@ -264,7 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
    const inventory = STI.getInventory();
    const lowStock = inventory.filter((item) => Number(item.stock || 0) <= 5);
-  const expiringSoon = inventory.filter((item) => isExpiringSoon(item.expiry));
+   
+   // Separated collections using explicit expiry status
+   const expiredItems = inventory.filter((item) => getExpiryStatus(item.expiry) === 'Expired');
+   const expiringSoon = inventory.filter((item) => getExpiryStatus(item.expiry) === 'Soon to expire');
+   
    const consultationsToday = getTodayConsultations().length;
 
    const messageList = [];
@@ -281,10 +292,18 @@ document.addEventListener('DOMContentLoaded', () => {
      messageList.push({ type: 'warning', text: `${second.name || 'Another item'} needs restocking.`, time: 'recently', inventory: true });
    }
 
+   // Dedicated Notification for EXPIRED items (Red indicator 🔴)
+   if (expiredItems.length) {
+     const names = expiredItems.slice(0, 2).map((item) => item.name || 'Item').join(' and ');
+     const remaining = expiredItems.length > 2 ? ` and ${expiredItems.length - 2} more` : '';
+     messageList.push({ type: 'error', text: `${names}${remaining} have expired.`, time: 'expired', inventory: true });
+   }
+
+   // Notification for SOON TO EXPIRE items (Yellow indicator 🟡)
    if (expiringSoon.length) {
      const names = expiringSoon.slice(0, 2).map((item) => item.name || 'Item').join(' and ');
      const remaining = expiringSoon.length > 2 ? ` and ${expiringSoon.length - 2} more` : '';
-    messageList.push({ type: 'warning', text: `${names}${remaining} will expire soon.`, time: 'within 5 days', inventory: true });
+     messageList.push({ type: 'warning', text: `${names}${remaining} will expire soon.`, time: 'within 5 days', inventory: true });
    }
 
    messageList.push({ type: 'info', text: `${consultationsToday} patient${consultationsToday === 1 ? '' : 's'} visited today.`, time: 'recently' });

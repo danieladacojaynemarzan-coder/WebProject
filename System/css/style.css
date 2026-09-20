@@ -1,6 +1,6 @@
 /* =========================================
    STI CLINIC SYSTEM
-   COMMON STYLES
+   COMMON STYLES & GLOBAL ANIMATIONS
 ========================================= */
 
 * {
@@ -99,21 +99,21 @@ body {
     margin-left: 6px;
     margin-right: 27px;
 
-    padding: 0 7px;
+    padding: 0 10px;
 
     display: flex;
     align-items: center;
 
     gap: 22px;
 
-    border-radius: 4px;
+    border-radius: 6px;
 
     color: white;
     text-decoration: none;
 
     font-size: 17px;
 
-    transition: .2s;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .menu-item i {
@@ -124,9 +124,15 @@ body {
     font-size: 22px;
 }
 
-.menu-item:hover,
+.menu-item:hover {
+    background: #14527f;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .menu-item.active {
     background: #14527f;
+    font-weight: 600;
 }
 
 
@@ -196,7 +202,7 @@ body {
 
 
 /* =========================================
-   COMMON SEARCH BOX
+   COMMON SEARCH BOX & INPUTS
 ========================================= */
 
 .search-box {
@@ -208,6 +214,7 @@ body {
 
     display: flex;
     align-items: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .search-box input {
@@ -229,6 +236,11 @@ body {
     padding: 0 14px;
 }
 
+.search-box:focus-within {
+    border-color: #147db8;
+    box-shadow: 0 0 0 3px rgba(20, 125, 184, 0.18);
+}
+
 
 /* =========================================
    COMMON BUTTON
@@ -243,15 +255,23 @@ body {
 
     border-radius: 28px;
 
-    padding: 12px 21px;
+    padding: 12px 24px;
 
     font-size: 22px;
+    font-weight: 600;
 
     cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .add-button:hover {
     background: #106b9d;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 18px rgba(20, 125, 184, 0.35);
+}
+
+.add-button:active {
+    transform: translateY(0) scale(0.98);
 }
 
 
@@ -289,7 +309,7 @@ body {
 }
 
 /* ===============================
-   PROFILE HEADER
+   PROFILE HEADER & DROPDOWN
 ================================ */
 
 .profile-area {
@@ -297,10 +317,12 @@ body {
     align-items: center;
     gap: 10px;
     cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .profile-area:hover {
-    opacity: 0.8;
+    opacity: 0.9;
+    transform: translateY(-1px);
 }
 
 .nurse-avatar {
@@ -316,7 +338,16 @@ body {
     font-size: 25px;
 }
 
-/* PROFILE DROPDOWN */
+@keyframes dropdownSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 
 .profile-menu {
     display: none;
@@ -326,19 +357,22 @@ body {
     right: 20px;
     top: 72px;
 
-    background: #f5f7fa;
+    background: #ffffff;
 
     width: 170px;
 
-    border-radius: 20px;
+    border-radius: 12px;
 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
 
     z-index: 500;
+    overflow: hidden;
+    transform-origin: top right;
 }
 
 .profile-menu.show {
     display: block;
+    animation: dropdownSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .profile-menu a {
@@ -350,12 +384,58 @@ body {
 
     color: #111;
 
-    font-size: 20px;
+    font-size: 18px;
+    transition: background 0.18s ease, color 0.18s ease, padding-left 0.2s ease;
 }
 
 .profile-menu a:hover {
-    background: #e5e8ec;
+    background: #eef5fc;
+    color: #147db8;
+    padding-left: 24px;
 }
+
+
+/* =========================================
+   GLOBAL MODALS & ANIMATIONS
+========================================= */
+
+@keyframes modalBackdropFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalContentSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal,
+.patient-modal,
+.inventory-modal,
+.consultation-modal {
+    transition: opacity 0.25s ease;
+}
+
+.modal[style*="display: flex"],
+.patient-modal[style*="display: flex"],
+.inventory-modal[style*="display: flex"],
+.consultation-modal[style*="display: flex"] {
+    animation: modalBackdropFade 0.2s ease forwards;
+}
+
+.modal-content,
+.patient-modal-content,
+.inventory-modal-box,
+.consultation-box {
+    animation: modalContentSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 
 /* Global confirm modal & action animations */
 .confirm-modal {
@@ -378,6 +458,7 @@ body {
     box-shadow: 0 14px 36px rgba(0,0,0,0.28);
     overflow: hidden;
     border: 3px solid #222;
+    animation: modalContentSlideIn 0.25s ease forwards;
 }
 .confirm-modal-body {
     padding: 22px 26px;
@@ -398,14 +479,23 @@ body {
     border: none;
     font-size: 16px;
     cursor: pointer;
+    transition: transform 0.18s ease, background 0.18s ease;
 }
 .confirm-modal-actions .btn-cancel {
     background: #f0f4f8;
     color: #333;
 }
+.confirm-modal-actions .btn-cancel:hover {
+    background: #e2eaf2;
+    transform: translateY(-1px);
+}
 .confirm-modal-actions .btn-ok {
     background: #d9534f;
     color: white;
+}
+.confirm-modal-actions .btn-ok:hover {
+    background: #c9302c;
+    transform: translateY(-1px);
 }
 
 /* action animation (small pop) */

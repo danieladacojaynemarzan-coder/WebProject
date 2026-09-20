@@ -396,10 +396,17 @@
 
                 <p class="or-text">Or</p>
 
-                <label>
-                    <input type="checkbox" id="registerStudent">
-                    Register New Student
-                </label>
+                <div class="register-student-container">
+                    <label class="register-student-label">
+                        <input type="checkbox" id="registerStudent">
+                        <span>Register New Student</span>
+                    </label>
+
+                    <div class="register-hint-message" id="registerHintMessage">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Click this box so that the new student details below will be saved directly into the Patients list!</span>
+                    </div>
+                </div>
 
                 <input
                     type="hidden"
@@ -409,11 +416,33 @@
                     type="hidden"
                     id="consultationEditId"
                 >
+                <input
+                    type="hidden"
+                    id="studentName"
+                >
 
                 <input
                     type="text"
-                    id="studentName"
-                    placeholder="Student Name"
+                    id="studentFirstName"
+                    placeholder="First Name"
+                >
+
+                <input
+                    type="text"
+                    id="studentMiddleName"
+                    placeholder="Middle Name"
+                >
+
+                <input
+                    type="text"
+                    id="studentSurname"
+                    placeholder="Last Name"
+                >
+
+                <input
+                    type="text"
+                    id="studentSuffix"
+                    placeholder="Suffix (Optional)"
                 >
 
                 <input
@@ -567,6 +596,22 @@
                 </div>
 
             </div>
+
+        <div class="consultation-confirm-notice">
+
+            <label class="confirm-checkbox-label">
+
+                <input type="checkbox" id="confirmConsultationSave">
+
+                <span>I confirm that all entered consultation details are accurate and verified.</span>
+
+            </label>
+
+            <p class="confirm-warning-text" id="confirmWarningText" style="display: none; color: #dc3545; font-size: 14px; margin-top: 6px; font-weight: 600;">
+
+                ⚠️ Please check the confirmation box above before saving the consultation log.
+
+            </p>
 
         </div>
 

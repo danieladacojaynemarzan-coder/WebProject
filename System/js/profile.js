@@ -3,7 +3,8 @@ let profile = JSON.parse(
 ) || {
     name: "Nurse Name",
     campus: "STI College Baliuag",
-    role: "School Nurse",
+    role: "Nurse",
+    sex: "Female",
     email: "Nurse@sti.edu.ph",
     contact: "0998989898"
 };
@@ -18,20 +19,31 @@ function loadProfile() {
     document.getElementById("displayName").textContent =
         profile.name;
 
-    document.getElementById("headerNurseName").textContent =
-        profile.name;
+    const headerNameEl = document.getElementById("headerNurseName");
+    if (headerNameEl) {
+        headerNameEl.textContent = profile.name;
+    }
 
     document.getElementById("displayCampus").textContent =
         profile.campus;
 
     document.getElementById("displayRole").textContent =
-        profile.role;
+        profile.role || "Nurse";
+
+    const displaySexEl = document.getElementById("displaySex");
+    if (displaySexEl) {
+        displaySexEl.textContent = profile.sex || "Female";
+    }
 
     document.getElementById("displayEmail").textContent =
         profile.email;
 
     document.getElementById("displayContact").textContent =
         profile.contact;
+
+    if (typeof window.loadHeaderProfile === 'function') {
+        window.loadHeaderProfile();
+    }
 }
 
 
@@ -48,7 +60,12 @@ function openEditProfile() {
         profile.campus;
 
     document.getElementById("editRole").value =
-        profile.role;
+        (profile.role === "Head Nurse") ? "Head Nurse" : "Nurse";
+
+    const editSexEl = document.getElementById("editSex");
+    if (editSexEl) {
+        editSexEl.value = profile.sex || "Female";
+    }
 
     document.getElementById("editEmail").value =
         profile.email;
@@ -90,6 +107,11 @@ function saveProfile() {
     profile.role =
         document.getElementById("editRole").value;
 
+    const editSexEl = document.getElementById("editSex");
+    if (editSexEl) {
+        profile.sex = editSexEl.value;
+    }
+
     profile.email =
         document.getElementById("editEmail").value;
 
@@ -105,12 +127,9 @@ function saveProfile() {
 
     loadProfile();
 
-  // notify other scripts to update header immediately if available
-  try { if (typeof window.loadHeaderProfile === 'function') window.loadHeaderProfile(); } catch(e) {}
+    closeEditProfile();
 
-  closeEditProfile();
-
-  alert("Profile updated successfully!");
+    alert("Profile updated successfully!");
 }
 
 

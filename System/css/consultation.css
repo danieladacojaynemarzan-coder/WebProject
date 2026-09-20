@@ -12,61 +12,43 @@
 ========================================= */
 
 .consultation-top {
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     margin-bottom: 32px;
 }
 
-
 .consultation-filters {
-
     display: flex;
-
     align-items: center;
-
     gap: 19px;
 }
 
-
 .consultation-filters .search-box {
-
     width: 352px;
 }
 
-
 .date-box {
-
     width: 275px;
-
     height: 53px;
-
     background: white;
-
     border: 2px solid #222;
-
     display: flex;
-
     align-items: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.date-box:focus-within {
+    border-color: #147db8;
+    box-shadow: 0 0 0 3px rgba(20, 125, 184, 0.18);
+}
 
 .date-box input {
-
     width: 100%;
-
     height: 100%;
-
     border: none;
-
     outline: none;
-
     padding: 0 14px;
-
     font-size: 19px;
 }
 
@@ -82,6 +64,12 @@
     font: inherit;
     font-size: 13px;
     cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.date-box button:hover {
+    background: #164a75;
+    color: white;
 }
 
 
@@ -90,64 +78,43 @@
 ========================================= */
 
 .consultation-list {
-
     display: flex;
-
     flex-direction: column;
-
     gap: 25px;
 }
 
-
 .consultation-card {
-
     min-height: 160px;
-
     background: white;
-
     border: 1px solid #777;
-
     border-radius: 30px;
-
     box-shadow: 0 8px 18px rgba(0,0,0,.12);
-
     padding: 10px 44px;
-
     display: grid;
-
-    grid-template-columns:
-        1.8fr
-        .65fr
-        .85fr
-        .9fr
-        90px;
-
+    grid-template-columns: 1.8fr .65fr .85fr .9fr 90px;
     align-items: center;
     cursor: pointer;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     position: relative;
 }
 
 .consultation-card:hover {
-    box-shadow: 0 12px 24px rgba(0,0,0,.14);
-    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(0,0,0,.14);
+    transform: translateY(-2px);
+    border-color: #164a75;
 }
 
 .consultation-card.expanded {
-    box-shadow: 0 12px 24px rgba(0,0,0,.16);
+    box-shadow: 0 12px 28px rgba(0,0,0,.16);
     padding-bottom: 20px;
 }
 
 .consultation-card h3 {
-
     font-size: 25px;
-
     margin-bottom: 18px;
 }
 
-
 .consultation-card p {
-
     font-size: 20px;
 }
 
@@ -161,6 +128,7 @@
     border-radius: 0 0 18px 18px;
     padding-left: 12px;
     padding-right: 12px;
+    animation: fadeIn 0.2s ease;
 }
 
 .consultation-card.expanded .consultation-extra {
@@ -185,37 +153,33 @@
 }
 
 .consultation-actions {
-
     display: flex;
-
     justify-content: flex-end;
-
     gap: 14px;
 }
 
-
 .consultation-actions button {
-
     border: none;
-
     background: transparent;
-
-    font-size: 31px;
+    font-size: 28px;
+    transition: transform 0.18s ease, opacity 0.18s ease;
 }
 
+.consultation-actions button:hover {
+    transform: scale(1.15);
+    opacity: 0.88;
+}
 
 .consultation-actions .edit-btn {
     cursor: pointer;
-
     color: #f5b400;
 }
 
-
 .consultation-actions .delete-btn {
     cursor: pointer;
-
     color: red;
 }
+
 
 /* ============================= */
 /* NEW CONSULTATION MODAL        */
@@ -223,39 +187,32 @@
 
 .consultation-modal {
     display: none;
-
     position: fixed;
     inset: 0;
-
     z-index: 1000;
-
-    background: rgba(0,0,0,0.1);
-
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(2px);
     justify-content: center;
     align-items: center;
 }
 
 .consultation-box {
     width: 1120px;
+    max-width: 95vw;
+    max-height: 92vh;
+    overflow-y: auto;
     background: white;
-
     border-radius: 10px;
-
     box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-
-    overflow: hidden;
 }
 
 .consultation-title {
     background: #164a75;
     color: white;
-
     height: 65px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     position: relative;
 }
 
@@ -267,22 +224,23 @@
 .consultation-title button {
     position: absolute;
     right: 15px;
-
     background: none;
     border: none;
-
     color: white;
-
     font-size: 35px;
     cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.consultation-title button:hover {
+    transform: scale(1.1);
+    opacity: 0.85;
 }
 
 .consultation-body {
     display: grid;
     grid-template-columns: 1fr 1.4fr;
-
     gap: 70px;
-
     padding: 20px;
 }
 
@@ -297,16 +255,19 @@
 .consultation-form select {
     width: 100%;
     height: 36px;
-
     border: 2px solid #222;
-
     padding: 5px 10px;
-
     font-size: 18px;
-
     box-sizing: border-box;
-
     margin-bottom: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.patient-form input:focus,
+.consultation-form input:focus,
+.consultation-form select:focus {
+    border-color: #164a75;
+    box-shadow: 0 0 0 3px rgba(22, 74, 117, 0.18);
 }
 
 .patient-form input {
@@ -316,15 +277,12 @@
 .or-text {
     text-align: center;
     width: 270px;
-
     font-size: 20px;
 }
 
 .patient-form label {
     display: block;
-
     font-size: 18px;
-
     margin-bottom: 15px;
 }
 
@@ -336,31 +294,83 @@
 .two-inputs {
     display: grid;
     grid-template-columns: 1fr 1fr;
-
     gap: 45px;
-
     margin-bottom: 5px;
 }
 
 .two-inputs label,
 .consultation-form > div > label {
     display: block;
-
     font-size: 18px;
-
     margin-bottom: 3px;
 }
 
-.consultation-buttons {
-    display: flex;
-.consultation-buttons {
-    display: flex;
-    justify-content: center;
-
-    gap: 60px;
+.consultation-confirm-notice {
+    padding: 12px 20px;
+    background: #fff8f8;
+    border: 1px solid #ffd1d1;
+    border-radius: 8px;
+    margin: 10px 20px 15px 20px;
 }
+
+.confirm-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #164a75;
+    cursor: pointer;
+}
+
+.confirm-checkbox-label input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+    cursor: pointer;
+    accent-color: #164a75;
+}
+
+.consultation-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+    gap: 15px;
     padding: 0 0 15px;
 }
+
+.consultation-buttons button {
+    width: 190px;
+    height: 38px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.save-consultation {
+    background: green;
+}
+
+.save-consultation:hover {
+    background: darkgreen;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 128, 0, 0.3);
+}
+
+.cancel-consultation {
+    background: red;
+}
+
+.cancel-consultation:hover {
+    background: darkred;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+}
+
 .patient-details {
     margin-top: 8px;
     background: #fbfdff;
@@ -406,11 +416,17 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 .patient-details .actions .view-btn {
     background: #137fc1;
     color: white;
+}
+
+.patient-details .actions .view-btn:hover {
+    background: #0e6399;
+    transform: translateY(-1px);
 }
 
 .patient-details .actions .clear-btn {
@@ -419,34 +435,48 @@
     margin-left: 8px;
 }
 
-.consultation-buttons {
+.patient-details .actions .clear-btn:hover {
+    background: #dce5ee;
+    transform: translateY(-1px);
+}
+
+.register-student-container {
+    margin: 8px 0 12px;
+}
+
+.register-student-label {
     display: flex;
-    justify-content: end;
-    margin-right: 20px;
-}
-.consultation-buttons button {
-    width: 190px;
-    height: 38px;
-    border: none;
-    border-radius: 7px;
-
-    color: white;
-
-    font-size: 20px;
-
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #123;
     cursor: pointer;
-
-
-
 }
 
-.save-consultation {
-    background: green;
-    margin-right: 5px;
+.register-student-label input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer;
+    accent-color: #147eb8;
 }
 
-.cancel-consultation {
-    background: red;
-    margin-left: 5px;
+.register-hint-message {
+    margin-top: 6px;
+    padding: 8px 12px;
+    background: #eef7ff;
+    border-left: 4px solid #147eb8;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #0d527d;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(20, 126, 184, 0.08);
 }
 
+.register-hint-message i {
+    font-size: 15px;
+    color: #147eb8;
+}

@@ -481,7 +481,8 @@
 }
 
 
-.edit-modal-body input {
+.edit-modal-body input,
+.edit-modal-body select {
     width: 100%;
 
     padding: 10px;
@@ -489,6 +490,18 @@
     border: 2px solid #bbb;
 
     font-size: 16px;
+
+    background: white;
+
+    outline: none;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-modal-body input:focus,
+.edit-modal-body select:focus {
+    border-color: #147eb8;
+    box-shadow: 0 0 0 3px rgba(20, 126, 184, 0.18);
 }
 
 

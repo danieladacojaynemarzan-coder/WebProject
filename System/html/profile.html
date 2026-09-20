@@ -148,7 +148,14 @@
                         <p>
                             <strong>Role:</strong>
                             <span id="displayRole">
-                                School Nurse
+                                Nurse
+                            </span>
+                        </p>
+
+                        <p>
+                            <strong>Sex:</strong>
+                            <span id="displaySex">
+                                Female
                             </span>
                         </p>
 
@@ -197,31 +204,47 @@
 
             <div class="edit-modal-body">
 
-                <label>Nurse Name</label>
+                <label for="editName">Nurse Name</label>
 
                 <input type="text"
                        id="editName">
 
 
-                <label>Campus</label>
+                <label for="editCampus">Campus</label>
 
                 <input type="text"
                        id="editCampus">
 
 
-                <label>Role</label>
+                <label for="editRole">Role</label>
 
-                <input type="text"
-                       id="editRole">
+                <select id="editRole">
+
+                    <option value="Nurse">Nurse</option>
+
+                    <option value="Head Nurse">Head Nurse</option>
+
+                </select>
 
 
-                <label>Email</label>
+                <label for="editSex">Sex</label>
+
+                <select id="editSex">
+
+                    <option value="Female">Female</option>
+
+                    <option value="Male">Male</option>
+
+                </select>
+
+
+                <label for="editEmail">Email</label>
 
                 <input type="email"
                        id="editEmail">
 
 
-                <label>Contact Number</label>
+                <label for="editContact">Contact Number</label>
 
                 <input type="text"
                        id="editContact">

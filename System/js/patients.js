@@ -1,475 +1,367 @@
-/* patients.js — localStorage-driven patient list */
+/* patients.js — localStorage-driven patient list with 10-entry pagination & Inventory style layout */
 
 document.addEventListener('DOMContentLoaded', () => {
   const table = document.getElementById('patientsTable');
   const searchInput = document.getElementById('patientSearch');
   const strandFilter = document.getElementById('strandFilter');
-  const modal = document.getElementById('patientModal');
-  const modalActions = document.getElementById('patientModalActions');
-  const saveButton = document.getElementById('patientSaveButton');
-  const cancelButton = document.getElementById('patientCancelButton');
-  const activeTab = document.getElementById('activePatientsTab');
-  const archivedTab = document.getElementById('archivedPatientsTab');
-  let activePatientId = null;
-  let activePatientSnapshot = null;
-  let isEditing = false;
+  const archivesBtn = document.getElementById('archivesBtn');
+  const archivesBtnText = document.getElementById('archivesBtnText');
+  const entryCountEl = document.getElementById('patientEntryCount');
+  const paginationEl = document.getElementById('patientPagination');
+  const infoModal = document.getElementById('patientModal');
+
+  const itemsPerPage = 10;
+  let currentPage = 1;
   let archiveMode = false;
 
+  // Render Table & Pagination
   function renderPatients() {
-   if (!table) return;
+    if (!table) return;
 
-  const patients = archiveMode ? STI.getPatientArchives() : STI.getPatients();
-   const searchValue = (searchInput ? searchInput.value : '').trim().toLowerCase();
-   const strandValue = (strandFilter ? strandFilter.value : '').trim();
-   const filtered = patients.filter((patient) => {
-     const name = (patient.name || '').toLowerCase();
-     const strand = String(patient.strand || '');
-     return (name.includes(searchValue) || String(patient.studentNumber || '').toLowerCase().includes(searchValue)) &&
-       (!strandValue || strand === strandValue);
-   });
+    const patients = archiveMode ? STI.getPatientArchives() : STI.getPatients();
+    const searchValue = (searchInput ? searchInput.value : '').trim().toLowerCase();
+    const strandValue = (strandFilter ? strandFilter.value : '').trim();
 
-   table.innerHTML = '';
-   if (!filtered.length) {
-     table.innerHTML = '<tr><td colspan="6">No patients found.</td></tr>';
-     return;
-   }
+    const filtered = patients.filter((patient) => {
+      const name = (patient.name || '').toLowerCase();
+      const strand = String(patient.strand || '');
+      const studentNum = String(patient.studentNumber || '').toLowerCase();
+      const matchesSearch = name.includes(searchValue) || studentNum.includes(searchValue);
+      const matchesStrand = !strandValue || strand === strandValue;
+      return matchesSearch && matchesStrand;
+    });
 
-   filtered.forEach((patient, index) => {
-     const row = document.createElement('tr');
-     const actions = archiveMode ? `
-       <button class="restore-btn" data-id="${patient.id}" type="button">Restore</button>
-       <button class="permanent-delete-btn" data-id="${patient.id}" type="button">Delete</button>` : `
-       <button class="view-btn" data-id="${patient.id}" type="button" aria-label="View patient"><i class="fa-solid fa-eye"></i></button>
-       <button class="edit-btn" data-id="${patient.id}" type="button" aria-label="Edit patient"><i class="fa-solid fa-pencil"></i></button>
-       <button class="delete-btn" data-id="${patient.id}" type="button" aria-label="Archive patient"><i class="fa-solid fa-box-archive"></i></button>`;
-     row.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${escapeHtml(patient.name || '')}</td>
-      <td>${escapeHtml(patient.studentNumber || '')}</td>
-      <td>${escapeHtml(patient.strand || '')}</td>
-      <td>${escapeHtml(patient.section || '')}</td>
-       <td class="actions">${actions}</td>`;
-     if (archiveMode) {
-       row.querySelector('.restore-btn').addEventListener('click', () => restorePatient(patient.id));
-       row.querySelector('.permanent-delete-btn').addEventListener('click', () => permanentlyDeletePatient(patient.id));
-     } else {
-       row.querySelector('.view-btn').addEventListener('click', () => viewPatient(patient.id));
-       row.querySelector('.edit-btn').addEventListener('click', () => editPatient(patient.id));
-       row.querySelector('.delete-btn').addEventListener('click', () => archivePatient(patient.id));
-     }
-     table.appendChild(row);
-   });
+    const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const pageItems = filtered.slice(startIndex, startIndex + itemsPerPage);
+
+    table.innerHTML = '';
+
+    if (!filtered.length) {
+      table.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">No patients found.</td></tr>';
+      if (entryCountEl) entryCountEl.textContent = 'Showing 0 to 0 of 0 entries';
+      renderPagination(0);
+      return;
+    }
+
+    pageItems.forEach((patient, index) => {
+      const row = document.createElement('tr');
+      const displayIndex = startIndex + index + 1;
+
+      const actionsHtml = archiveMode ? `
+        <button class="restore-btn" data-id="${patient.id}" type="button">Restore</button>
+        <button class="permanent-delete-btn" data-id="${patient.id}" type="button">Delete</button>
+      ` : `
+        <button class="view-btn" data-id="${patient.id}" type="button" aria-label="View patient"><i class="fa-solid fa-eye"></i></button>
+        <button class="edit-btn" data-id="${patient.id}" type="button" aria-label="Edit patient"><i class="fa-solid fa-pencil"></i></button>
+        <button class="delete-btn" data-id="${patient.id}" type="button" aria-label="Archive patient"><i class="fa-solid fa-trash-can"></i></button>
+      `;
+
+      row.innerHTML = `
+        <td>${displayIndex}</td>
+        <td><strong>${escapeHtml(patient.name || '')}</strong></td>
+        <td>${escapeHtml(patient.studentNumber || '')}</td>
+        <td>${escapeHtml(patient.strand || '')}</td>
+        <td>${escapeHtml(patient.section || '')}</td>
+        <td class="actions">${actionsHtml}</td>
+      `;
+
+      if (archiveMode) {
+        const restoreBtn = row.querySelector('.restore-btn');
+        const deleteBtn = row.querySelector('.permanent-delete-btn');
+        if (restoreBtn) restoreBtn.addEventListener('click', () => restorePatient(patient.id));
+        if (deleteBtn) deleteBtn.addEventListener('click', () => permanentlyDeletePatient(patient.id));
+      } else {
+        const viewBtn = row.querySelector('.view-btn');
+        const editBtn = row.querySelector('.edit-btn');
+        const deleteBtn = row.querySelector('.delete-btn');
+        if (viewBtn) viewBtn.addEventListener('click', () => viewPatient(patient.id));
+        if (editBtn) editBtn.addEventListener('click', () => editPatient(patient.id));
+        if (deleteBtn) deleteBtn.addEventListener('click', () => archivePatient(patient.id));
+      }
+
+      table.appendChild(row);
+    });
+
+    // Update entry count text
+    if (entryCountEl) {
+      const showingFrom = startIndex + 1;
+      const showingTo = Math.min(startIndex + pageItems.length, filtered.length);
+      entryCountEl.textContent = `Showing ${showingFrom} to ${showingTo} of ${filtered.length} entries`;
+    }
+
+    renderPagination(filtered.length);
+  }
+
+  // Pagination Builder
+  function renderPagination(totalItems) {
+    if (!paginationEl) return;
+
+    const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+    paginationEl.innerHTML = '';
+
+    const prevBtn = document.createElement('button');
+    prevBtn.type = 'button';
+    prevBtn.textContent = '‹';
+    prevBtn.disabled = currentPage <= 1;
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage -= 1;
+        renderPatients();
+      }
+    });
+    paginationEl.appendChild(prevBtn);
+
+    for (let page = 1; page <= totalPages; page += 1) {
+      const pageBtn = document.createElement('button');
+      pageBtn.type = 'button';
+      pageBtn.textContent = String(page);
+      if (page === currentPage) pageBtn.className = 'current';
+      pageBtn.addEventListener('click', () => {
+        currentPage = page;
+        renderPatients();
+      });
+      paginationEl.appendChild(pageBtn);
+    }
+
+    const nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.textContent = '›';
+    nextBtn.disabled = currentPage >= totalPages;
+    nextBtn.addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        currentPage += 1;
+        renderPatients();
+      }
+    });
+    paginationEl.appendChild(nextBtn);
   }
 
   function escapeHtml(value) {
-   return String(value || '').replace(/[&<>"']/g, (char) => ({
-     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-   }[char]));
+    return String(value || '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[char]));
   }
 
-  function patientFields(patient) {
-   return {
-     infoSurname: patient.surname || '',
-     infoFirstName: patient.firstName || patient.name || '',
-     infoMiddleName: patient.middleName || '',
-     infoStudentNo: patient.studentNumber || '',
-     infoSex: patient.sex || '',
-     infoStrand: patient.strand || '',
-     infoSection: patient.section || '',
-     infoBlood: patient.bloodType || '',
-     infoAllergies: patient.allergies || '',
-     infoCondition: patient.condition || '',
-     infoEmergencyName: patient.emergencyName || '',
-     infoEmergencyNumber: patient.emergencyNumber || ''
-   };
+  function resetEditPatientForm() {
+    setFieldValue('editPatientId', '');
+    setFieldValue('editSurname', '');
+    setFieldValue('editFirstName', '');
+    setFieldValue('editMiddleName', '');
+    setFieldValue('editSuffix', '');
+    setFieldValue('editStudentNumber', '');
+    setFieldValue('editSex', 'Male');
+    setFieldValue('editStrand', '');
+    setFieldValue('editGradeSection', '');
+    setFieldValue('editBloodType', '');
+    setFieldValue('editAllergies', '');
+    setFieldValue('editCondition', '');
+    setFieldValue('editEmergency1', '');
+    setFieldValue('editEmergency2', '');
   }
 
-  function setDisplayValue(id, value) {
-   const element = document.getElementById(id);
-   if (!element) return;
-   element.innerHTML = escapeHtml(value || '—').replace(/\n/g, '<br>');
-  }
-
-  function renderPatientModal(patient, editMode) {
-   if (!modal) return;
-   const fields = patientFields(patient);
-   const displayFields = {
-     infoSurname: fields.infoSurname,
-     infoFirstName: fields.infoFirstName,
-     infoMiddleName: fields.infoMiddleName,
-     infoStudentNo: fields.infoStudentNo,
-     infoSex: fields.infoSex,
-     infoStrand: fields.infoStrand,
-     infoSection: fields.infoSection,
-     infoBlood: fields.infoBlood,
-     infoAllergies: fields.infoAllergies,
-     infoCondition: fields.infoCondition,
-     infoEmergency: `${fields.infoEmergencyName}\n${fields.infoEmergencyNumber}`
-   };
-
-   Object.entries(displayFields).forEach(([id, value]) => setDisplayValue(id, value));
-   modal.classList.toggle('is-editing', editMode);
-   modalActions.hidden = !editMode;
-   isEditing = editMode;
-   modal.style.display = 'flex';
-
-   if (editMode) {
-     Object.entries(fields).forEach(([id, value]) => {
-       const element = document.getElementById(id);
-       if (!element) return;
-       if (id === 'infoSex') {
-         element.innerHTML = `<select data-patient-field="sex"><option value="">Select sex</option><option value="Female">Female</option><option value="Male">Male</option><option value="Other">Other</option></select>`;
-         element.firstElementChild.value = value;
-       } else {
-         element.innerHTML = `<input data-patient-field="${id}" type="text" value="${escapeHtml(value)}">`;
-       }
-     });
-     document.getElementById('infoEmergency').innerHTML = `
-       <span class="emergency-inputs">
-         <input data-patient-field="emergencyName" type="text" value="${escapeHtml(fields.infoEmergencyName)}" placeholder="Contact name">
-         <input data-patient-field="emergencyNumber" type="text" value="${escapeHtml(fields.infoEmergencyNumber)}" placeholder="Phone number">
-       </span>`;
-   }
-  }
-
-  function readEditValues() {
-   const value = (field) => document.querySelector(`[data-patient-field="${field}"]`)?.value.trim() || '';
-   return {
-     surname: value('infoSurname'), firstName: value('infoFirstName'), middleName: value('infoMiddleName'),
-     studentNumber: value('infoStudentNo'), sex: value('sex'), strand: value('infoStrand'), section: value('infoSection'),
-     bloodType: value('infoBlood'), allergies: value('infoAllergies'), condition: value('infoCondition'),
-     emergencyName: value('emergencyName'), emergencyNumber: value('emergencyNumber')
-   };
-  }
-
-  function finishEdit(saveChanges) {
-   if (!activePatientId) return;
-   if (saveChanges) {
-     const patients = STI.getPatients();
-     const patient = patients.find((item) => String(item.id) === String(activePatientId));
-     if (patient) {
-       const changes = readEditValues();
-       Object.assign(patient, changes);
-       patient.name = [changes.firstName, changes.middleName, changes.surname].filter(Boolean).join(' ') || patient.name;
-       STI.savePatients(patients);
-       renderPatients();
-       activePatientSnapshot = { ...patient };
-     }
-   }
-   const patient = STI.getPatients().find((item) => String(item.id) === String(activePatientId));
-   if (patient) renderPatientModal(patient, false);
-  }
-
-  window.filterPatients = renderPatients;
-
+  // Action Functions
   window.viewPatient = function (id) {
-   const patient = STI.getPatients().find((item) => String(item.id) === String(id));
-   if (!patient) return;
-   activePatientId = patient.id;
-   activePatientSnapshot = { ...patient };
-   renderPatientModal(patient, false);
+    const patients = archiveMode ? STI.getPatientArchives() : STI.getPatients();
+    const patient = patients.find((item) => String(item.id) === String(id));
+    if (!patient) return;
+    renderPatientInfoModal(patient);
   };
 
   window.editPatient = function (id) {
-   const patient = STI.getPatients().find((item) => String(item.id) === String(id));
-   if (!patient) return;
-   activePatientId = patient.id;
-   activePatientSnapshot = { ...patient };
-   renderPatientModal(patient, true);
+    const patients = STI.getPatients();
+    const patient = patients.find((item) => String(item.id) === String(id));
+    if (!patient) return;
+
+    setFieldValue('editPatientId', patient.id);
+    setFieldValue('editSurname', patient.surname || '');
+    setFieldValue('editFirstName', patient.firstName || patient.name || '');
+    setFieldValue('editMiddleName', patient.middleName || '');
+    setFieldValue('editSuffix', patient.suffix || '');
+    setFieldValue('editStudentNumber', patient.studentNumber || '');
+    setFieldValue('editSex', patient.sex || 'Male');
+    setFieldValue('editStrand', patient.strand || '');
+    setFieldValue('editGradeSection', patient.section || '');
+    setFieldValue('editBloodType', patient.bloodType || '');
+    setFieldValue('editAllergies', patient.allergies || '');
+    setFieldValue('editCondition', patient.condition || '');
+    setFieldValue('editEmergency1', patient.emergencyNumber || '');
+    setFieldValue('editEmergency2', patient.emergencyNumber2 || '');
+
+    const title = document.getElementById('editPatientModalTitle');
+    if (title) title.textContent = 'Edit Patient Information';
+
+    const editModal = document.getElementById('editPatientModal');
+    if (editModal) editModal.style.display = 'flex';
   };
 
-  window.deletePatient = async function (id) {
+  window.openAddPatientModal = function () {
+    resetEditPatientForm();
+    const title = document.getElementById('editPatientModalTitle');
+    if (title) title.textContent = 'Add New Patient';
+
+    const editModal = document.getElementById('editPatientModal');
+    if (editModal) editModal.style.display = 'flex';
+  };
+
+  window.closeEditPatientModal = function () {
+    const editModal = document.getElementById('editPatientModal');
+    if (editModal) editModal.style.display = 'none';
+    resetEditPatientForm();
+  };
+
+  window.savePatientEdit = function (event) {
+    if (event) event.preventDefault();
+
+    const targetId = getFieldValue('editPatientId');
+    let patients = STI.getPatients();
+
+    const surname = getFieldValue('editSurname');
+    const firstName = getFieldValue('editFirstName');
+    const middleName = getFieldValue('editMiddleName');
+    const suffix = getFieldValue('editSuffix');
+    const fullName = [firstName, middleName, surname, suffix].filter(Boolean).join(' ');
+
+    if (targetId) {
+      // Edit existing patient
+      patients = patients.map((patient) => {
+        if (String(patient.id) === String(targetId)) {
+          return {
+            ...patient,
+            surname,
+            firstName,
+            middleName,
+            suffix,
+            name: fullName || patient.name,
+            studentNumber: getFieldValue('editStudentNumber') || patient.studentNumber,
+            sex: getFieldValue('editSex') || patient.sex,
+            strand: getFieldValue('editStrand') || patient.strand,
+            section: getFieldValue('editGradeSection') || patient.section,
+            bloodType: getFieldValue('editBloodType') || patient.bloodType,
+            allergies: getFieldValue('editAllergies') || patient.allergies,
+            condition: getFieldValue('editCondition') || patient.condition,
+            emergencyNumber: getFieldValue('editEmergency1') || patient.emergencyNumber,
+            emergencyNumber2: getFieldValue('editEmergency2') || patient.emergencyNumber2
+          };
+        }
+        return patient;
+      });
+    } else {
+      // Add new patient
+      const newPatient = {
+        id: STI.nextId(patients),
+        surname,
+        firstName,
+        middleName,
+        suffix,
+        name: fullName || 'New Patient',
+        studentNumber: getFieldValue('editStudentNumber') || 'N/A',
+        sex: getFieldValue('editSex') || 'Male',
+        strand: getFieldValue('editStrand') || 'N/A',
+        section: getFieldValue('editGradeSection') || 'N/A',
+        bloodType: getFieldValue('editBloodType') || 'N/A',
+        allergies: getFieldValue('editAllergies') || 'None',
+        condition: getFieldValue('editCondition') || 'None',
+        emergencyNumber: getFieldValue('editEmergency1') || '',
+        emergencyNumber2: getFieldValue('editEmergency2') || ''
+      };
+      patients.unshift(newPatient);
+    }
+
+    STI.savePatients(patients);
+    currentPage = 1;
+    renderPatients();
+    closeEditPatientModal();
+    if (window.animateAction) window.animateAction(document.querySelector('.patients-table') || document.body);
+  };
+
+  window.deletePatient = function (id) {
     return archivePatient(id);
   };
 
   async function archivePatient(id) {
-   try {
-     const ok = window.showConfirm ? await window.showConfirm('Move this patient to Archived Patients?') : confirm('Move this patient to Archived Patients?');
-     if (!ok) return;
-     const patients = STI.getPatients();
-     const patient = patients.find((item) => String(item.id) === String(id));
-     if (!patient) return;
-     const archives = STI.getPatientArchives();
-     archives.unshift({ ...patient, archivedAt: new Date().toISOString() });
-     STI.savePatientArchives(archives);
-     const remaining = patients.filter((item) => String(item.id) !== String(id));
-     STI.savePatients(remaining);
-     renderPatients();
-     if (window.animateAction) window.animateAction(document.querySelector('#patientsTable') || document.body);
-   } catch (e) {
-     console.error('delete patient', e);
-   }
+    try {
+      const ok = window.showConfirm ? await window.showConfirm('Move this patient to Archived Patients?') : confirm('Move this patient to Archived Patients?');
+      if (!ok) return;
+
+      const patients = STI.getPatients();
+      const patient = patients.find((item) => String(item.id) === String(id));
+      if (!patient) return;
+
+      const archives = STI.getPatientArchives();
+      archives.unshift({ ...patient, archivedAt: new Date().toISOString() });
+      STI.savePatientArchives(archives);
+
+      const remaining = patients.filter((item) => String(item.id) !== String(id));
+      STI.savePatients(remaining);
+
+      renderPatients();
+      if (window.animateAction) window.animateAction(document.querySelector('.patients-table') || document.body);
+    } catch (e) {
+      console.error('archive patient', e);
+    }
   }
 
   async function restorePatient(id) {
-   const archives = STI.getPatientArchives();
-   const patient = archives.find((item) => String(item.id) === String(id));
-   if (!patient) return;
-   STI.savePatients([{ ...patient, archivedAt: undefined }, ...STI.getPatients()]);
-   STI.savePatientArchives(archives.filter((item) => String(item.id) !== String(id)));
-   renderPatients();
+    const archives = STI.getPatientArchives();
+    const patient = archives.find((item) => String(item.id) === String(id));
+    if (!patient) return;
+
+    STI.savePatients([{ ...patient, archivedAt: undefined }, ...STI.getPatients()]);
+    STI.savePatientArchives(archives.filter((item) => String(item.id) !== String(id)));
+    renderPatients();
   }
 
   async function permanentlyDeletePatient(id) {
-   const ok = window.showConfirm ? await window.showConfirm('Permanently delete this archived patient?') : confirm('Permanently delete this archived patient?');
-   if (!ok) return;
-   STI.savePatientArchives(STI.getPatientArchives().filter((item) => String(item.id) !== String(id)));
-   renderPatients();
-  }
+    const ok = window.showConfirm ? await window.showConfirm('Permanently delete this archived patient?') : confirm('Permanently delete this archived patient?');
+    if (!ok) return;
 
-  window.openPatientModal = function (patient) {
-   renderPatientModal(patient);
-  };
-
-  window.closePatientModal = function () {
-    if (isEditing) finishEdit(false);
-    if (modal) modal.style.display = 'none';
-    activePatientId = null;
-    activePatientSnapshot = null;
-    isEditing = false;
-  };
-
-  if (searchInput) searchInput.addEventListener('keyup', renderPatients);
-  if (strandFilter) strandFilter.addEventListener('change', renderPatients);
-  if (activeTab) activeTab.addEventListener('click', () => {
-   archiveMode = false;
-   activeTab.classList.add('active');
-   archivedTab.classList.remove('active');
-   activeTab.setAttribute('aria-selected', 'true');
-   archivedTab.setAttribute('aria-selected', 'false');
-   renderPatients();
-  });
-  if (archivedTab) archivedTab.addEventListener('click', () => {
-   archiveMode = true;
-   archivedTab.classList.add('active');
-   activeTab.classList.remove('active');
-   archivedTab.setAttribute('aria-selected', 'true');
-   activeTab.setAttribute('aria-selected', 'false');
-   renderPatients();
-  });
-  if (saveButton) saveButton.addEventListener('click', () => finishEdit(true));
-  if (cancelButton) cancelButton.addEventListener('click', () => finishEdit(false));
-  window.addEventListener('storage', (event) => {
-   if (event.key === 'sti_patients') renderPatients();
-  });
-  window.addEventListener('pageshow', renderPatients);
-
-  renderPatients();
-const discardedPatientScript = String.raw`
-/* patients.js — localStorage-driven patient list */
-
-document.addEventListener('DOMContentLoaded', () => {
-  const table = document.getElementById('patientsTable');
-  const searchInput = document.getElementById('patientSearch');
-  const strandFilter = document.getElementById('strandFilter');
-
-  function renderPatients() {
-   if (!table) return;
-
-   const patients = STI.getPatients();
-   const searchValue = (searchInput ? searchInput.value : '').trim().toLowerCase();
-   const strandValue = (strandFilter ? strandFilter.value : '').trim();
-
-   const filtered = patients.filter((patient) => {
-     const name = (patient.name || '').toLowerCase();
-     const strand = (patient.strand || '').toString();
-     const matchesSearch = name.includes(searchValue) || (patient.studentNumber || '').toLowerCase().includes(searchValue);
-     const matchesStrand = !strandValue || strand === strandValue;
-     return matchesSearch && matchesStrand;
-   });
-
-   table.innerHTML = '';
-
-   if (!filtered.length) {
-     table.innerHTML = '<tr><td colspan="6">No patients found.</td></tr>';
-     return;
-   }
-
-   filtered.forEach((patient, index) => {
-     const row = document.createElement('tr');
-     row.innerHTML = '
-       <td>\${index + 1}</td>
-       <td>\${escapeHtml(patient.name || '')}</td>
-       <td>\${escapeHtml(patient.studentNumber || '')}</td>
-       <td>\${escapeHtml(patient.strand || '')}</td>
-       <td>\${escapeHtml(patient.section || '')}</td>
-       <td class="actions">
-         <button class="view-btn" data-id="\${patient.id}" type="button"><i class="fa-solid fa-eye"></i></button>
-         <button class="edit-btn" data-id="\${patient.id}" type="button"><i class="fa-solid fa-pencil"></i></button>
-         <button class="delete-btn" data-id="\${patient.id}" type="button"><i class="fa-solid fa-trash-can"></i></button>
-       </td>
-    ';
-
-     row.querySelector('.view-btn').addEventListener('click', () => viewPatient(patient.id));
-     row.querySelector('.edit-btn').addEventListener('click', () => editPatient(patient.id));
-     row.querySelector('.delete-btn').addEventListener('click', () => deletePatient(patient.id));
-
-     table.appendChild(row);
-   });
-  }
-
-  function escapeHtml(value) {
-   return String(value || '').replace(/[&<>"']/g, (char) => ({
-     '&': '&amp;',
-     '<': '&lt;',
-     '>': '&gt;',
-     '"': '&quot;',
-     "'": '&#39;'
-   }[char]));
-  }
-
-  function renderPatientModal(patient) {
-   const modal = document.getElementById('patientModal');
-   if (!modal) return;
-
-   const fields = {
-     infoSurname: patient.surname || '',
-     infoMiddleName: patient.middleName || '',
-     infoFirstName: patient.firstName || patient.name || '',
-     infoStudentNo: patient.studentNumber || '',
-     infoSex: patient.sex || 'N/A',
-     infoStrand: patient.strand || 'N/A',
-     infoSection: patient.section || 'N/A',
-     infoBlood: patient.bloodType || 'N/A',
-     infoAllergies: patient.allergies || 'None',
-     infoCondition: patient.condition || 'None',
-     infoEmergency: (patient.emergencyName || 'N/A') + '<br>' + (patient.emergencyNumber || 'N/A')
-   };
-
-   Object.entries(fields).forEach(([id, value]) => {
-     const el = document.getElementById(id);
-     if (el) {
-       el.textContent = id === 'infoEmergency' ? value : value;
-     }
-   });
-
-   const emergencyEl = document.getElementById('infoEmergency');
-   if (emergencyEl) emergencyEl.innerHTML = fields.infoEmergency;
-
-   modal.style.display = 'flex';
-  }
-
-  window.filterPatients = function () {
-   renderPatients();
-  };
-
-  window.viewPatient = function (id) {
-   const patient = STI.getPatients().find((item) => String(item.id) === String(id));
-   if (!patient) return;
-   renderPatientModal(patient);
-  };
-
-  window.editPatient = function (id) {
-   const patient = STI.getPatients().find((item) => String(item.id) === String(id));
-   if (!patient) return;
-   const newName = prompt('Edit patient name:', patient.name || '');
-   if (newName === null) return;
-   patient.name = newName.trim() || patient.name;
-   STI.savePatients(STI.getPatients());
-   renderPatients();
-  };
-
-  window.deletePatient = async function (id) {
-   try {
-     const ok = window.showConfirm ? await window.showConfirm('Are you sure you want to delete this patient?') : confirm('Are you sure you want to delete this patient?');
-     if (!ok) return;
-     const patients = STI.getPatients().filter((item) => String(item.id) !== String(id));
-     STI.savePatients(patients);
-     renderPatients();
-     if (window.animateAction) window.animateAction(document.querySelector('#patientsTable') || document.body);
-   } catch (e) {
-     console.error('delete patient', e);
-   }
-  };
-
-  window.openPatientModal = function (patient) {
-   renderPatientModal(patient);
-  };
-
-  window.closePatientModal = function () {
-   const modal = document.getElementById('patientModal');
-   if (modal) modal.style.display = 'none';
-  };
-
-  // Edit
-  function openEditPatientModal(patientId) {
-    const patients = STI.getPatients();
-    const patient = patients.find(p => String(p.id) === String(patientId) || String(p.studentId) === String(patientId));
-
-    if (!patient) {
-        console.error("Patient ID:", patientId);
-        return;
-    }
-
-    setFieldValue("editPatientId", patient.id || patient.studentId || "");
-    setFieldValue("editSurname", patient.surname || "");
-    setFieldValue("editMiddleName", patient.middleName || "");
-    setFieldValue("editFirstName", patient.firstName || patient.name || "");
-    setFieldValue("editStudentNumber", patient.studentNumber || "");
-    setFieldValue("editSex", patient.sex || "");
-    setFieldValue("editStrand", patient.strand || "");
-    setFieldValue("editGradeSection", patient.section || patient.gradeSection || "");
-    setFieldValue("editBloodType", patient.bloodType || "");
-    setFieldValue("editAllergies", patient.allergies || "");
-    setFieldValue("editCondition", patient.condition || "");
-    setFieldValue("editEmergency1", patient.emergencyNumber || patient.emergencyContact1 || "");
-    setFieldValue("editEmergency2", patient.emergencyNumber2 || patient.emergencyContact2 || "");
-
-    const modal = document.getElementById("editPatientModal");
-    if (modal) {
-        modal.classList.add("show");
-        modal.style.display = "flex";
-    } else {
-        console.error("Modal element #editPatientModal not found in HTML.");
-    }
-  }
-
-  function closeEditPatientModal() {
-    const modal = document.getElementById("editPatientModal");
-    if (modal) {
-        modal.classList.remove("show");
-        modal.style.display = "none";
-    }
-  }
-
-  function savePatientEdit(event) {
-    if (event) event.preventDefault();
-
-    const targetId = getFieldValue("editPatientId");
-    let patients = STI.getPatients();
-
-    patients = patients.map(patient => {
-        if (String(patient.id) === String(targetId) || String(patient.studentId) === String(targetId)) {
-            const surname = getFieldValue("editSurname") || patient.surname;
-            const firstName = getFieldValue("editFirstName") || patient.firstName;
-            const middleName = getFieldValue("editMiddleName") || patient.middleName;
-
-
-            const fullName = [firstName, middleName, surname].filter(Boolean).join(' ');
-
-            return {
-                ...patient,
-                surname: surname,
-                middleName: middleName,
-                firstName: firstName,
-                name: fullName,
-                studentNumber: getFieldValue("editStudentNumber") || patient.studentNumber,
-                sex: getFieldValue("editSex") || patient.sex,
-                strand: getFieldValue("editStrand") || patient.strand,
-                section: getFieldValue("editGradeSection") || patient.section,
-                bloodType: getFieldValue("editBloodType") || patient.bloodType,
-                allergies: getFieldValue("editAllergies") || patient.allergies,
-                condition: getFieldValue("editCondition") || patient.condition,
-                emergencyNumber: getFieldValue("editEmergency1") || patient.emergencyNumber,
-                emergencyNumber2: getFieldValue("editEmergency2") || patient.emergencyNumber2
-            };
-        }
-        return patient;
-    });
-
-    STI.savePatients(patients);
+    STI.savePatientArchives(STI.getPatientArchives().filter((item) => String(item.id) !== String(id)));
     renderPatients();
-    closeEditPatientModal();
+  }
+
+  // Patient Info View Modal
+  function renderPatientInfoModal(patient) {
+    if (!infoModal) return;
+
+    const isMale = String(patient.sex || '').toLowerCase() === 'male';
+    const avatarEl = infoModal.querySelector('.patient-avatar');
+    if (avatarEl) {
+      avatarEl.textContent = isMale ? '👨' : '👩';
+    }
+
+    const surnameWithSuffix = [patient.surname, patient.suffix].filter(Boolean).join(' ');
+    setDisplayValue('infoSurname', surnameWithSuffix || patient.surname || patient.name?.split(' ').pop() || '');
+    setDisplayValue('infoFirstName', patient.firstName || patient.name?.split(' ')[0] || '');
+    setDisplayValue('infoMiddleName', patient.middleName || '');
+    setDisplayValue('infoStudentNo', patient.studentNumber || 'N/A');
+    setDisplayValue('infoSex', patient.sex || 'N/A');
+    setDisplayValue('infoStrand', patient.strand || 'N/A');
+    setDisplayValue('infoSection', patient.section || 'N/A');
+    setDisplayValue('infoBlood', patient.bloodType || 'N/A');
+    setDisplayValue('infoAllergies', patient.allergies || 'None');
+    setDisplayValue('infoCondition', patient.condition || 'None');
+    
+    const emergencyText = [patient.emergencyName, patient.emergencyNumber].filter(Boolean).join('\n') || patient.emergencyNumber || 'N/A';
+    setDisplayValue('infoEmergency', emergencyText);
+
+    infoModal.style.display = 'flex';
+  }
+
+  window.openPatientModal = function (patient) {
+    renderPatientInfoModal(patient);
+  };
+
+  window.closePatientModal = function () {
+    if (infoModal) infoModal.style.display = 'none';
+  };
+
+  function setDisplayValue(id, value) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    element.innerHTML = escapeHtml(value || '—').replace(/\n/g, '<br>');
   }
 
   function setFieldValue(id, val) {
@@ -479,13 +371,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getFieldValue(id) {
     const el = document.getElementById(id);
-    return el ? el.value.trim() : "";
+    return el ? el.value.trim() : '';
   }
 
+  // Event Listeners
+  if (searchInput) searchInput.addEventListener('keyup', () => { currentPage = 1; renderPatients(); });
+  if (strandFilter) strandFilter.addEventListener('change', () => { currentPage = 1; renderPatients(); });
 
-  if (searchInput) searchInput.addEventListener('keyup', renderPatients);
-  if (strandFilter) strandFilter.addEventListener('change', renderPatients);
+  if (archivesBtn) {
+    archivesBtn.addEventListener('click', () => {
+      archiveMode = !archiveMode;
+      currentPage = 1;
+      if (archiveMode) {
+        if (archivesBtnText) archivesBtnText.textContent = 'Active Patients';
+        archivesBtn.classList.add('active-archive');
+      } else {
+        if (archivesBtnText) archivesBtnText.textContent = 'Archives';
+        archivesBtn.classList.remove('active-archive');
+      }
+      renderPatients();
+    });
+  }
 
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'sti_patients' || event.key === 'sti_patient_archives') renderPatients();
+  });
+
+  window.addEventListener('pageshow', renderPatients);
+
+  // Initial render
   renderPatients();
-`;
 });
