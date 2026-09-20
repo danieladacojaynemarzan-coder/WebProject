@@ -418,10 +418,15 @@
     color: #233;
     margin-left: 8px;
 }
+
+.consultation-buttons {
+    display: flex;
+    justify-content: end;
+    margin-right: 20px;
+}
 .consultation-buttons button {
     width: 190px;
     height: 38px;
-
     border: none;
     border-radius: 7px;
 
@@ -430,13 +435,18 @@
     font-size: 20px;
 
     cursor: pointer;
+
+
+
 }
 
 .save-consultation {
     background: green;
+    margin-right: 5px;
 }
 
 .cancel-consultation {
     background: red;
+    margin-left: 5px;
 }
 
