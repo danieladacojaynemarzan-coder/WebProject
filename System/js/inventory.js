@@ -8,16 +8,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const itemsPerPage = 7;
   let currentPage = 1;
 
-  function getStatusLabel(stock) {
-   if (stock <= 3) return 'Low';
+  function getExpiryStatus(expiry) {
+   if (!expiry) return null;
+
+   const expiryDate = new Date(`${expiry}T00:00:00`);
+   if (Number.isNaN(expiryDate.getTime())) return null;
+
+   const today = new Date();
+   today.setHours(0, 0, 0, 0);
+   const daysUntilExpiry = Math.round((expiryDate - today) / (1000 * 60 * 60 * 24));
+
+   return daysUntilExpiry >= 0 && daysUntilExpiry <= 5 ? 'Soon to expire' : null;
+  }
+
+  function getStatusLabel(item) {
+   const expiryStatus = getExpiryStatus(item.expiry);
+   if (expiryStatus) return expiryStatus;
+
+   const stock = Number(item.stock || 0);
    if (stock <= 6) return 'Low';
    return 'High';
   }
 
-  function getStatusClass(stock) {
-   if (stock <= 3) return 'low';
-   if (stock <= 6) return 'low';
-   return 'high';
+  function getStatusClass(item) {
+   return getExpiryStatus(item.expiry) ? 'expire' : Number(item.stock || 0) <= 6 ? 'low' : 'high';
   }
 
   function renderPagination(totalItems) {
@@ -77,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
    const filtered = items.filter((item) => {
      const name = (item.name || '').toLowerCase();
      const category = item.category || '';
-     const status = getStatusLabel(item.stock || 0);
+    const status = getStatusLabel(item);
      const matchesSearch = name.includes(searchValue);
      const matchesCategory = !selectedCategory || category === selectedCategory;
      const matchesStatus = !selectedStatus || status === selectedStatus;
@@ -119,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
          </div>
        </td>
        <td>
-         <span class="status ${getStatusClass(item.stock || 0)}">${getStatusLabel(item.stock || 0)}</span>
+         <span class="status ${getStatusClass(item)}">${getStatusLabel(item)}</span>
        </td>
        <td class="inventory-actions">
          <button class="inventory-edit" type="button" data-id="${item.id}"><i class="fa-solid fa-pencil"></i></button>

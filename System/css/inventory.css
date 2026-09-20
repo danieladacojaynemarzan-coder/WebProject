@@ -306,8 +306,9 @@
 .inventory-modal-box {
    width: min(1100px, 90vw);
    background: #f2f2f2;
-   border: 2px solid #222;
+
    box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+   border-radius: 10px;
 }
 
 .inventory-modal-header {
@@ -318,13 +319,15 @@
    color: white;
    padding: 18px 22px;
    border-bottom: 2px solid #0a486f;
+   border-radius: 4px 4px 0 0;
 }
 
 .inventory-modal-header h2 {
    margin: 0;
    font-size: clamp(2rem, 3vw, 3rem);
-   font-weight: 800;
+   font-weight: 600;
    letter-spacing: 0.02em;
+   
 }
 
 .inventory-close {

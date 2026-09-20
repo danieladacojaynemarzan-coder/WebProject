@@ -30,6 +30,13 @@
     font-size: 20px;
 }
 
+.archive-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+
 .archive-breadcrumb span {
     margin: 0 8px;
     color: #777;

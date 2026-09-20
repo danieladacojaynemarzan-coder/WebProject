@@ -62,8 +62,15 @@
 
             <h1>Inventory</h1>
 
-            <div class="nurse-profile">
-                Nurse Name 👩‍⚕️
+            <div class="profile-area" onclick="openProfile()">
+
+                <strong id="headerNurseName">Nurse Name</strong>
+
+                <div class="nurse-avatar">
+                    <i class="fa-solid fa-user-nurse"></i>
+                </div>
+
+                <i class="fa-solid fa-circle-chevron-down"></i>
             </div>
 
         </header>
@@ -82,7 +89,7 @@
                 <!-- BREADCRUMB -->
 
                 <div class="archive-breadcrumb">
-                    Inventory <span>›</span> Archives
+                         <a href="inventory.html">Inventory</a> <span>›</span> Archives
                 </div>
 
 
@@ -433,6 +440,18 @@
         </div> <!-- .page-container -->
 
     </main>
+
+    <div class="profile-menu" id="profileMenu">
+
+        <a href="profile.html">
+            Profile
+        </a>
+
+        <a href="../index.html">
+            Log out
+        </a>
+
+    </div>
 
 
     <!-- JAVASCRIPT -->
