@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
      const row = document.createElement('tr');
      const actions = archiveMode ? `
        <button class="restore-btn" data-id="${patient.id}" type="button">Restore</button>
-       <button class="permanent-delete-btn" data-id="${patient.id}" type="button">Delete permanently</button>` : `
+       <button class="permanent-delete-btn" data-id="${patient.id}" type="button">Delete</button>` : `
        <button class="view-btn" data-id="${patient.id}" type="button" aria-label="View patient"><i class="fa-solid fa-eye"></i></button>
        <button class="edit-btn" data-id="${patient.id}" type="button" aria-label="Edit patient"><i class="fa-solid fa-pencil"></i></button>
        <button class="delete-btn" data-id="${patient.id}" type="button" aria-label="Archive patient"><i class="fa-solid fa-box-archive"></i></button>`;
