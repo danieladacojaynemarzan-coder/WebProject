@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </td>
         <td class="inventory-actions">
           <button class="inventory-edit" type="button" data-id="${item.id}"><i class="fa-solid fa-pencil"></i></button>
-          <button class="inventory-delete" type="button" data-id="${item.id}"><i class="fa-regular fa-trash-can"></i></button>
+          <button class="inventory-delete" type="button" data-id="${item.id}"><i class="fa-solid fa-trash-can"></i></button>
         </td>
       `;
 

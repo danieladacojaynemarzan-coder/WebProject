@@ -167,7 +167,7 @@
 
 /* Fully Expired (Today or past) */
 .status.expired {
-    background: RED;
+    background: red;
     color: WHITE;
     border: 1px solid #f5c6cb;
 }
@@ -207,7 +207,7 @@
 }
 
 .inventory-delete {
-   color: #d9534f;
+   color: red;
 }
 
 
