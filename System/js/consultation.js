@@ -546,15 +546,6 @@
     };
 
     window.saveConsultation = function () {
-      const confirmCheck = document.getElementById('confirmConsultationSave');
-      const confirmWarning = document.getElementById('confirmWarningText');
-      if (confirmCheck && !confirmCheck.checked) {
-        if (confirmWarning) confirmWarning.style.display = 'block';
-        alert('Please check the confirmation box before saving the consultation log.');
-        confirmCheck.focus();
-        return;
-      }
-      if (confirmWarning) confirmWarning.style.display = 'none';
 
       const register = !!(registerCheckbox && registerCheckbox.checked);
 
