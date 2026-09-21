@@ -100,7 +100,6 @@
 
 .actions button {
     border: none;
-    background: transparent;
     cursor: pointer;
     font-size: 22px;
     transition: transform 0.12s ease, opacity 0.12s ease;
@@ -113,14 +112,17 @@
 
 .view-btn {
     color: #147db8;
+    background: transparent;
 }
 
 .edit-btn {
     color: #f6ae12;
+    background: transparent;
 }
 
 .delete-btn {
     color: #d9534f;
+    background: transparent;
 }
 
 .restore-btn {
