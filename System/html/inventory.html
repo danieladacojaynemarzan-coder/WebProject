@@ -99,13 +99,11 @@
 
             <div class="profile-area" onclick="openProfile()">
 
-    <strong id="headerNurseName">Nurse Name</strong>
+                <strong id="headerNurseName">Nurse Name</strong>
 
-    <div class="nurse-avatar">
-        👩‍⚕️
-    </div>
-
-
+                <div class="nurse-avatar">
+                    👩‍⚕️
+                </div>
 
                 <i class="fa-solid fa-circle-chevron-down"></i>
 
@@ -176,6 +174,11 @@
 
                         <option value="Soon to expire">
                             Soon to expire
+                        </option>
+
+                        <!-- ADDED EXPIRED OPTION -->
+                        <option value="Expired">
+                            Expired
                         </option>
 
                     </select>
@@ -620,9 +623,9 @@
 
                     <i class="fa-solid fa-box-archive"></i>
 
-                   <a href="inventory-archives.html" class="archives-link">
-    📥 Archives
-</a>
+                    <a href="inventory-archives.html" class="archives-link">
+                        📥 Archives
+                    </a>
 
                 </button>
 
@@ -649,6 +652,7 @@
 
     </main>
 
+
 </div>
 
 
@@ -667,87 +671,205 @@
 
 </div>
 
+
 <div class="profile-menu" id="profileMenu">
- 
+
     <a href="profile.html">
         Profile
     </a>
- 
-     <a href="../html/login.html">
-            Log out
-        </a>
- 
+
+    <a href="../html/login.html">
+        Log out
+    </a>
+
 </div>
+
+
 
 <div id="inventoryModal" class="inventory-modal">
+
     <div class="inventory-modal-box">
+
         <div class="inventory-modal-header">
+
             <h2>Add New Inventory Item</h2>
-            <button type="button" class="inventory-close" onclick="closeInventoryModal()">×</button>
+
+            <button type="button"
+                    class="inventory-close"
+                    onclick="closeInventoryModal()">
+                ×
+            </button>
+
         </div>
+
 
         <div class="inventory-modal-body">
+
             <div class="inventory-form-grid">
-                <div class="inventory-field-group">
-                    <label for="inventoryName">Item Name</label>
-                    <input id="inventoryName" type="text" placeholder="">
-                </div>
+
 
                 <div class="inventory-field-group">
-                    <label for="inventoryUnit">Unit</label>
+
+                    <label for="inventoryName">
+                        Item Name
+                    </label>
+
+                    <input
+                        id="inventoryName"
+                        type="text"
+                        placeholder=""
+                    >
+
+                </div>
+
+
+                <div class="inventory-field-group">
+
+                    <label for="inventoryUnit">
+                        Unit
+                    </label>
+
                     <select id="inventoryUnit">
+
                         <option value="Bottle">Bottle</option>
+
                         <option value="Bottles">Bottles</option>
+
                         <option value="Box">Box</option>
+
                         <option value="Boxes">Boxes</option>
+
                         <option value="Pack">Pack</option>
+
                         <option value="Packs">Packs</option>
+
                         <option value="Tablet">Tablet</option>
+
                         <option value="Tablets">Tablets</option>
+
                     </select>
+
                 </div>
 
+
                 <div class="inventory-field-group">
-                    <label for="inventoryCategory">Category</label>
+
+                    <label for="inventoryCategory">
+                        Category
+                    </label>
+
                     <select id="inventoryCategory">
-                        <option value="Medicine">Medicine</option>
-                        <option value="Antiseptic">Antiseptic</option>
-                        <option value="Supplies">Supplies</option>
+
+                        <option value="Medicine">
+                            Medicine
+                        </option>
+
+                        <option value="Antiseptic">
+                            Antiseptic
+                        </option>
+
+                        <option value="Supplies">
+                            Supplies
+                        </option>
+
                     </select>
+
                 </div>
 
-                <div class="inventory-field-group">
-                    <label for="inventoryStock">Stock</label>
-                    <input id="inventoryStock" type="number" min="0" value="0">
-                </div>
 
                 <div class="inventory-field-group">
-                    <label for="inventorySupplier">Supplier (optional)</label>
-                    <input id="inventorySupplier" type="text" placeholder="">
+
+                    <label for="inventoryStock">
+                        Stock
+                    </label>
+
+                    <input
+                        id="inventoryStock"
+                        type="number"
+                        min="0"
+                        value="0"
+                    >
+
                 </div>
 
+
                 <div class="inventory-field-group">
-                    <label for="inventoryExpiry">Expiry Date</label>
-                    <input id="inventoryExpiry" type="date">
+
+                    <label for="inventorySupplier">
+                        Supplier (optional)
+                    </label>
+
+                    <input
+                        id="inventorySupplier"
+                        type="text"
+                        placeholder=""
+                    >
+
                 </div>
+
+
+                <div class="inventory-field-group">
+
+                    <label for="inventoryExpiry">
+                        Expiry Date
+                    </label>
+
+                    <input
+                        id="inventoryExpiry"
+                        type="date"
+                    >
+
+                </div>
+
 
                 <div class="inventory-notes-field">
-                    <label for="inventoryNotes">Description / Remarks</label>
-                    <textarea id="inventoryNotes" rows="6" placeholder=""></textarea>
+
+                    <label for="inventoryNotes">
+                        Description / Remarks
+                    </label>
+
+                    <textarea
+                        id="inventoryNotes"
+                        rows="6"
+                        placeholder="">
+                    </textarea>
+
                 </div>
+
             </div>
 
+
             <div class="inventory-modal-actions">
-                <button class="inventory-save" type="button" onclick="saveInventoryItem()">Save</button>
-                <button class="inventory-cancel" type="button" onclick="closeInventoryModal()">Cancel</button>
+
+                <button
+                    class="inventory-save"
+                    type="button"
+                    onclick="saveInventoryItem()">
+                    Save
+                </button>
+
+                <button
+                    class="inventory-cancel"
+                    type="button"
+                    onclick="closeInventoryModal()">
+                    Cancel
+                </button>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
+
 
 
 <script src="../js/main.js"></script>
+
 <script src="../js/inventory.js"></script>
 
+
 </body>
+
 </html>
